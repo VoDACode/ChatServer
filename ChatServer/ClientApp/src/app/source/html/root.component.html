@@ -1,0 +1,18 @@
+<div *ngIf="!IsDEBUG">
+  <app-reg-log *ngIf="!getAuthorization().logIn && !getAuthorization().ConfirmEmailProcess"></app-reg-log>
+
+  <app-confirm-email *ngIf="!getAuthorization().logIn && getAuthorization().ConfirmEmailProcess"></app-confirm-email>
+
+  <app-set-password *ngIf="getAuthorization().logIn && IsSetPassword()"></app-set-password>
+
+  <div *ngIf="getAuthorization().logIn && !IsSetPassword()">
+    <app-chat></app-chat>
+    <app-menu-source></app-menu-source>
+    <app-create-storage-menu></app-create-storage-menu>
+  </div>
+</div>
+<div *ngIf="IsDEBUG">
+  <app-chat></app-chat>
+  <app-menu-source></app-menu-source>
+  <app-create-storage-menu></app-create-storage-menu>
+</div>

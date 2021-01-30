@@ -1,0 +1,40 @@
+<div id="logRegInBox">
+  <div class="selectMode">
+    <button (click)="ViewRegIn(true)" class="reg">Reg In</button>
+    <button (click)="ViewRegIn(false)" class="log">Log In</button>
+  </div>
+  <div class="viewModes">
+    <div [style.display]="(IsVisibleRegIn) ? 'block' : 'none'">
+      <div class="inputBox">
+        <input type="text" placeholder="User name" [(ngModel)]="User.userName">
+      </div>
+      <div class="inputBox">
+        <input type="text" placeholder="Nickname" [(ngModel)]="User.nickname">
+      </div>
+      <div class="inputBox">
+        <input type="email" placeholder="email" [(ngModel)]="User.email">
+      </div>
+      <div class="inputBox">
+        <input type="password" placeholder="Password" [(ngModel)]="Password">
+      </div>
+      <div class="inputBox">
+        <input type="password" placeholder="Confirm password" [(ngModel)]="ConfirmPassword">
+      </div>
+      <div class="inputBox buttonBox">
+        <button type="button" (click)="actionRegIn()">Reg In</button>
+      </div>
+    </div>
+    <div [style.display]="(!IsVisibleRegIn) ? 'block' : 'none'">
+      <div class="inputBox">
+        <input type="email" placeholder="email" [(ngModel)]="User.email">
+      </div>
+      <div class="inputBox">
+        <input type="password" placeholder="Password" [(ngModel)]="Password">
+      </div>
+      <div class="inputBox buttonBox">
+        <button type="button" (click)="actionLogIn()">Lgo In</button>
+      </div>
+    </div>
+    <div id="WarningBox"></div>
+  </div>
+</div>

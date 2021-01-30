@@ -1,0 +1,100 @@
+<!--Modal windows-->
+<app-detail-info-storage></app-detail-info-storage>
+
+<div class="Modal_bg vImg" id="viewImg">
+  <div class="Modal_content" id="viewImgBox">
+    <div class="Modal_top_panel">
+      <div>
+      </div>
+      <div>
+        <span class="Modal_close vImg">X</span>
+      </div>
+    </div>
+    <div class="Modal_main_conten_box">
+      <img id="viewImgObj">
+    </div>
+  </div>
+</div>
+
+<app-storage-settings></app-storage-settings>
+<!--Custom context menu-->
+<div class="Custom_context_menu" id="message_Custom_context_menu">
+  <div class="contentBox">
+    <div class="item">
+      <span>Reply</span>
+    </div>
+    <div class="item">
+      <span>Copy</span>
+    </div>
+    <div class="item">
+      <span>Edit</span>
+    </div>
+    <div class="item">
+      <span>Copy the link on the message</span>
+    </div>
+    <div class="item">
+      <span>Delete</span>
+    </div>
+  </div>
+</div>
+
+<!--User settings-->
+<div class="Modal_bg" id="UserSettingsWindow">
+  <div class="Modal_content">
+    <div>
+      <span class="Modal_close" onclick="$('#UserSettingsWindow').hide()">X</span>
+    </div>
+    <div class="editBox">
+      <div class="top">
+        <div class="avatar">
+          <img [src]='ViewUser.imgContent' (click)="openSelectUserTitleImg()">
+          <input type="file" style="display: none" id="selectUserTitleImg" accept="image/*">
+        </div>
+        <div class="nick">
+          <input type="text" [(ngModel)]="ViewUser.userName" title="User name">
+          <input type="text" [(ngModel)]="ViewUser.nickname" title="Nickname">
+        </div>
+      </div>
+      <div>
+        <label>email:</label>
+        <input type="email" [(ngModel)]="ViewUser.email">
+      </div>
+      <div>
+        <button (click)="OpenSetPasswordMenu()">Set password</button>
+      </div>
+      <div>
+        <button (click)="SaveUserSetting()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Left tab menu-->
+<div id="LeftTabMenu">
+  <div class="content">
+    <div class="top">
+      <div>
+        <img [src]='getUserData().imgContent'>
+      </div>
+      <div>
+        <span>{{getUserData().nickname}}</span>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="itemList">
+        <div class="item" (click)="openUserSettingsWindow()">
+          <span>Settings</span>
+        </div>
+        <div class="item">
+          <span>Contacts</span>
+        </div>
+        <div class="item" (click)="LogOutUser()">
+          <span>Log Out</span>
+        </div>
+        <div class="item">
+          <span>About the app</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,539 @@
+.Modal_bg{
+    z-index: 500;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: none;
+    background-color: rgba(0,0,0,0.25);
+}
+.Modal_content{
+    position: absolute;
+    top: 5%;
+    left: 37.5%;
+    z-index: 550;
+    height: 80%;
+    width: 25%;
+    background-color: rgb(0, 162, 255);
+    border-radius: 5px;
+    display: grid;
+    grid-template-rows: 35px auto;
+}
+.Modal_content *{
+    color: white;
+}
+.Modal_top_panel{
+    display: grid;
+    grid-template-columns: auto 20px;
+    border-bottom: 2px solid rgb(76, 93, 110);
+}
+.Modal_top_panel span{
+    font-size: x-large;
+}
+.Modal_close{
+    color: rgb(200, 200, 200);
+    font-weight: 1000;
+    font-family: 'Padauk', sans-serif;
+    -webkit-user-select: none;
+}
+.Modal_close:hover{
+    color: white;
+    cursor: pointer;
+}
+.Modal_main_conten_box{
+    display: grid;
+    grid-template-rows: 80px 30px auto;
+}
+
+/*storage settings*/
+#storageSettings{
+    background-color: rgb(76, 93, 110);
+    display: none;
+}
+#storageSettings .Modal_main_conten_box{
+    display: grid;
+    grid-template-rows: none;
+    grid-template-columns: 150px auto;
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    width: 75%;
+    height: 100%;
+    color: white;
+}
+#storageSettings .Modal_main_conten_box .content .Modal_close{
+    position: fixed;
+    right: 15%;
+    z-index: 600;
+    font-size: x-large;
+}
+#storageSettings .Modal_main_conten_box > .menu{
+    background-color: rgb(76, 93, 110);
+    overflow: auto;
+    -webkit-user-select: none;
+}
+#storageSettings .Modal_main_conten_box > .menu > .menuItemBox{
+    border-bottom: rgb(44, 54, 65);
+}
+#storageSettings .Modal_main_conten_box > .menu > .menuItemBox > .item span{
+    font-size: 18px;
+}
+#storageSettings .Modal_main_conten_box > .menu > .menuItemBox > .item input{
+    display: none;
+}
+#storageSettings .Modal_main_conten_box > .menu > .menuItemBox span{
+    font-size: 16px;
+}
+#storageSettings .Modal_main_conten_box > .menu > .menuItemBox > .item{
+    border-radius: 5px;
+    margin: 2px;
+    padding: 2px;
+}
+#storageSettings .Modal_main_conten_box > .menu > .menuItemBox > .item:hover{
+    background-color: rgba(129, 129, 129, 0.5);
+    cursor: pointer;
+}
+
+#storageSettings .Modal_main_conten_box > .content{
+    height: 100%;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate{
+    display: none;
+    margin: 10px;
+    height: 100%;
+    background-color: rgb(0, 162, 255);
+    overflow: auto;
+    -webkit-user-select: none;
+    bottom: 50px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .main{
+    display: grid;
+    grid-template-columns: 80px auto;
+    margin: 50px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .main > .ava > button{
+    height: 80px;
+    width: 80px;
+    border-radius: 100%;
+    border: none;
+    background-color: rgb(255, 255, 255);
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .main > .ava > button:hover{
+    background-color: rgb(200, 200, 200);
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .main > .content{
+    margin-left: 20px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .main > .content span{
+    font-size: x-large;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .main > .content input{
+    color: black;
+    font-size: x-large;
+    width: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 3px;
+}
+
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .PermissionsTemplates{
+    display: grid;
+    grid-template-columns: 15% auto;
+    width: 100%;
+    margin-bottom: 50px;
+    overflow: hidden;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .PermissionsTemplates > .list{
+    width: 100%;
+    height: 40%;
+    margin: 10px;
+    background-color: rgb(76, 93, 110);
+    border: 2px solid rgb(43, 53, 63);
+    overflow: auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .PermissionsTemplates > .list > .item{
+    border-radius: 5px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .PermissionsTemplates > .list > .item span{
+    font-size: 18px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .PermissionsTemplates > .list > .item:hover{
+    background-color: rgba(200, 200, 200, 0.5);
+    cursor: pointer;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .PermissionsTemplates > .viewBox{
+    margin-left: 20px;
+    margin-top: 20px;
+    display: grid;
+    grid-auto-rows: auto auto auto auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .PermissionsTemplates > .viewBox > div{
+    border-bottom: 2px solid rgb(76, 93, 110);
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .PermissionsTemplates > .viewBox input{
+    color: black;
+    font-size: x-large;
+    width: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 3px;
+}
+
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks{
+    margin: 20px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item{
+    margin-bottom: 2px;
+    margin-top: 2px;
+    padding: 5px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: auto auto auto 60px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item:hover{
+    background-color: rgba(200, 200, 200, 0.5);
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .user{
+    display: grid;
+    grid-template-columns: 40px auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .user > .avatar{
+    border-radius: 100%;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .user > .name{
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .user > .name span{
+    grid-row: 2;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .user > .avatar img{
+    width: 40px;
+    height: 40px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .link{
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .link span{
+    grid-row: 2;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .link span:hover{
+    margin-bottom: 3px;
+    margin-right: 3px;
+    cursor: pointer;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .time{
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .time span{
+    grid-row: 2;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .settings{
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .settings button{
+    grid-row: 2;
+    background-color: #ff5252;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Padauk', sans-serif;
+    -webkit-user-select: none;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .JoinLinks > .list > .item > .settings button:hover{
+    background-color: #ffacac;
+    cursor: pointer;
+}
+
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans{
+    margin: 20px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item{
+    margin-bottom: 2px;
+    margin-top: 2px;
+    padding: 5px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: auto auto auto 60px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item:hover{
+    background-color: rgba(200, 200, 200, 0.5);
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .user{
+    display: grid;
+    grid-template-columns: 40px auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .user > .avatar{
+    border-radius: 100%;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .user > .name{
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .user > .name span{
+    grid-row: 2;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .user > .avatar img{
+    width: 40px;
+    height: 40px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .reason{
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .reason span{
+    grid-row: 2;
+    word-wrap: anywhere;
+    margin-left: 5px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .time{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .time > div{
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-row: 2;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .time > div span{
+    grid-column: 2;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .settings{
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .settings button{
+    grid-row: 2;
+    background-color: #2bff27;
+    border: none;
+    border-radius: 5px;
+    padding: 2px;
+    font-family: 'Padauk', sans-serif;
+    -webkit-user-select: none;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Bans > .list > .item > .settings button:hover{
+    background-color: #9aff9a;
+    cursor: pointer;
+}
+
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log{
+    margin: 20px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log > .list > .item{
+    margin-bottom: 2px;
+    margin-top: 2px;
+    padding: 5px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 80px auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log > .list > .item:hover{
+    background-color: rgba(200, 200, 200, 0.5);
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log > .list > .item > .date{
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log > .list > .item > .date span{
+    grid-row: 2;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log > .list > .item > .user{
+    display: grid;
+    grid-template-columns: 40px auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log > .list > .item > .user > .avatar{
+    border-radius: 100%;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log > .list > .item > .user > .name{
+    display: grid;
+    grid-template-rows: auto auto auto;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log > .list > .item > .user > .name span{
+    grid-row: 2;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log > .list > .item > .user > .avatar img{
+    width: 40px;
+    height: 40px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log > .list > .item > .ection{
+    display: grid;
+    grid-template-rows: auto auto auto;
+    margin-left: 5px;
+}
+#storageSettings .Modal_main_conten_box > .content > .menuTemplate > .Log > .list > .item > .ection span{
+    grid-row: 2;
+    word-wrap: anywhere;
+}
+
+/*Create storage menu*/
+#createStorageMenuBox{
+  display: grid;
+  grid-template-rows: 25px auto;
+  height: 38%;
+  width: 30%;
+  left: 35%;
+}
+#createStorageMenuBox > .close{
+  position: relative;
+}
+#createStorageMenuBox > .close span{
+  position: absolute;
+  right: 5px;
+  font-size: x-large;
+}
+#createStorageMenuBox > .content{
+  padding-bottom: 3%;
+}
+#createStorageMenuBox > .content > .page{
+  width: 90%;
+  height: 98%;
+  margin: 5%;
+  margin-top: 0;
+ /* border: 2px solid black;
+  */
+}
+#createStorageMenuBox > .content > .page > .type{
+  display: grid;
+  grid-template-columns: 50% 50%;
+  height: 100%;
+}
+#createStorageMenuBox > .content > .page > .type div{
+  border: 2px solid #2bff27;
+  width: 90%;
+  height: 90%;
+  margin: 5%;
+  cursor: pointer;
+}
+#createStorageMenuBox > .content > .page > .Title{
+  display: grid;
+  grid-template-rows: auto auto;
+}
+#createStorageMenuBox > .content > .page > .Title > .TitleViewInfo{
+  display: grid;
+  grid-template-columns: 100px auto;
+}
+#createStorageMenuBox > .content > .page > .Title > .TitleViewInfo > .ImgBox{
+  height: 100px;
+  width: 100px;
+  border-radius: 100%;
+  border: 2px solid #000000;
+}
+#createStorageMenuBox > .content > .page > .Title > .TitleViewInfo > .ImgBox:hover{
+  background-color: #ffffff;
+  opacity: 0.5;
+  cursor: pointer;
+}
+#createStorageMenuBox > .content > .page > .Title > .TitleViewInfo > .ImgBox img{
+  height: 100px;
+  width: 100px;
+  border-radius: 100%;
+}
+#createStorageMenuBox > .content > .page > .Title > .TitleViewInfo > .NameBox{
+  display: grid;
+  grid-template-rows: auto auto auto;
+  margin-left: 10px;
+}
+#createStorageMenuBox > .content > .page > .Title > .TitleViewInfo > .NameBox input{
+  grid-row: 2;
+  padding: 2px;
+}
+#createStorageMenuBox > .content > .page > .Title > .settings div{
+  margin: 3px;
+}
+#createStorageMenuBox > .content > .page > .Title > .settings input[type=text]{
+  font-size: 18px;
+}
+#createStorageMenuBox > .content > .page > .Title > .settings > .buttonBox{
+  display: grid;
+  grid-template-columns: auto auto;
+}
+#createStorageMenuBox > .content > .page > .Title > .settings > .buttonBox button{
+  font-size: 18px;
+  background-color: rgb(0, 183, 255);
+  border-radius: 5px;
+  border: 2px solid rgb(0, 138, 183);
+  padding: 3px;
+  margin-right: 7%;
+  margin-left: auto;
+  grid-column: 2;
+}
+#createStorageMenuBox > .content > .page > .Title > .settings > .buttonBox button:hover{
+  background-color: rgb(83, 205, 255);
+  cursor: pointer;
+}
+
+/*LeftTabMenu*/
+#LeftTabMenu{
+  position: absolute;
+  left: -25%;
+  display: none;
+  height: 100%;
+  width: 25%;
+  background-color: #0080db;
+  z-index: 120;
+}
+#LeftTabMenu > .content{
+  height: 100%;
+  border-radius: 5px;
+  /*border-right: 2px solid rgb(76, 93, 110);*/
+  border-right: 2px solid black;
+}
+#LeftTabMenu > .content > .top{
+  height: 18%;
+  background-color: #008cee;
+}
+#LeftTabMenu > .content > .top > div > span{
+  font-size: x-large;
+  margin-left: 20px;
+  color: white;
+}
+#LeftTabMenu > .content > .top > div > img{
+  width: 100px;
+  height: 100px;
+}
+#LeftTabMenu > .content > .bottom > .itemList > .item{
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+#LeftTabMenu > .content > .bottom > .itemList > .item:hover{
+  background-color: white;
+  opacity: 0.25;
+  cursor: pointer;
+}
+#LeftTabMenu > .content > .bottom > .itemList > .item span{
+  font-size: x-large;
+  margin-left: 10px;
+  color: black;
+}
+
+/*User settings*/
+#UserSettingsWindow .editBox > .top{
+  display: grid;
+  grid-template-columns: 100px auto;
+}
+#UserSettingsWindow .editBox > .top > .avatar{
+  border-radius: 100%;
+}
+#UserSettingsWindow .editBox > .top > .avatar:hover{
+  background-color: white;
+  opacity: 0.25;
+  z-index: 150;
+}
+#UserSettingsWindow .editBox > .top > .avatar,
+#UserSettingsWindow .editBox > .top > .avatar img{
+  height: 80px;
+  width: 80px;
+}
+#UserSettingsWindow button{
+  font-size: x-large;
+  color: black;
+}

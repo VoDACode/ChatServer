@@ -1,0 +1,24 @@
+.Custom_context_menu{
+    display: none;
+    background-color:   rgb(0, 96, 192);
+    position: absolute;
+    width: auto;
+    height: auto;
+    border: 2px solid rgb(76, 93, 110);
+    border-radius: 5px;
+}
+.Custom_context_menu > .contentBox{
+    margin: 10px;
+}
+.Custom_context_menu > .contentBox > .item{
+    border-radius: 5px;
+    padding: 2px;
+    -webkit-user-select: none;
+}
+.Custom_context_menu > .contentBox > .item *{
+    color: white;
+}
+.Custom_context_menu > .contentBox > .item:hover{
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.25);
+}

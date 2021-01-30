@@ -1,0 +1,324 @@
+*{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+input[type=text], input[type=email], input[type=password]{
+  width: 92%;
+  font-size: x-large;
+  padding: 2%;
+  border-radius: 5px;
+  border: 2px solid rgb(76, 93, 110);
+  color: black;
+}
+#contentBox{
+    position: absolute;
+    background-color: rgb(0, 162, 255);
+    display: grid;
+    grid-template-columns: 25% auto;
+    height: 100%;
+    width: 100%;
+}
+#dialogList{
+  position: relative;
+    border-right: 2px solid rgb(76, 93, 110);
+}
+#dialogList > #openCreateMenu{
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  z-index: 100;
+  background-color: rgb(0, 207, 239);
+  border-radius: 100%;
+}
+#dialogList > #openCreateMenu img{
+  height: 60px;
+  width: 60px;
+}
+#dialogList > #openCreateMenu:hover {
+  background-color: rgb(0, 224, 255);
+  cursor: pointer;
+}
+app-message-region{
+    display: grid;
+    grid-template-rows: 60px auto 60px;
+}
+#hideMessagesObj{
+    display: block;
+}
+#searchBox{
+  display: grid;
+  grid-template-columns: 48px auto;
+}
+#searchBox > .openUserMenu img{
+  width: 50px;
+  height: 50px;
+  margin-left: 3px;
+}
+#searchBox input{
+    width: 92%;
+    font-size: x-large;
+    padding: 2%;
+    margin: 2%;
+    border-radius: 5px;
+    /*border: 2px solid rgb(76, 93, 110);*/
+    border: 2px solid black;
+    box-shadow: 0 0 10px rgba(0,0,0, 0.25);
+}
+#TitleInfoBox{
+    cursor: pointer;
+}
+#TitleBox{
+    display: grid;
+    grid-template-columns: auto 25%;
+    border-bottom: 2px solid rgb(76, 93, 110);
+}
+.StorageTitleName, .StorageStatus{
+    margin-left: 5px;
+}
+.StorageTitleName{
+    color: white;
+    font-weight: 600;
+    font-size: 150%;
+}
+.StorageStatus{
+    color: white;
+    font-size: 125%;
+}
+
+#contactViewBox{
+    max-height: 92%;
+    overflow: auto;
+}
+
+#SendBoxContent{
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 2px solid rgb(76, 93, 110);
+}
+#SendBoxContent div{
+    display: inline;
+}
+#SendBoxContent button{
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+#SendBoxContent button img{
+    width: 100%;
+    height: 100%;
+}
+#SendBoxContent button:hover{
+    opacity: 0.5;
+}
+#BoxSendTextMessage textarea{
+    font-size: x-large;
+    border-radius: 5px;
+    height: 25px;
+    width: 94%;
+    resize: none;
+    border: none;
+    overflow: auto;
+    padding: 2px;
+}
+#input-SelectFiles{
+    display: none;
+}
+
+/*message Item*/
+#MessagesBox{
+    display: block;
+    position: relative;
+    overflow: auto;
+}
+.messageItem *{
+    color: white;
+}
+.messageItem{
+    width: 100%;
+    margin-top: 10px;
+}
+.messageItem:hover{
+    background-color: rgba(255, 255, 255, 0.25)
+}
+.messageItem_message_box{
+    display: grid;
+    grid-template-rows: auto auto;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.messageItem_top_panel div{
+    display: inline;
+}
+.messageItem_senderName{
+    font-weight: 1000;
+    font-size: 20px;
+}
+.messageItem_sendDate{
+    font-size: 12px;
+    color: rgb(231, 231, 231);
+}
+.messageItem + .file .messageItem_content {
+    display: grid;
+    grid-template-columns: 50px auto;
+    padding-bottom: 3px;
+}
+.messageItem .messageItem_content span{
+    font-size: 19px;
+}
+.messageItem + .message .messageItem_content span{
+    font-size: 19px;
+}
+.messageItem + .file .messageItem_content span{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 5px;
+}
+.messageItem_content button img{
+    width: 50px;
+    height: 50px;
+    background-color: white;
+}
+.messageItem_content button img:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}
+.messageItem_content button{
+    background-color: unset;
+    border-radius: 100%;
+    border: none;
+}
+.messageItem + .img .messageItem_content{
+    display: grid;
+    grid-template-rows: auto auto;
+}
+.messageItem + .img .messageItem_content img{
+    max-width: 300px;
+    max-height: 300px;
+}
+
+/*contact Item*/
+.contactItem{
+    z-index: 100;
+    display: grid;
+    grid-template-columns: 80px auto;
+    background-color: rgb(0, 162, 255);
+}
+.contactItem *{
+    color: white;
+}
+.contactItem:hover{
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+.contactItem_Detail_Box{
+    display: grid;
+    grid-template-rows: auto auto;
+}
+.contactItem_status{
+    margin-bottom: 10px;
+}
+.contactItem_titleName{
+    font-size: x-large;
+}
+.contactItem_TitleImg{
+    max-width: 80px;
+    max-height: 80px;
+}
+/*Modal windows*/
+.Modal_img_box img{
+    height: 80px;
+    width: 80px;
+    border-radius: 100%;
+}
+.Modal_top_info{
+    display: grid;
+    grid-template-columns: 80px auto;
+}
+.Modal_setting_panel{
+    -webkit-user-select: none;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.Modal_setting_panel div{
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+.Modal_setting_panel div span{
+    grid-column: 2;
+}
+
+#Modal_swich_userList{
+    border-bottom: 2px solid rgb(76, 93, 110);
+}
+.ItemUserFromViewList{
+    width: 100%;
+    height: 60px;
+    display: grid;
+    grid-template-columns: 80px auto auto;
+}
+.ItemUserFromViewList:hover{
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.25);
+}
+.ItemUserFromViewList > .avatar > img{
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+}
+.ItemUserFromViewList > .info{
+    display: grid;
+    grid-template-rows: auto auto;
+}
+.ItemUserFromViewList > .info > .name > span{
+    font-size: 20px;
+    margin-top: 5px;
+}
+.ItemUserFromViewList > .info > .status > span{
+    font-size: 16px;
+}
+.ItemUserFromViewList > .permission{
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: auto auto auto;
+}
+.ItemUserFromViewList > .permission > span{
+    grid-row: 2;
+    grid-column: 2;
+}
+
+#SettingPanel{
+    display: none;
+    grid-template-rows: auto auto auto;
+}
+#SettingPanel > div{
+    width: 96%;
+    margin: 2%;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    border-radius: 5px;
+}
+#SettingPanel > div:hover{
+    background-color: rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+}
+#SettingPanel > div > span{
+    -webkit-user-select: none;
+    grid-column: 2;
+    font-size: x-large;
+}
+
+#viewImg .Modal_main_conten_box{
+    display: block;
+}
+
+#message_Custom_context_menu > .contentBox > .item span{
+    font-size: 16px;
+}

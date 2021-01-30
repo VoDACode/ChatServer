@@ -1,0 +1,43 @@
+#setPasswordBox{
+  margin: 30%;
+  margin-top: 5%;
+}
+#logRegInBox{
+  display: grid;
+  grid-template-rows: 40px auto;
+  margin: 30%;
+  margin-top: 5%;
+}
+#setPasswordBox input,
+#logRegInBox input{
+  margin-top: 3px;
+  width: 95%;
+}
+#setPasswordBox button,
+#logRegInBox button{
+  font-size: x-large;
+}
+#logRegInBox > .selectMode{
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+#logRegInBox > .selectMode > .log{
+  grid-column: 3;
+}
+#logRegInBox > .selectMode > .reg{
+  grid-column: 1;
+}
+#setPasswordBox > .inputBox + .buttonBox,
+#logRegInBox > .viewModes > div > .inputBox + .buttonBox{
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+#logRegInBox > .viewModes > div > .inputBox + .buttonBox button{
+  grid-column: 4;
+}
+#setPasswordBox > .inputBox + .buttonBox > .close{
+  grid-column: 1;
+}
+#setPasswordBox > .inputBox + .buttonBox > .ok{
+  grid-column: 4;
+}

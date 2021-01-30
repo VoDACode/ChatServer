@@ -1,0 +1,31 @@
+<div id="contentBox">
+  <div id="dialogList">
+    <div id="searchBox">
+      <div class="openUserMenu">
+        <img src="assets/imgs/line-width-100.png" (click)="openLeftTabMenu()">
+      </div>
+      <div>
+        <input type="text" id="searchInput" (keyup)="onChangeSearch()" [(ngModel)]="SearchQuery">
+      </div>
+    </div>
+    <div id="contactViewBox">
+      <div class="contactItem" *ngFor="let obj of ViewContactItem" id="contat_{{obj.Storage.id}}" (click)="onSelectContact(obj.Storage.id)">
+        <div>
+          <img class="contactItem_TitleImg" [src]=obj.Storage.imgContent>
+        </div>
+        <div class="contactItem_Detail_Box">
+          <div>
+            <span class="contactItem_titleName">{{obj.Storage.name}}</span>
+          </div>
+          <div>
+            <span class="contactItem_status">{{obj.Storage.status}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="openCreateMenu" (click)="onOpenCreateMenu()">
+      <img src="assets/imgs/plus-math-100.png">
+    </div>
+  </div>
+  <app-message-region></app-message-region>
+</div>

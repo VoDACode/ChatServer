@@ -1,0 +1,7 @@
+<div class="switch">
+  <label class="title">{{Lable}}</label>
+  <label class="obj">
+    <input type="checkbox" [(ngModel)]="Status" (change)="Changed()">
+    <span [className]="(IsRound) ? 'slider round' : 'slider'"></span>
+  </label>
+</div>

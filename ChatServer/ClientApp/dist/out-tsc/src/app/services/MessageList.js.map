@@ -1,0 +1,1 @@
+{"version":3,"file":"MessageList.js","sourceRoot":"","sources":["../../../../../src/app/services/MessageList.ts"],"names":[],"mappings":"AAEA,MAAM,OAAO,WAAW;IAAxB;QACU,SAAI,GAAwB,IAAI,KAAK,EAAgB,CAAC;IAOhE,CAAC;IANQ,OAAO;QACZ,OAAO,IAAI,CAAC,IAAI,CAAC;IACnB,CAAC;IACM,GAAG,CAAC,GAAiB;QAC1B,IAAI,CAAC,IAAI,CAAC,IAAI,CAAC,GAAG,CAAC,CAAC;IACtB,CAAC;CACF"}

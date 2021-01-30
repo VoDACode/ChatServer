@@ -1,0 +1,64 @@
+<div class="Modal_bg detailInfoAboutStorage" id="detailedInfoAboutStorage"
+     [style.display]="((IsVisible)?'block':'none')">
+  <div class="Modal_content">
+    <div class="Modal_top_panel">
+      <div>
+        <span class="Modal_title">Detailed Information</span>
+      </div>
+      <div>
+        <span class="Modal_close detailInfoAboutStorage" onclick="$('#detailedInfoAboutStorage').hide()">X</span>
+      </div>
+    </div>
+    <div class="Modal_main_conten_box">
+      <div class="Modal_top_info">
+        <div class="Modal_img_box">
+          <img [src]="getSelectChat.Storage.imgContent" id="StorageTitleImg">
+        </div>
+        <div class="Modal_info_box">
+          <div>
+            <span class="StorageTitleName">{{getSelectChat.Storage.name}}</span>
+          </div>
+          <div>
+            <span class="StorageStatus">{{getSelectChat.Storage.status}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="Modal_setting_panel">
+        <div id="Modal_swich_userList">
+          <span>User list</span>
+        </div>
+        <div id="Modal_swich_setting">
+          <span>Settings</span>
+        </div>
+      </div>
+      <div class="Modal_View_SelectIn_setting_panel">
+        <div id="ListUsers_inStorage">
+          <div *ngFor="let obj of getSelectChat.UsersList" class="contactItem" id="contat_{{obj.id}}">
+            <div>
+              <img class="contactItem_TitleImg" [src]="obj.imgContent">
+            </div>
+            <div class="contactItem_Detail_Box">
+              <div>
+                <span class="contactItem_titleName">{{obj.nickname}}</span>
+              </div>
+              <div>
+                <span class="contactItem_status">NaN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="SettingPanel">
+          <div>
+            <span>Export chat history</span>
+          </div>
+          <div>
+            <span>Leave</span>
+          </div>
+          <div>
+            <span id="buttonOpen_stSettings" [style.display]="((IsCanViewSettings)?'block':'none')">storage settings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

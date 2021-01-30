@@ -1,0 +1,47 @@
+<div class="Modal_bg" id="createStorageMenu">
+  <div class="Modal_content" id="createStorageMenuBox">
+    <div class="close">
+      <span class="Modal_close" onclick="$('#createStorageMenu').hide()">X</span>
+    </div>
+    <div class="content">
+      <div class="page" [style.display]="(IsViewMainPage) ? 'none' : 'block'">
+        <div class="type">
+          <div (click)="IsGroup()">
+            <h1>Group</h1>
+          </div>
+          <div (click)="IsChannel()">
+            <h1>Channal</h1>
+          </div>
+        </div>
+      </div>
+      <div class="page" [style.display]="(!IsViewMainPage) ? 'none' : 'block'">
+        <div class="Title">
+          <div class="TitleViewInfo">
+            <div class="ImgBox">
+              <img [src]="Storage.imgContent" id="createStorageTitleImg">
+              <input style="display: none" id="openDialogWindowForTitleImg" type="file"
+                     accept="image/*" [(ngModel)]="Storage.imgContent">
+            </div>
+            <div class="NameBox">
+              <input [(ngModel)]="Storage.name" type="text">
+            </div>
+          </div>
+          <div class="settings">
+            <div>
+              <div>
+                <app-switch [Status]="Storage.isPrivate" (onChanged)="UpdateIsPrivate($event)"
+                            [Lable]="'Private: '"></app-switch>
+              </div>
+              <div>
+                <input type="text" [disabled]="Storage.isPrivate" [(ngModel)]="Storage.uniqueName">
+              </div>
+            </div>
+            <div class="buttonBox">
+              <button (click)="createStorage()">Create!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
