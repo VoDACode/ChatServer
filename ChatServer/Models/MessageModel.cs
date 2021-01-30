@@ -7,7 +7,7 @@ namespace ChatServer.Models
     {
         public int Id { get; set; }
         public string TextContent { get; set; }
-        public string ImgContect { get; set; }
+        public string ImgContent { get; set; }
         public string FileSavePath { get; set; }
         public string FileUrl { get; set; }
         public MessageType Type { get; set; }

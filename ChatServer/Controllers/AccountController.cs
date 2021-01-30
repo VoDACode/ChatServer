@@ -69,6 +69,7 @@ namespace ChatServer.Controllers
             HttpContext.Response.Cookies.Append("confirm_key", uKey);
             return Ok(new { userKey = uKey });
         }
+
         [HttpGet]
         [Route("/confirm/email/{lKey}")]
         public IActionResult ConfirmEmail(string lKey)

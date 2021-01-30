@@ -7,7 +7,7 @@ namespace ChatServer.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string ImgContect { get; set; }
+        public string ImgContent { get; set; }
         public bool IsPrivate { get; set; }
         public string UniqueName { get; set; }
         public StorageType Type { get; set; }
