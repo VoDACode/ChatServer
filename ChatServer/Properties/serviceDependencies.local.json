@@ -1,11 +1,15 @@
 {
   "dependencies": {
     "secrets1": {
-      "type": "secrets.user"
+      "resourceId": null,
+      "type": "secrets.user",
+      "connectionId": null,
+      "secretStore": null
     },
     "mssql1": {
+      "resourceId": null,
       "type": "mssql.onprem",
-      "connectionId": "VODA_PC\\VODASQL",
+      "connectionId": "ChatSqlConnection",
       "secretStore": "LocalSecretsFile"
     }
   }

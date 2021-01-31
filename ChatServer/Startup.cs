@@ -25,7 +25,7 @@ namespace ChatServer
         public void ConfigureServices(IServiceCollection services)
         {
             
-            string connection = Configuration.GetConnectionString("DefaultConnection");
+            string connection = Configuration.GetConnectionString("ChatSqlConnection");
 
             services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(connection));
