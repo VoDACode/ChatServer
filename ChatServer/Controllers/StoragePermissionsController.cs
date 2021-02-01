@@ -22,9 +22,36 @@ namespace ChatServer.Controllers
         public IActionResult getMyPermissions(string sID)
         {
             DB.Storages.ToList();
-            var userInStorage = DB.UserInStorages.FirstOrDefault(us => us.Storage.Id.ToString() == sID);
-            // TO DO
-            return Ok();
+            var userInStorage = DB.UserInStorages.FirstOrDefault(us => us.Storage.Id.ToString() == sID && us.User == getUserFromDB);
+            if (userInStorage == null)
+                return BadRequest(new { errorText = "Access denied." });
+            var result = (from up in DB.UserPermissions
+                          join p in DB.PermissionTemplates on up.PermissionTemplate.Id equals p.Id
+                          where up.UserInStorage == userInStorage
+                          select p).ToList();
+            if(userInStorage.User == userInStorage.Storage.Creator)
+            {
+                result.Add(new PermissionTemplateModel()
+                {
+                    IsBanUser = true,
+                    IsCopyJoinURL = true,
+                    IsCreateRoles = true,
+                    IsDeleteJoinURL = true,
+                    IsDeleteMessages = true,
+                    IsDeleteRoles = true,
+                    IsEditRoles = true,
+                    IsEditTitleImage = true,
+                    IsGenerateJoinURL = true,
+                    IsKickUser = true,
+                    IsMuteUser = true,
+                    IsReadLog = true,
+                    IsRenameStorage = true,
+                    IsSendFiles = true,
+                    IsSendMessage = true,
+                    Name = "Owner"
+                });
+            }
+            return Ok(result);
         }
     }
 }

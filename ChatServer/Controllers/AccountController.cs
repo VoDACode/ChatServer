@@ -20,6 +20,7 @@ namespace ChatServer.Controllers
     {
 
         DBContext DB;
+        UserModel getUserFromDB { get => DB.Users.FirstOrDefault(u => u.Email == User.Identity.Name); }
         public AccountController(DBContext dBContext)
         {
             DB = dBContext;
@@ -81,6 +82,15 @@ namespace ChatServer.Controllers
                 return Redirect("/");
 
             HttpContext.Response.Cookies.Delete("confirm_key");
+            // Confirm set email
+            var email = HttpContext.Request.Cookies["confirm_set_email"];
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                getUserFromDB.Email = email;
+                DB.SaveChanges();
+                HttpContext.Response.Cookies.Delete("confirm_set_email");
+                return Redirect("/");
+            }
 
             var token = CreateToken(confirm.User.Email, confirm.User.Password);
             if (token == null)
