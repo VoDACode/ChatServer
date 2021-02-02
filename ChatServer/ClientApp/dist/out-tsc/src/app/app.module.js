@@ -57,7 +57,6 @@ window.onbeforeunload = (e) => {
     // IE & Firefox
     if (e) {
         e.returnValue = 'Are you sure?';
-        window.open('https://google.com');
     }
     // For Safari
     return 'Are you sure?';

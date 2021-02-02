@@ -33,10 +33,11 @@ export class ChatComponent{
     if (this.SearchQuery.length !== 0) {
       const res = ChatHub.authorizationService.http(`/api/search?q=${this.SearchQuery}`, 'GET');
       this.ViewContactItem = new Array<ChatModel>();
+      console.log(res);
       // tslint:disable-next-line:prefer-for-of
       for (let i = 0; i < res.length; i++) {
         const tmp = new ChatModel();
-        tmp.Storage.id = res[i].id;
+        tmp.Storage.id = res[i].id + '_' + res[i].type;
         tmp.Storage.name = res[i].name;
         tmp.Storage.uniqueName = res[i].uniqueName;
         tmp.Storage.imgContent = res[i].imgContent;

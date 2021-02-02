@@ -41,7 +41,9 @@ export class AppMenuComponent {
       Convert.FileToBase64(file, (res) => {
         ChatHub.User.imgContent = res;
         this.ViewUser.imgContent = res;
-        Network.UploadFile('api/user/my/img/set', file);
+        console.log('Done convert!');
+        console.log(res);
+        Network.UploadFile('api/user/my/img/set', file, 'img');
       });
     }
     if (this.ViewUser.userName !== this.getUserData().userName){

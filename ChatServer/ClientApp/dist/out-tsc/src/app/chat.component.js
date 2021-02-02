@@ -32,7 +32,7 @@ let ChatComponent = class ChatComponent {
             // tslint:disable-next-line:prefer-for-of
             for (let i = 0; i < res.length; i++) {
                 const tmp = new ChatModel();
-                tmp.Storage.id = res[i].id;
+                tmp.Storage.id = res[i].id + '_' + res[i].type;
                 tmp.Storage.name = res[i].name;
                 tmp.Storage.uniqueName = res[i].uniqueName;
                 tmp.Storage.imgContent = res[i].imgContent;

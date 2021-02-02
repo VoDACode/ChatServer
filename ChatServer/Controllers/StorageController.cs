@@ -1,4 +1,5 @@
 ﻿using ChatServer.Models;
+using ChatServer.Models.View;
 using ChatServer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +53,35 @@ namespace ChatServer.Controllers
                                              fileUrl = m.FileUrl
                                          }).ToList()
                           }).ToList();
+            return Ok(result);
+        }
+
+        [Route("/api/search")]
+        public IActionResult SerachStorage(string q)
+        {
+            if (string.IsNullOrWhiteSpace(q))
+                return BadRequest(new { errorText = "Parameter 'q' is empty!" });
+            var result = (from u in DB.Users
+                          where (!string.IsNullOrWhiteSpace(u.UserName) && u.UserName.Contains(q)) || u.Nickname.Contains(q)
+                          select new SearchViewModel()
+                          {
+                              Id = u.Id,
+                              Name = u.Nickname,
+                              UniqueName = u.UserName,
+                              ImgContent = u.ImgContent,
+                              Type = SearchObjectType.Storage
+                          }).ToList();
+            result.AddRange((from s in DB.Storages
+                      where !s.IsPrivate && (s.UniqueName.Contains(q) || s.Name.Contains(q))
+                      select new SearchViewModel()
+                      {
+                          Id = s.Id,
+                          Name = s.Name,
+                          UniqueName = s.UniqueName,
+                          ImgContent = s.ImgContent,
+                          Type = SearchObjectType.User
+                      }).ToList());
+            result = result.OrderBy(p => p.UniqueName).Take(20).ToList();
             return Ok(result);
         }
     }
