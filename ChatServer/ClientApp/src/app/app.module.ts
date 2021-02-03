@@ -53,11 +53,5 @@ export class AppModule {
 }
 
 window.onbeforeunload = (e) => {
-  e = window.event;
-  // IE & Firefox
-  if (e) {
-    e.returnValue = 'Are you sure?';
-  }
-  // For Safari
-  return 'Are you sure?';
+  ChatHub.LeaveMessenger();
 };

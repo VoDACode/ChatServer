@@ -107,6 +107,10 @@ export class ChatHub{
     this.connection.start().catch(err => console.error('Error start chat hub: ', err));
   }
 
+  static LeaveMessenger(): void{
+    this.connection.send('LeaveMessenger');
+  }
+
   static GetUserInfo(id: string): any{
     return this.authorizationService.http(`api/user/${id}`, 'GET');
   }
