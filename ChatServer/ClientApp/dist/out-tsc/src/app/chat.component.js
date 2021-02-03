@@ -29,6 +29,7 @@ let ChatComponent = class ChatComponent {
         if (this.SearchQuery.length !== 0) {
             const res = ChatHub.authorizationService.http(`/api/search?q=${this.SearchQuery}`, 'GET');
             this.ViewContactItem = new Array();
+            console.log(res);
             // tslint:disable-next-line:prefer-for-of
             for (let i = 0; i < res.length; i++) {
                 const tmp = new ChatModel();

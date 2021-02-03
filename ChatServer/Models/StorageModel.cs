@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace ChatServer.Models
 {
@@ -12,6 +13,7 @@ namespace ChatServer.Models
         public string UniqueName { get; set; }
         public StorageType Type { get; set; }
         public DateTime CreateDate { get; set; }
+        [JsonIgnore]
         public UserModel Creator { get; set; }
     }
 }

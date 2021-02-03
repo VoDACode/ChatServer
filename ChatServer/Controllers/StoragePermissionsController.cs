@@ -1,6 +1,5 @@
 ﻿using ChatServer.Models;
 using ChatServer.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,8 +17,9 @@ namespace ChatServer.Controllers
         {
             DB = dBContext;
         }
+
         [HttpGet("me/list")]
-        public IActionResult getMyPermissions(string sID)
+        public IActionResult GetMyPermissions(string sID)
         {
             DB.Storages.ToList();
             var userInStorage = DB.UserInStorages.FirstOrDefault(us => us.Storage.Id.ToString() == sID && us.User == getUserFromDB);
@@ -51,6 +51,26 @@ namespace ChatServer.Controllers
                     Name = "Owner"
                 });
             }
+            return Ok(result);
+        }
+
+        [HttpGet("list")]
+        public IActionResult GetPemissionListInStorage(string sID)
+        {
+            DB.Storages.ToList();
+            var userInStorage = DB.UserInStorages.FirstOrDefault(us => us.Storage.Id.ToString() == sID && us.User == getUserFromDB);
+            if (userInStorage == null)
+                return BadRequest(new { errorText = "Access denied." });
+
+            var result = (from p in DB.PermissionTemplates
+                          where p.Storage == userInStorage.Storage
+                          select new
+                          {
+                              isSelected = p.Name == "Default",
+                              isMainRole = p.Name == "Default",
+                              template = p
+                          }).ToList();
+
             return Ok(result);
         }
     }
