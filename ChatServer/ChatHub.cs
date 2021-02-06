@@ -26,6 +26,12 @@ namespace ChatServer
             getUserFromDB.IsOnline = true;
             getUserFromDB.LastOnline = DateTime.Now;
             DB.SaveChanges();
+
+            DB.Storages.ToList();
+            var contacts = DB.UserInStorages.Where(c => c.User == getUserFromDB);
+            foreach(var item in contacts)
+                Groups.AddToGroupAsync(Context.ConnectionId, $"Storage_{item.Storage.Id}");
+
             return base.OnConnectedAsync();
         }
         public override Task OnDisconnectedAsync(Exception exception)

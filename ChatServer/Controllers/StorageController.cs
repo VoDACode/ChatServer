@@ -38,7 +38,8 @@ namespace ChatServer.Controllers
                                   isPrivate = us.Storage.IsPrivate,
                                   status = (us.Storage.Type != StorageType.Private) ?
                                             DB.UserInStorages.Where(s => s.Storage == us.Storage).Count().ToString()
-                                            : "",
+                                            : (DB.UserInStorages.FirstOrDefault(p => p.User != getUserFromDB).User.IsOnline ? "Online" :
+                                                    DB.UserInStorages.FirstOrDefault(p => p.User != getUserFromDB).User.LastOnline.ToString()),
                                   imgContent = us.Storage.ImgContent,
                                   name = us.Storage.Name,
                                   type = us.Storage.Type,
