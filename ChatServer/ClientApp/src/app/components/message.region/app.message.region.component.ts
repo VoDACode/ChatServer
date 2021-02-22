@@ -1,15 +1,15 @@
 import {Component} from '@angular/core';
-import {MessageCreateViewModel, MessageModel} from './models/MessageModel';
+import {MessageCreateViewModel, MessageModel} from '../../models/MessageModel';
 import {Location} from '@angular/common';
-import {ChatHub} from './services/app.service.signalR';
-import {ChatModel} from './models/ChatModel';
+import {ChatHub} from '../../services/app.service.signalR';
+import {ChatModel} from '../../models/ChatModel';
 import * as $ from 'jquery';
-import {StorageType} from './models/StorageModel';
-import {copyToClipboard} from './CustomClass';
+import {StorageType} from '../../models/StorageModel';
+import {copyToClipboard} from '../../services/CustomClass';
 
 @Component({
   selector: `app-message-region`,
-  templateUrl: './source/html/message.region.component.html'
+  templateUrl: './message.region.component.html'
 })
 
 export class AppMessageRegionComponent {

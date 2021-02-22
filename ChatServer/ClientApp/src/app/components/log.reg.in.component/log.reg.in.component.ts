@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
-import {UserModel} from './models/UserModel';
-import {ChatHub} from './services/app.service.signalR';
+import {UserModel} from '../../models/UserModel';
+import {ChatHub} from '../../services/app.service.signalR';
 import {CookieService} from 'ngx-cookie-service';
 
 @Component({
-  templateUrl: './source/html/log.reg.in.component.html',
+  templateUrl: './log.reg.in.component.html',
   selector: 'app-reg-log'
 })
 

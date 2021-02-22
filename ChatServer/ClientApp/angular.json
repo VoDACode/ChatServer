@@ -23,11 +23,11 @@
               "src/assets"
             ],
             "styles": [
-              "src/app/source/css/custom.context.menu.css",
-              "src/app/source/css/main.css",
-              "src/app/source/css/modal.window.css",
-              "src/app/source/css/switch.css",
-              "src/app/source/css/regAndLog.css"
+              "src/css/custom.context.menu.css",
+              "src/css/main.css",
+              "src/css/modal.window.css",
+              "src/css/switch.css",
+              "src/css/regAndLog.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",

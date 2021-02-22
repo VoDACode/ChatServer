@@ -1,14 +1,14 @@
 import {Component, Input} from '@angular/core';
-import {PermissionsTemplateModel} from '../models/PermissionsTemplateModel';
-import {UserModel} from '../models/UserModel';
-import {Convert, copyToClipboard, DateAddon} from '../CustomClass';
-import {ChatModel} from '../models/ChatModel';
-import {ChatHub} from '../services/app.service.signalR';
-import {StorageModel} from '../models/StorageModel';
+import {PermissionsTemplateModel} from '../../models/PermissionsTemplateModel';
+import {UserModel} from '../../models/UserModel';
+import {Convert, copyToClipboard, DateAddon} from '../../services/CustomClass';
+import {ChatModel} from '../../models/ChatModel';
+import {ChatHub} from '../../services/app.service.signalR';
+import {StorageModel} from '../../models/StorageModel';
 
 @Component({
   selector: 'app-storage-settings',
-  templateUrl: '../source/html/menu/storage.settings.html'
+  templateUrl: './storage.settings.html'
 })
 
 export class StorageSttingsComponent {

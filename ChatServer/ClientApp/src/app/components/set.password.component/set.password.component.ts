@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
-import {ChatHub} from './services/app.service.signalR';
+import {ChatHub} from '../../services/app.service.signalR';
 
 @Component({
   selector: 'app-set-password',
-  templateUrl: './source/html/set.password.page.html'
+  templateUrl: './set.password.page.html'
 })
 
 export class SetPasswordComponent{

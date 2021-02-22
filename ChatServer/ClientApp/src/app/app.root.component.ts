@@ -5,7 +5,7 @@ import * as $ from 'jquery';
 
 @Component({
   selector: `app-root`,
-  templateUrl: './source/html/root.component.html'
+  templateUrl: './root.component.html'
 })
 export class AppRootComponent {
   IsDEBUG = false;

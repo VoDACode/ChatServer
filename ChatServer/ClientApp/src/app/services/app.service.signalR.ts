@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
 import * as signalR from '@aspnet/signalr';
 import {StorageModel, StorageType} from '../models/StorageModel';
-import {Convert, Network} from '../CustomClass';
+import {Convert, Network} from './CustomClass';
 
 export class ChatHub{
   private static location: Location;

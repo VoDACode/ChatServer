@@ -1,5 +1,5 @@
 import {MessageModel} from './MessageModel';
-import {ModelBad, ModelJoinLink, ModelLog, ModelPermissionsTemplate} from '../menu/storage.sttings.component';
+import {ModelBad, ModelJoinLink, ModelLog, ModelPermissionsTemplate} from '../components/storage.settings/storage.sttings.component';
 import {ContactModel} from './ContactModel';
 import {PermissionsTemplateModel} from './PermissionsTemplateModel';
 import {UserModel} from './UserModel';

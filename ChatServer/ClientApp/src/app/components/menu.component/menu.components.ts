@@ -1,15 +1,16 @@
 import {Component} from '@angular/core';
-import {UserModel} from './models/UserModel';
-import {ChatHub} from './services/app.service.signalR';
+import {UserModel} from '../../models/UserModel';
+import {ChatHub} from '../../services/app.service.signalR';
 import * as $ from 'jquery';
-import {Convert, Network} from './CustomClass';
+import {Convert, Network} from '../../services/CustomClass';
 
 @Component({
   selector: 'app-menu-source',
-  templateUrl: 'source/html/menu.components.html',
+  templateUrl: 'menu.components.html',
 })
 
-export class AppMenuComponent {
+// tslint:disable-next-line:component-class-suffix
+export class MenuComponents {
   ViewUser: UserModel = new UserModel();
   constructor() {
     this.ViewUser.nickname = this.getUserData().nickname;

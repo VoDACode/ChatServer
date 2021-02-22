@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
-import {ChatHub} from '../services/app.service.signalR';
-import {ChatModel} from '../models/ChatModel';
+import {ChatHub} from '../../services/app.service.signalR';
+import {ChatModel} from '../../models/ChatModel';
 
 @Component({
   selector: 'app-detail-info-storage',
-  templateUrl: '../source/html/menu/detail.Info.About.Storage.html'
+  templateUrl: './detail.Info.About.Storage.html'
 })
 
 export class DetailInfoAboutStorageComponent{

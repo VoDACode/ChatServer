@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
-  templateUrl: 'source/html/switch.component.html',
+  templateUrl: 'switch.component.html',
   selector: 'app-switch'
 })
 

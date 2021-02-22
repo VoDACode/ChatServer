@@ -2,7 +2,7 @@ import { Injectable} from '@angular/core';
 import { Router } from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
 import {ChatHub} from './app.service.signalR';
-import {Convert} from '../CustomClass';
+import {Convert} from './CustomClass';
 
 @Injectable({
   providedIn: 'root'

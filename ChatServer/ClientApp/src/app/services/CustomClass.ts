@@ -1,5 +1,5 @@
 import {Location} from '@angular/common';
-import {ChatHub} from './services/app.service.signalR';
+import {ChatHub} from './app.service.signalR';
 
 export class UrlParameters{
   private static local: Location;

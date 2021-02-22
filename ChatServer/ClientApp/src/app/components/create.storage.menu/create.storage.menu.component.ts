@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {ContactModel} from '../models/ContactModel';
-import {StorageType} from '../models/StorageModel';
-import {ChatHub} from '../services/app.service.signalR';
+import {ContactModel} from '../../models/ContactModel';
+import {StorageType} from '../../models/StorageModel';
+import {ChatHub} from '../../services/app.service.signalR';
 import * as $ from 'jquery';
 
 @Component({
-  templateUrl: '../source/html/menu/create.storage.menu.html',
+  templateUrl: './create.storage.menu.html',
   selector: 'app-create-storage-menu'
 })
 

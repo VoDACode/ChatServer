@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
-import {ChatHub} from './services/app.service.signalR';
-import {ChatModel} from './models/ChatModel';
+import {ChatHub} from '../../services/app.service.signalR';
+import {ChatModel} from '../../models/ChatModel';
 import * as $ from 'jquery';
 
 @Component({
-  templateUrl: 'source/html/chat.component.html',
+  templateUrl: './chat.component.html',
   selector: 'app-chat'
 })
 export class ChatComponent{
