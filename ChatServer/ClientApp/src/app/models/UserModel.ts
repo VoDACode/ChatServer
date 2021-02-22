@@ -4,5 +4,6 @@ export class UserModel {
   imgContent = '';
   email: string;
   nickname: string;
+  status: string;
   deleteIfMissingFromMonths;
 }

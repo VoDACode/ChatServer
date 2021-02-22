@@ -50,10 +50,30 @@ export class ChatHub{
       .then(() => {
         ChatHub.UpdateConnectionId();
       });
+    this.connection.on('editMessage', (sId, mId, newText) => {
+      // tslint:disable-next-line:triple-equals
+      if (this.selectChat.Storage.id == sId){
+        // tslint:disable-next-line:triple-equals
+        const message = this.selectChat.MessageList.find(m => m.id == mId);
+        if (message !== null) {
+          message.textContent = newText;
+        }
+      }
+      // tslint:disable-next-line:triple-equals
+      const chat = this.chatList.find(p => p.Storage.id == sId);
+      if (chat !== null) {
+        // tslint:disable-next-line:triple-equals
+        const message = chat.MessageList.find(m => m.id == mId);
+        if (message !== null) {
+          message.textContent = newText;
+        }
+      }
+    });
     this.connection.on('receiveConnectionId', (id) => this.connectionId = id);
     this.connection.on('receiveStorage', (obj) => {
       const chat = new ChatModel();
       chat.Storage = obj;
+      chat.Storage.imgContent = `/api/image?key=${chat.Storage.imgContent}`;
       chat.PermissionsTemplateList = this.authorizationService.http(`api/storage/permission/list?sID=${chat.Storage.id}`, 'GET');
       chat.youPermissionsTemplateList = this.authorizationService.http(`api/storage/me/permission/list?sID=${chat.Storage.id}`, 'GET');
       this.chatList.push(chat);
@@ -81,6 +101,35 @@ export class ChatHub{
         this.selectChat.Storage.uniqueName = obj.uniqueName;
       }
     });
+    this.connection.on('UpdateUserStatus', (obj) => {
+      this.chatList.forEach(item => {
+        const user = item.UsersList.find(p => p.id === obj.uID);
+        if (Object.keys(user).length > 0){
+          item.UsersList.find(p => p.id === obj.uID).status = obj.status ? 'Online' : obj.lastOnline;
+        }
+      });
+    });
+    this.connection.on('deleteMessage', (mId, chatId) => {
+      let message;
+      let index;
+      // tslint:disable-next-line:triple-equals
+      if (this.selectChat.Storage.id == chatId){
+        // tslint:disable-next-line:triple-equals
+        message = this.selectChat.MessageList.find(p => p.id == mId);
+        index = this.selectChat.MessageList.indexOf(message, 0);
+        if (index > -1) {
+          this.selectChat.MessageList.splice(index, 1);
+        }
+      }
+      // tslint:disable-next-line:triple-equals
+      const chat = this.chatList.find(p => p.Storage.id == chatId);
+      // tslint:disable-next-line:triple-equals
+      message = chat.MessageList.find(p => p.id == mId);
+      index = chat.MessageList.indexOf(message, 0);
+      if (index > -1) {
+        chat.MessageList.splice(index, 1);
+      }
+    });
     const chatList = this.authorizationService.http('api/storage/list', 'GET');
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < chatList.length; i++){
@@ -96,12 +145,13 @@ export class ChatHub{
             chat.Storage.imgContent = res;
           });
         }
+      }else {
+        chat.Storage.imgContent = `/api/image?key=${chat.Storage.imgContent}`;
       }
       chat.youPermissionsTemplateList = this.authorizationService.http(`api/storage/permission/me/list?sID=${chat.Storage.id}`, 'GET');
       chat.MessageList = chatList[i].message;
       this.chatList.push(chat);
     }
-    console.log(this.chatList);
   }
   static Connected(): void{
     this.connection.start().catch(err => console.error('Error start chat hub: ', err));

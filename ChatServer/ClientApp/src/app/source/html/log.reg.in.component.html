@@ -1,38 +1,59 @@
 <div id="logRegInBox">
   <div class="selectMode">
-    <button (click)="ViewRegIn(true)" class="reg">Reg In</button>
-    <button (click)="ViewRegIn(false)" class="log">Log In</button>
+    <button type="button" class="btn btn-primary reg" (click)="ViewRegIn(true)">Reg In</button>
+    <button type="button" class="btn btn-primary log" (click)="ViewRegIn(false)">Log In</button>
   </div>
   <div class="viewModes">
     <div [style.display]="(IsVisibleRegIn) ? 'block' : 'none'">
       <div class="inputBox">
-        <input type="text" placeholder="User name" [(ngModel)]="User.userName">
+        <div class="input-group flex-nowrap">
+          <span class="input-group-text">@</span>
+          <input type="text" class="form-control" placeholder="User name" [(ngModel)]="User.userName" aria-label="User name" aria-describedby="addon-wrapping">
+        </div>
       </div>
       <div class="inputBox">
-        <input type="text" placeholder="Nickname" [(ngModel)]="User.nickname">
+        <div class="input-group flex-nowrap">
+          <span class="input-group-text">Nickname</span>
+          <input type="text" class="form-control" placeholder="Nickname" [(ngModel)]="User.nickname" aria-label="Nickname" aria-describedby="addon-wrapping">
+        </div>
       </div>
       <div class="inputBox">
-        <input type="email" placeholder="email" [(ngModel)]="User.email">
+        <div class="input-group flex-nowrap">
+          <span class="input-group-text">Email</span>
+          <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="User.email" aria-label="Email" aria-describedby="addon-wrapping">
+        </div>
       </div>
       <div class="inputBox">
-        <input type="password" placeholder="Password" [(ngModel)]="Password">
+        <div class="input-group flex-nowrap">
+          <span class="input-group-text"><img width="20" height="20" src="assets/imgs/key-64.png"></span>
+          <input type="password" class="form-control" placeholder="Password" [(ngModel)]="Password" aria-label="Password" aria-describedby="addon-wrapping">
+        </div>
       </div>
       <div class="inputBox">
-        <input type="password" placeholder="Confirm password" [(ngModel)]="ConfirmPassword">
+        <div class="input-group flex-nowrap">
+          <span class="input-group-text"><img width="20" height="20" src="assets/imgs/key-64.png"></span>
+          <input type="password" class="form-control" placeholder="Confirm password" [(ngModel)]="ConfirmPassword" aria-label="Confirm password" aria-describedby="addon-wrapping">
+        </div>
       </div>
       <div class="inputBox buttonBox">
-        <button type="button" (click)="actionRegIn()">Reg In</button>
+        <button type="button" class="btn btn-success" (click)="actionRegIn()">Reg In</button>
       </div>
     </div>
     <div [style.display]="(!IsVisibleRegIn) ? 'block' : 'none'">
       <div class="inputBox">
-        <input type="email" placeholder="email" [(ngModel)]="User.email">
+        <div class="input-group flex-nowrap">
+          <span class="input-group-text">Email</span>
+          <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="User.email" aria-label="Email" aria-describedby="addon-wrapping">
+        </div>
       </div>
       <div class="inputBox">
-        <input type="password" placeholder="Password" [(ngModel)]="Password">
+        <div class="input-group flex-nowrap">
+          <span class="input-group-text"><img width="20" height="20" src="assets/imgs/key-64.png"></span>
+          <input type="password" class="form-control" placeholder="Password" [(ngModel)]="Password" aria-label="Password" aria-describedby="addon-wrapping">
+        </div>
       </div>
       <div class="inputBox buttonBox">
-        <button type="button" (click)="actionLogIn()">Lgo In</button>
+        <button type="button" class="btn btn-success" (click)="actionLogIn()">Lgo In</button>
       </div>
     </div>
     <div id="WarningBox"></div>

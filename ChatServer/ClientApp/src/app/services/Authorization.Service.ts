@@ -31,12 +31,13 @@ export class AuthorizationService{
 
   public UpdateUserInfo(): void{
     const res = this.http(`${this.uri}/user/my`, 'get');
+    ChatHub.User.id = res.id;
     ChatHub.User.nickname = res.nickname;
     ChatHub.User.userName = res.userName;
     ChatHub.User.email = res.email;
     ChatHub.User.deleteIfMissingFromMonths = res.deleteIfMissingFromMonths;
     if (res.imgContent !== null){
-      ChatHub.User.imgContent = res.imgContent;
+      ChatHub.User.imgContent = `api/image?key=${res.imgContent}`;
     }else {
       Convert.toDataURL('assets/imgs/default-user-avatar-96.png', (resCall) => {
         ChatHub.User.imgContent = resCall;
@@ -45,7 +46,6 @@ export class AuthorizationService{
   }
   async login(email: string, password: string, callBack: (status: boolean) => void): Promise<void> {
     $.post(`${this.uri}/account/authenticate?email=${email}&password=${password}`, (resp) => {
-      console.log(resp);
       this.cookieService.set(this.tokenName, resp.token);
       callBack((resp.token !== null));
     });

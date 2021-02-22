@@ -21,7 +21,7 @@
     grid-template-rows: 35px auto;
 }
 .Modal_content *{
-    color: white;
+    /*color: white;*/
 }
 .Modal_top_panel{
     display: grid;
@@ -520,6 +520,7 @@
   display: grid;
   grid-template-columns: 100px auto;
 }
+/*
 #UserSettingsWindow .editBox > .top > .avatar{
   border-radius: 100%;
 }
@@ -533,6 +534,7 @@
   height: 80px;
   width: 80px;
 }
+ */
 #UserSettingsWindow button{
   font-size: x-large;
   color: black;

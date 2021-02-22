@@ -4,11 +4,16 @@
     overflow: hidden;
 }
 input[type=text], input[type=email], input[type=password]{
-  width: 92%;
+  /*width: 92%;
   font-size: x-large;
   padding: 2%;
   border-radius: 5px;
   border: 2px solid rgb(76, 93, 110);
+
+   */
+  color: black;
+}
+.input-group-text{
   color: black;
 }
 #contentBox{
@@ -43,7 +48,7 @@ input[type=text], input[type=email], input[type=password]{
 }
 app-message-region{
     display: grid;
-    grid-template-rows: 60px auto 60px;
+    grid-template-rows: 60px auto 80px;
 }
 #hideMessagesObj{
     display: block;
@@ -115,11 +120,11 @@ app-message-region{
 #SendBoxContent button:hover{
     opacity: 0.5;
 }
-#BoxSendTextMessage textarea{
+#BoxSendTextMessage input{
     font-size: x-large;
     border-radius: 5px;
-    height: 25px;
-    width: 94%;
+    height: 100%;
+    width: 90%;
     resize: none;
     border: none;
     overflow: auto;

@@ -40,7 +40,7 @@ namespace ChatServer.Controllers
                                             DB.UserInStorages.Where(s => s.Storage == us.Storage).Count().ToString()
                                             : (DB.UserInStorages.FirstOrDefault(p => p.User != getUserFromDB).User.IsOnline ? "Online" :
                                                     DB.UserInStorages.FirstOrDefault(p => p.User != getUserFromDB).User.LastOnline.ToString()),
-                                  imgContent = us.Storage.ImgContent,
+                                  imgContent = us.Storage.Image.Key,
                                   name = us.Storage.Name,
                                   type = us.Storage.Type,
                                   uniqueName = us.Storage.UniqueName
@@ -73,7 +73,7 @@ namespace ChatServer.Controllers
                               Id = u.Id,
                               Name = u.Nickname,
                               UniqueName = u.UserName,
-                              ImgContent = u.ImgContent,
+                              ImgContent = u.Image.Key,
                               Type = SearchObjectType.Storage
                           }).ToList();
             result.AddRange((from s in DB.Storages
@@ -83,10 +83,33 @@ namespace ChatServer.Controllers
                           Id = s.Id,
                           Name = s.Name,
                           UniqueName = s.UniqueName,
-                          ImgContent = s.ImgContent,
+                          ImgContent = s.Image.Key,
                           Type = SearchObjectType.User
                       }).ToList());
             result = result.OrderBy(p => p.UniqueName).Take(20).ToList();
+            return Ok(result);
+        }
+
+        [HttpPost("user/list")]
+        public IActionResult GetUserList(string sId)
+        {
+            var storage = DB.Storages.FirstOrDefault(s => s.Id.ToString() == sId);
+            DB.Users.ToList();
+            var userInStorage = DB.UserInStorages.FirstOrDefault(us => us.Storage == storage && us.User == getUserFromDB);
+            if (userInStorage == null)
+                return BadRequest(new { errorText = "Access denied." });
+
+            var result = (from u in DB.UserInStorages
+                          where u.Storage == storage
+                          select new
+                          {
+                              id = u.User.Id,
+                              userName = u.User.UserName,
+                              nickname = u.User.Nickname,
+                              imgContent = u.User.Image.Key,
+                              status = u.User.IsOnline ? "Online" : u.User.LastOnline.ToString()
+                          }).ToList();
+
             return Ok(result);
         }
 
@@ -143,6 +166,105 @@ namespace ChatServer.Controllers
                 uniqueName = storage.Entity.UniqueName
             });
             return Ok();
+        }
+    
+        [HttpPost("join")]
+        public IActionResult JoinToStorage(string connectionId, string sId, SearchObjectType objectType)
+        {
+            DB.Storages.ToList();
+            switch (objectType)
+            {
+                case SearchObjectType.Storage:
+                    #region Join to storage
+                    if (DB.UserInStorages.FirstOrDefault(
+                            p => p.User == getUserFromDB &&
+                            p.Storage.Id.ToString() == sId) != null)
+                        return Ok();
+                    var selectStorage = DB.Storages.FirstOrDefault(p => !p.IsPrivate &&
+                                                        p.Type != StorageType.Private &&
+                                                        p.Id.ToString() == sId);
+                    if (selectStorage == null)
+                        return BadRequest(new { errorText = "Access denied." });
+
+                    var us = DB.UserInStorages.Add(new UserInStorageModel()
+                    {
+                        DateOfEntry = DateTime.Now,
+                        User = getUserFromDB,
+                        Storage = selectStorage
+                    });
+                    DB.UserPermissions.Add(new UserPermissionsModel()
+                    {
+                        UserInStorage = us.Entity,
+                        PermissionTemplate = DB.PermissionTemplates.FirstOrDefault(p => p.Storage == selectStorage &&
+                                                                                   p.Name == "Default")
+                    });
+                    DB.SaveChanges();
+                    Hub.Groups.AddToGroupAsync(connectionId, $"Storage_{us.Entity.Storage.Id}");
+                    Hub.Clients.Client(connectionId).SendAsync("receiveStorage", new {
+                        createDate = us.Entity.DateOfEntry,
+                        id = us.Entity.Storage.Id,
+                        isPrivate = us.Entity.Storage.IsPrivate,
+                        status = DB.UserInStorages.Where(s => s.Storage == us.Entity.Storage).Count().ToString(),
+                        imgContent = us.Entity.Storage.Image == null ? null : us.Entity.Storage.Image.Key,
+                        name = us.Entity.Storage.Name,
+                        type = us.Entity.Storage.Type,
+                        uniqueName = us.Entity.Storage.UniqueName
+                    });
+                    #endregion
+                    break;
+                case SearchObjectType.User:
+                    //TO DO
+                    var selectUser = DB.Users.FirstOrDefault(u => u.Id.ToString() == sId);
+                    var myPrivate = DB.Storages.FirstOrDefault(s => s == (
+                        DB.UserInStorages.FirstOrDefault(us => 
+                            (us.User == getUserFromDB || us.User == selectUser) &&
+                            us.Storage.Type == StorageType.Private).Storage
+                        )
+                    );
+                    if(myPrivate == null)
+                    {
+                        DB.ContactLists.Add(new ContactListModel()
+                        {
+                            FirstUser = getUserFromDB,
+                            SecondUser = selectUser
+                        });
+                    }           
+                    break;
+            }
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [Route("/join")]
+        [HttpGet("{key}")]
+        public IActionResult JoiningByReference(string key)
+        {
+            //TO DO
+            return Ok();
+        }
+
+        [HttpPost("preview")]
+        public IActionResult PreviewStorage(string sId)
+        {
+            var storage = DB.Storages.FirstOrDefault(p => p.Id.ToString() == sId &&
+                                    !p.IsPrivate && p.Type != StorageType.Private);
+            if (storage == null)
+                return BadRequest(new { errorText = "Access denied." });
+
+            var messages = (from m in DB.Messages
+                            where m.Storage == storage
+                            select new
+                            {
+                                sender = m.Sender,
+                                sendDate = m.SendDate,
+                                type = m.Type,
+                                id = m.Id,
+                                textContent = m.TextContent,
+                                imgContent = m.ImgContent,
+                                fileUrl = m.FileUrl
+                            }).ToList();
+
+            return Ok(messages);
         }
     }
 }

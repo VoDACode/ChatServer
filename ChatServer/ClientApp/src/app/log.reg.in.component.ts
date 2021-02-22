@@ -32,6 +32,9 @@ export class LogRegInComponent{
       ChatHub.authorizationService.login(this.User.email, this.Password, (status: boolean) => {
         if (!status) {
           this.PrintWarning('C - Wrong login or password!');
+        }else{
+          ChatHub.authorizationService.UpdateUserInfo();
+          ChatHub.initializeHub();
         }
       });
     }
@@ -71,6 +74,8 @@ export class LogRegInComponent{
   private RegIn(): void{
     $.post(`api/account/registration?email=${this.User.email}&password=${this.Password}&userName=${this.User.userName}&nickName=${this.User.nickname}`, (data) => {
       this.cookie.set('confirm_key', data.userKey);
+      ChatHub.authorizationService.UpdateUserInfo();
+      ChatHub.initializeHub();
     });
   }
 }

@@ -13,10 +13,6 @@
   margin-top: 3px;
   width: 95%;
 }
-#setPasswordBox button,
-#logRegInBox button{
-  font-size: x-large;
-}
 #logRegInBox > .selectMode{
   display: grid;
   grid-template-columns: auto auto auto;

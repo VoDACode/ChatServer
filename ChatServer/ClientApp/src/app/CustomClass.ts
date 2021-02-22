@@ -128,9 +128,9 @@ export class Network{
   }
 }
 
-export const copyToClipboard = (url: string) => {
+export const copyToClipboard = (text: string) => {
   document.addEventListener('copy', (e: ClipboardEvent) => {
-    e.clipboardData.setData('text/plain', url);
+    e.clipboardData.setData('text/plain', text);
     e.preventDefault();
     // @ts-ignore
     document.removeEventListener('copy');

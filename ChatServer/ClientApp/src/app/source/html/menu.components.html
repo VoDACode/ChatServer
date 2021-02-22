@@ -17,26 +17,6 @@
 </div>
 
 <app-storage-settings></app-storage-settings>
-<!--Custom context menu-->
-<div class="Custom_context_menu" id="message_Custom_context_menu">
-  <div class="contentBox">
-    <div class="item">
-      <span>Reply</span>
-    </div>
-    <div class="item">
-      <span>Copy</span>
-    </div>
-    <div class="item">
-      <span>Edit</span>
-    </div>
-    <div class="item">
-      <span>Copy the link on the message</span>
-    </div>
-    <div class="item">
-      <span>Delete</span>
-    </div>
-  </div>
-</div>
 
 <!--User settings-->
 <div class="Modal_bg" id="UserSettingsWindow">
@@ -47,23 +27,31 @@
     <div class="editBox">
       <div class="top">
         <div class="avatar">
-          <img [src]='ViewUser.imgContent' (click)="openSelectUserTitleImg()">
+          <img [src]='ViewUser.imgContent' (click)="openSelectUserTitleImg()" class="img-thumbnail" alt="Title">
           <input type="file" style="display: none" id="selectUserTitleImg" accept="image/*">
         </div>
         <div class="nick">
-          <input type="text" [(ngModel)]="ViewUser.userName" title="User name">
-          <input type="text" [(ngModel)]="ViewUser.nickname" title="Nickname">
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text">@</span>
+            <input type="text" class="form-control" placeholder="Username" [(ngModel)]="ViewUser.userName" aria-label="Username" aria-describedby="addon-wrapping">
+          </div>
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text">Nick</span>
+            <input type="text" class="form-control" [(ngModel)]="ViewUser.nickname" placeholder="Nickname" [(ngModel)]="ViewUser.nickname" aria-label="Nickname" aria-describedby="addon-wrapping">
+          </div>
         </div>
       </div>
       <div>
-        <label>email:</label>
-        <input type="email" [(ngModel)]="ViewUser.email">
+        <div class="input-group flex-nowrap">
+          <span class="input-group-text">Email</span>
+          <input type="email" class="form-control" placeholder="email" [(ngModel)]="ViewUser.email" aria-label="email" aria-describedby="addon-wrapping">
+        </div>
       </div>
       <div>
-        <button (click)="OpenSetPasswordMenu()">Set password</button>
+        <button type="button" (click)="OpenSetPasswordMenu()" class="btn btn-primary">Set password</button>
       </div>
       <div>
-        <button (click)="SaveUserSetting()">Save</button>
+        <button type="button" (click)="SaveUserSetting()" class="btn btn-success">Success</button>
       </div>
     </div>
   </div>

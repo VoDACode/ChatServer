@@ -71,6 +71,20 @@ namespace ChatServer.Controllers
             return Ok(new { userKey = uKey });
         }
 
+        [HttpDelete("logout")]
+        public IActionResult Logout()
+        {
+            string token = HttpContext.Request.Cookies["auth_token"];
+            var session = DB.UserSessions.FirstOrDefault(o => o.Token == token);
+            if (session != null)
+            {
+                DB.UserSessions.Remove(session);
+                DB.SaveChanges();
+            }
+            HttpContext.Response.Cookies.Delete("auth_token");
+            return Redirect("/");
+        }
+
         [HttpGet]
         [Route("/confirm/email/{lKey}")]
         public IActionResult ConfirmEmail(string lKey)

@@ -35,14 +35,14 @@
         <div id="ListUsers_inStorage">
           <div *ngFor="let obj of getSelectChat.UsersList" class="contactItem" id="contat_{{obj.id}}">
             <div>
-              <img class="contactItem_TitleImg" [src]="obj.imgContent">
+              <img class="contactItem_TitleImg" [src]="obj.imgContent == null ? 'assets/imgs/default-user-avatar-96.png': '/api/image?key='+obj.imgContent">
             </div>
             <div class="contactItem_Detail_Box">
               <div>
-                <span class="contactItem_titleName">{{obj.nickname}}</span>
+                <span class="contactItem_titleName" [innerText]="obj.nickname"></span>
               </div>
               <div>
-                <span class="contactItem_status">NaN</span>
+                <span class="contactItem_status">{{obj.status}}</span>
               </div>
             </div>
           </div>

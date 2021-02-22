@@ -18,6 +18,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {CookieService} from 'ngx-cookie-service';
 import {ConfirmEmailComponent} from './confirm.email.component';
 import {SetPasswordComponent} from './set.password.component';
+import * as $ from 'jquery';
 
 const appRoutes: Routes = [
   { path: '*', redirectTo: '/', pathMatch: 'full'},
@@ -55,3 +56,6 @@ export class AppModule {
 window.onbeforeunload = (e) => {
   ChatHub.LeaveMessenger();
 };
+$(document).bind( 'click', () => {
+  $('#MessageMenu').hide();
+});

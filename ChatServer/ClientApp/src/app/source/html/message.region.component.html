@@ -1,4 +1,4 @@
-<div id="TitleBox" [style.display]="IsVisible?'block':'none'">
+<div id="TitleBox" [style.display]="IsVisible?'block':'none'" *ngIf="IsVisible">
   <div id="TitleInfoBox" (click)="onOpenDetailInfo()">
     <div>
       <span class="StorageTitleName">{{getHubSelectChat().Storage.name}}</span>
@@ -10,8 +10,9 @@
   <div>
   </div>
 </div>
-<div id="MessagesBox" [style.display]="IsVisible?'block':'none'">
-  <div class="messageItem message" *ngFor="let obj of getHubSelectChat().MessageList" id="{{obj.id}}_message" (contextmenu)="openMessageContextMenu()">
+<div id="MessagesBox"  *ngIf="IsVisible">
+  <div class="messageItem message" *ngFor="let obj of getHubSelectChat().MessageList"
+       id="{{obj.id}}_message" (contextmenu)="openMessageContextMenu($event, obj)">
     <div class="messageItem_message_box">
       <div class="messageItem_top_panel">
         <div>
@@ -26,11 +27,18 @@
     </div>
   </div>
 </div>
-<div id="SendBox" [style.display]="IsVisible?'block':'none'">
+<div id="SendBox"  *ngIf="IsVisible">
+  <div style="margin-left: 5px">
+    <span class="fs-6" *ngIf="IsEditMode">
+      Is enabled edit mode,
+      <a href="#" (click)="eventCancelEditMessage()">cancel</a> changes or
+      <a href="#" (click)="eventSaveEditMessage()">save</a> changes.
+    </span>
+  </div>
   <div id="SendBoxContent">
     <form name="sendData">
       <div id="BoxSendTextMessage">
-        <textarea rows="1" type="text" name="textContent" [(ngModel)]="TextContent"></textarea>
+        <input type="text" name="textContent" [(ngModel)]="TextContent"/>
       </div>
       <div id="BoxSendFilesMessage">
         <button type="button" name="selectFiles" (click)="selectFile()" id="buttonSelectFiles">
@@ -46,3 +54,11 @@
     </form>
   </div>
 </div>
+<!--Custom context message menu-->
+<ul class="dropdown-menu" id="MessageMenu" target-message="0">
+  <li><a class="dropdown-item" onclick="alert(':D')" *ngIf="!IsChannel">Reply</a></li>
+  <li><a class="dropdown-item" (click)="eventCopyMessage()">Copy</a></li>
+  <li><a class="dropdown-item" (click)="eventEditMessage()" *ngIf="IsEditMessage">Edit</a></li>
+  <li><a class="dropdown-item" onclick="alert(':D')">Copy the link on the message</a></li>
+  <li><a class="dropdown-item" (click)="eventDeleteMessage()" *ngIf="IsDeleteMessage">Delete</a></li>
+</ul>

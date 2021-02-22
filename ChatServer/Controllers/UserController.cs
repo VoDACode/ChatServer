@@ -36,7 +36,7 @@ namespace ChatServer.Controllers
             return Ok(new
             {
                 result.Id,
-                result.ImgContent,
+                result.Image.Key,
                 result.IsOnline,
                 result.LastOnline,
                 result.Nickname,
@@ -44,19 +44,35 @@ namespace ChatServer.Controllers
             });
         }
 
+        [AllowAnonymous]
+        [Route("/api/image")]
+        public IActionResult GetTitleImage(string key)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                return BadRequest(new { errorText = "Image isn't selected." });
+            var result = DB.Images.FirstOrDefault(p => p.Key == key);
+            if (result == null)
+                return BadRequest(new { errorText = $"User isn't found." });
+
+            byte[] imgBytes = Convert.FromBase64String(result.Image.Replace("data:image/jpg;base64,", ""));
+            return File(imgBytes, "image/jpeg");
+        }
+
         [HttpGet("my")]
         public IActionResult GetUserInfo()
         {
+            DB.Images.ToList();
             var user = DB.Users.FirstOrDefault(u => u.Email == User.Identity.Name);
             if (user == null)
                 return BadRequest();
             return Ok(new
             {
+                id = user.Id,
                 nickname = user.Nickname,
                 userName = user.UserName,
                 email = user.Email,
                 deleteIfMissingFromMonths = user.DeleteIfMissingFromMonths,
-                imgContent = user.ImgContent
+                imgContent = user.Image == null ? null : user.Image.Key
             });
         }
 
@@ -128,7 +144,13 @@ namespace ChatServer.Controllers
                 byte[] buffer = new byte[fs.Length];
                 fs.Read(buffer, 0, buffer.Length);
                 string Base64Img = "data:image/jpg;base64," + Convert.ToBase64String(buffer);
-                getUserFromDB.ImgContent = Base64Img;
+                var imageInDb = DB.Images.Add(new ImageStorageModel()
+                {
+                    Key = "".RandomString(18),
+                    Image = Base64Img
+                });
+                DB.SaveChanges();
+                getUserFromDB.Image = imageInDb.Entity;
                 DB.SaveChanges();
             }          
             return Ok();

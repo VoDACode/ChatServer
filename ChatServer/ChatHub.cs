@@ -25,12 +25,25 @@ namespace ChatServer
         {
             getUserFromDB.IsOnline = true;
             getUserFromDB.LastOnline = DateTime.Now;
+            Clients.Group($"UserStatus_{getUserFromDB.Id}").SendAsync("UpdateUserStatus", new
+            {
+                uID = getUserFromDB.Id,
+                status = true
+            });
             DB.SaveChanges();
 
             DB.Storages.ToList();
             var contacts = DB.UserInStorages.Where(c => c.User == getUserFromDB);
-            foreach(var item in contacts)
+            foreach (var item in contacts)
+            {
+                //sub to a message 
                 Groups.AddToGroupAsync(Context.ConnectionId, $"Storage_{item.Storage.Id}");
+                //sub to user status
+                if (item.Storage.Type == StorageType.Private) {
+                    var user = DB.UserInStorages.FirstOrDefault(s => s.Id == item.Id && s.User != getUserFromDB).User;
+                    Groups.AddToGroupAsync(Context.ConnectionId, $"UserStatus_{user.Id}");
+                }
+            }
 
             return base.OnConnectedAsync();
         }
@@ -45,6 +58,12 @@ namespace ChatServer
             user.IsOnline = false;
             user.LastOnline = DateTime.Now;
             DB.SaveChanges();
+            Clients.Group($"UserStatus_{getUserFromDB.Id}").SendAsync("UpdateUserStatus", new
+            {
+                uID = getUserFromDB.Id,
+                status = false,
+                lastOnline = user.LastOnline
+            });
         }
 
         public Task GetConnectionId()

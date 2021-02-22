@@ -17,6 +17,7 @@ namespace ChatServer.Services
         public DbSet<BanModel> Bans { get; set; }
         public DbSet<StorageLogModel> StorageLogs { get; set; }
         public DbSet<StorageJoinLinkModel> StorageJoinLinks { get; set; }
+        public DbSet<ImageStorageModel> Images { get; set; }
         public DBContext(DbContextOptions<DBContext> options)
             : base(options)
         {
