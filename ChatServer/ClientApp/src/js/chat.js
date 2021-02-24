@@ -82,19 +82,6 @@ $(function(){
     $(".Modal_close").bind("click", function(e){
         $($("."+this.classList[1])[0]).hide();
     });
-
-    $("#Modal_swich_userList").bind("click", function (e) {
-        $("#Modal_swich_setting").css("border-bottom", "none");
-        $("#Modal_swich_userList").css("border-bottom", "2px solid rgb(76, 93, 110)");
-        $("#ListUsers_inStorage").show();
-        $("#SettingPanel").hide();
-    });
-    $("#Modal_swich_setting").bind("click", function (e) {
-        $("#Modal_swich_userList").css("border-bottom", "none");
-        $("#Modal_swich_setting").css("border-bottom", "2px solid rgb(76, 93, 110)");
-        $("#ListUsers_inStorage").hide();
-        $("#SettingPanel").css("display", "grid");
-    });
 });
 
 function addUserToList(User){

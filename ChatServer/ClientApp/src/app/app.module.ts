@@ -19,6 +19,7 @@ import {CookieService} from 'ngx-cookie-service';
 import {ConfirmEmailComponent} from './components/confirm.email/confirm.email.component';
 import {SetPasswordComponent} from './components/set.password.component/set.password.component';
 import * as $ from 'jquery';
+import {FileDownloadComponent} from './components/file.download.component/file-download.component';
 
 const appRoutes: Routes = [
   { path: '*', redirectTo: '/', pathMatch: 'full'},
@@ -29,7 +30,8 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppRootComponent, ChatComponent, AppMessageRegionComponent, MenuComponents, StorageSttingsComponent, SetPasswordComponent
-    , DetailInfoAboutStorageComponent, CreateStorageMenuComponent, SwitchComponent, LogRegInComponent, ConfirmEmailComponent
+    , DetailInfoAboutStorageComponent, CreateStorageMenuComponent, SwitchComponent, LogRegInComponent, ConfirmEmailComponent,
+    FileDownloadComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, RouterModule, RouterModule.forRoot(appRoutes)

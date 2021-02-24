@@ -1,5 +1,5 @@
 <div class="Modal_bg detailInfoAboutStorage" id="detailedInfoAboutStorage"
-     [style.display]="((IsVisible)?'block':'none')">
+     style="display: none">
   <div class="Modal_content">
     <div class="Modal_top_panel">
       <div>
@@ -24,10 +24,10 @@
         </div>
       </div>
       <div class="Modal_setting_panel">
-        <div id="Modal_swich_userList">
+        <div id="Modal_swich_userList" (click)="openUserList()">
           <span>User list</span>
         </div>
-        <div id="Modal_swich_setting">
+        <div id="Modal_swich_setting" (click)="openSettings()">
           <span>Settings</span>
         </div>
       </div>
@@ -52,10 +52,10 @@
             <span>Export chat history</span>
           </div>
           <div>
-            <span>Leave</span>
+            <span (click)="eventLeaveStorage()">Leave</span>
           </div>
           <div>
-            <span id="buttonOpen_stSettings" [style.display]="((IsCanViewSettings)?'block':'none')">storage settings</span>
+            <span id="buttonOpen_stSettings">Storage settings</span>
           </div>
         </div>
       </div>

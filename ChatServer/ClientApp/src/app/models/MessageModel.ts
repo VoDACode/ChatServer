@@ -1,4 +1,5 @@
 import {UserModel} from './UserModel';
+import {StorageModel} from './StorageModel';
 
 export enum MessageType {
   File, Text, Post
@@ -11,16 +12,16 @@ export class MessageModel{
   textContent: string;
   imgContent: string;
   fileUrl: string;
+  fileName: string;
 }
 export class MessageCreateViewModel{
-  static getHtmlContent(message: MessageModel): string{
-    if (message.type === 0){
-      return `<a href="/api/file/${message.fileUrl}">
-                  <img src="assets/imgs/download-button-100.png">
-              </a>
-              <span>${message.textContent}</span>`;
+  static getHtmlContent(message: MessageModel, storage: StorageModel): string{
+    // tslint:disable-next-line:triple-equals
+    if (message.type == 0){
+      return '';
     }
-    else if (message.type === 2){
+    // tslint:disable-next-line:triple-equals
+    else if (message.type == 2){
       return `<span>${message.textContent}</span>
               <img class="messageItem_content_img" src="${message.imgContent}">`;
     }

@@ -49,7 +49,7 @@ export class AppMessageRegionComponent {
   }
 
   getHtmlContent(message: MessageModel): string{
-    return MessageCreateViewModel.getHtmlContent(message);
+    return MessageCreateViewModel.getHtmlContent(message, ChatHub.selectChat.Storage);
   }
 
   selectFile(): void{

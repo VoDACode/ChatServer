@@ -39,6 +39,7 @@ export class ChatComponent{
         tmp.Storage.type = res[i].type;
         tmp.Storage.name = res[i].name;
         tmp.Storage.uniqueName = res[i].uniqueName;
+        tmp.Storage.imgContent = res[i].imgContent;
         if (tmp.Storage.imgContent == null) {
           if (tmp.Storage.type === 1) {
             tmp.Storage.imgContent = 'assets/imgs/default-user-avatar-96.png';

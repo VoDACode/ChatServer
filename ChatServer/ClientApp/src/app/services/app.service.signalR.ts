@@ -50,6 +50,19 @@ export class ChatHub{
       .then(() => {
         ChatHub.UpdateConnectionId();
       });
+    this.connection.on('deleteStorage', (sId) => {
+      // tslint:disable-next-line:triple-equals
+      const chat = this.chatList.find(p => p.Storage.id == sId);
+      const index = this.chatList.indexOf(chat, 0);
+      if (index > -1) {
+        this.chatList.splice(index, 1);
+      }
+      // tslint:disable-next-line:triple-equals
+      if (this.selectChat.Storage.id == sId){
+        this.selectChat = new ChatModel();
+        $('#detailedInfoAboutStorage').hide();
+      }
+    });
     this.connection.on('editMessage', (sId, mId, newText) => {
       // tslint:disable-next-line:triple-equals
       if (this.selectChat.Storage.id == sId){
@@ -73,9 +86,11 @@ export class ChatHub{
     this.connection.on('receiveStorage', (obj) => {
       const chat = new ChatModel();
       chat.Storage = obj;
-      chat.Storage.imgContent = `/api/image?key=${chat.Storage.imgContent}`;
+      chat.Storage.imgContent = chat.Storage.imgContent == null ? 'assets/imgs/default-storage-icon.png' : `/api/image?key=${chat.Storage.imgContent}`;
       chat.PermissionsTemplateList = this.authorizationService.http(`api/storage/permission/list?sID=${chat.Storage.id}`, 'GET');
-      chat.youPermissionsTemplateList = this.authorizationService.http(`api/storage/me/permission/list?sID=${chat.Storage.id}`, 'GET');
+      chat.youPermissionsTemplateList = this.authorizationService.http(`api/storage/permission/me/list?sID=${chat.Storage.id}`, 'GET');
+      chat.MessageList = this.authorizationService.http(`api/message/list?sID=${chat.Storage.id}&limit=500`, 'GET');
+      console.log(chat);
       this.chatList.push(chat);
     });
     this.connection.on('receiveMessage', (obj) => {

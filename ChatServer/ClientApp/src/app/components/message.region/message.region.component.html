@@ -22,7 +22,16 @@
           <span class="messageItem_sendDate" [innerHTML]="obj.sendDate"></span>
         </div>
       </div>
-      <div class="messageItem_content" [innerHTML]="getHtmlContent(obj)">
+      <div class="messageItem_content">
+        <app-file *ngIf="obj.type == 0" [message]="obj" [storage]="getHubSelectChat().Storage">
+        </app-file>
+        <div *ngIf="obj.type == 2">
+          <span>{{obj.textContent}}</span>
+          <img class="messageItem_content_img" [src]="obj.imgContent">
+        </div>
+        <div *ngIf="obj.type == 1">
+          <span>{{obj.textContent}}</span>
+        </div>
       </div>
     </div>
   </div>

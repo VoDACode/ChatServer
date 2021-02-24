@@ -12,5 +12,7 @@ namespace ChatServer
         public const string MailPassword = "wqacdutksijmglnj";
         public const string MailService = "smtp.gmail.com";
         public const int MailPort = 587;
+        
+        public const string FileSaveDir = "H:\\";
     }
 }

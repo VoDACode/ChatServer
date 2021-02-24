@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Linq;
+using ChatServer.Helpers;
 
 namespace ChatServer.Controllers
 {
@@ -48,15 +49,29 @@ namespace ChatServer.Controllers
             MessageType messageType = MessageType.Text;
             if (file != null)
                 messageType = MessageType.File;
-
-            var message = DB.Messages.Add(new MessageModel()
+            var messageModel = new MessageModel()
             {
-                TextContent = textContent.Replace("&", "&amp").Replace("<", "&lt").Replace(">", "&gt"),
+                TextContent = textContent == null ? null : textContent.Replace("&", "&amp").Replace("<", "&lt").Replace(">", "&gt"),
                 Storage = storage,
                 SendDate = DateTime.Now,
                 Sender = getUserFromDB,
                 Type = messageType
-            });
+            };
+            if (messageType == MessageType.File)
+            {
+                messageModel.FileUrl = "".RandomString(32);
+                messageModel.FileSavePath = $"{Config.FileSaveDir}{messageModel.FileUrl}\\{file.FileName}";
+                System.IO.Directory.CreateDirectory($"{Config.FileSaveDir}{messageModel.FileUrl}");
+                using (var stream = file.OpenReadStream())
+                {
+                    byte[] buffer = new byte[stream.Length];
+                    stream.Read(buffer, 0, buffer.Length);
+                    System.IO.File.WriteAllBytesAsync(messageModel.FileSavePath, buffer);
+                }
+                
+            }
+
+            var message = DB.Messages.Add(messageModel);
             DB.SaveChanges();
             hub.Clients.Groups($"Storage_{sID}").SendAsync("receiveMessage", new
             {
@@ -67,7 +82,8 @@ namespace ChatServer.Controllers
                     id = message.Entity.Id,
                     textContent = message.Entity.TextContent,
                     imgContent = message.Entity.ImgContent,
-                    fileUrl = message.Entity.FileUrl
+                    fileUrl = message.Entity.FileUrl,
+                    fileName = System.IO.Path.GetFileName(message.Entity.FileSavePath)
                 },
                 sender = new
                 {
@@ -131,6 +147,29 @@ namespace ChatServer.Controllers
             DB.SaveChanges();
             hub.Clients.Group($"Storage_{sID}").SendAsync("editMessage", sID, mID, newText);
             return Ok();
+        }
+
+        [HttpGet("list")]
+        public IActionResult GetMessageList(string sID, int limit)
+        {
+            DB.Storages.ToList();
+            var userInStorage = DB.UserInStorages.FirstOrDefault(p => p.Storage.Id.ToString() == sID && p.User == getUserFromDB);
+            if (userInStorage == null)
+                return BadRequest(new { errorText = "Access denied." });
+            var result = (from m in DB.Messages
+                       where m.Storage == userInStorage.Storage
+                       select new
+                       {
+                           sender = m.Sender,
+                           sendDate = m.SendDate,
+                           type = m.Type,
+                           id = m.Id,
+                           textContent = m.TextContent,
+                           imgContent = m.ImgContent,
+                           fileUrl = m.FileUrl,
+                           fileName = System.IO.Path.GetFileName(m.FileSavePath)
+                       }).Take(limit).ToList();
+            return Ok(result);
         }
     }
 }

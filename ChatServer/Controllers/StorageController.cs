@@ -55,7 +55,8 @@ namespace ChatServer.Controllers
                                              id = m.Id,
                                              textContent = m.TextContent,
                                              imgContent = m.ImgContent,
-                                             fileUrl = m.FileUrl
+                                             fileUrl = m.FileUrl,
+                                             fileName = System.IO.Path.GetFileName(m.FileSavePath)
                                          }).ToList()
                           }).ToList();
             return Ok(result);
@@ -265,6 +266,23 @@ namespace ChatServer.Controllers
                             }).ToList();
 
             return Ok(messages);
+        }
+
+        [HttpPost("leave")]
+        public IActionResult LeaveStorage(string sId, string connectionId)
+        {
+            var storage = DB.Storages.FirstOrDefault(p => p.Id.ToString() == sId);
+            if (storage == null)
+                return BadRequest(new { errorText = "Incorrect storage id." });
+            var userInStorage = DB.UserInStorages.FirstOrDefault(p => p.Storage == storage && p.User == getUserFromDB);
+            if (userInStorage == null)
+                return BadRequest(new { errorText = "Access denied." });
+            Hub.Groups.RemoveFromGroupAsync(connectionId, $"Storage_{sId}");
+            Hub.Clients.Client(connectionId).SendAsync("deleteStorage", sId);
+            DB.UserPermissions.Remove(DB.UserPermissions.FirstOrDefault(p => p.UserInStorage == userInStorage));
+            DB.UserInStorages.Remove(userInStorage);
+            DB.SaveChanges();
+            return Ok();
         }
     }
 }
