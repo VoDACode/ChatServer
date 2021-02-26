@@ -24,6 +24,45 @@ namespace ChatServer.Controllers
             this.hub = hub;
         }
 
+        [HttpPost("post/private")]
+        public IActionResult PostPrivateMessage(string uID, string textContent, IFormFile file)
+        {
+            var user = DB.Users.FirstOrDefault(p => p.Id.ToString() == uID);
+            var storage = DB.Storages.FirstOrDefault(s => s == (
+                        DB.UserInStorages.FirstOrDefault(us =>
+                            (us.User == getUserFromDB || us.User == user) &&
+                            us.Storage.Type == StorageType.Private).Storage
+                        )
+                    );
+            if (storage == null)
+            {
+                var createStorage = DB.Storages.Add(new StorageModel()
+                {
+                    CreateDate = DateTime.Now,
+                    Creator = getUserFromDB,
+                    IsPrivate = true,
+                    Type = StorageType.Private,
+                    Name = "{name}"
+                });
+                DB.SaveChanges();
+                DB.UserInStorages.Add(new UserInStorageModel()
+                {
+                    DateOfEntry = DateTime.Now,
+                    User = getUserFromDB,
+                    Storage = createStorage.Entity,
+                });
+                DB.UserInStorages.Add(new UserInStorageModel()
+                {
+                    DateOfEntry = DateTime.Now,
+                    User = user,
+                    Storage = createStorage.Entity,
+                });
+                DB.SaveChanges();
+                storage = createStorage.Entity;
+            }
+            return PostMessage(storage.Id.ToString(), textContent, file);
+        }
+
         [HttpPost("post")]
         public IActionResult PostMessage(string sID, string textContent, IFormFile file)
         {
@@ -36,7 +75,7 @@ namespace ChatServer.Controllers
             if (userInStorage == null)
                 return BadRequest(new { errorText = "Access denied." });
 
-            if (storage.Creator != getUserFromDB)
+            if (storage.Creator != getUserFromDB && storage.Type != StorageType.Private)
             {
                 if (DB.UserPermissions.FirstOrDefault(p => p.UserInStorage == userInStorage
                      && p.PermissionTemplate.IsSendMessage) == null)
@@ -99,7 +138,7 @@ namespace ChatServer.Controllers
                 }
             });
             return Ok();
-        }
+        }     
 
         [HttpPost("delete")]
         public IActionResult DeleteMessage(string sID, string mID)
@@ -113,7 +152,7 @@ namespace ChatServer.Controllers
             if (message == null)
                 return BadRequest(new { errorText = "Incorrect message id!" });
 
-            if (userInStorage.Storage.Creator != getUserFromDB)
+            if (userInStorage.Storage.Creator != getUserFromDB && userInStorage.Storage.Type != StorageType.Private)
             {
                 if (message.Sender != getUserFromDB && DB.UserPermissions.FirstOrDefault(p => p.UserInStorage == userInStorage
                      && p.PermissionTemplate.IsDeleteMessages) == null)

@@ -189,7 +189,12 @@ export class ChatHub{
   }
 
   static sendMessage(text: string, file: any): void {
-    const q = `api/message/post?sID=${this.selectChat.Storage.id}&textContent=${text}`;
+    let q = '';
+    if (this.selectChat.Storage.type !== StorageType.Private) {
+      q = `api/message/post?sID=${this.selectChat.Storage.id}&textContent=${text}`;
+    }else {
+      q = `api/message/post/private?uID=${this.selectChat.Storage.id}&textContent=${text}`;
+    }
     if (file != null) {
       Network.UploadFile(q, file, 'file');
     } else {

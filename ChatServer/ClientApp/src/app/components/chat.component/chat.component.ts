@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {ChatHub} from '../../services/app.service.signalR';
 import {ChatModel} from '../../models/ChatModel';
 import * as $ from 'jquery';
+import {StorageType} from '../../models/StorageModel';
 
 @Component({
   templateUrl: './chat.component.html',
@@ -61,13 +62,21 @@ export class ChatComponent{
     $('#createStorageMenu').show();
   }
 
-  onSelectContact(sId, sType): void{
+  onSelectContact(selectChat: ChatModel): void{
     if (this.SearchQuery.length !== 0) {
-      const query = `api/storage/join?sId=${sId}&objectType=${sType + 1}&connectionId=${ChatHub.ConnectionId}`;
-      const res = ChatHub.authorizationService.http(query, 'POST');
+      if (selectChat.Storage.type === 0) {
+        const query = `api/storage/join?sId=${selectChat.Storage.id}&objectType=0&connectionId=${ChatHub.ConnectionId}`;
+        ChatHub.authorizationService.http(query, 'POST');
+      }else if (selectChat.Storage.type === 1) {
+        ChatHub.selectChat = new ChatModel();
+        ChatHub.selectChat.Storage.id = selectChat.Storage.id;
+        ChatHub.selectChat.Storage.name = selectChat.Storage.name;
+        ChatHub.selectChat.Storage.imgContent = selectChat.Storage.imgContent;
+        ChatHub.selectChat.Storage.type = StorageType.Private;
+      }
     }
     // tslint:disable-next-line:triple-equals
-    const chat = ChatHub.chatList.find(o => o.Storage.id == sId);
+    const chat = ChatHub.chatList.find(o => o.Storage.id == selectChat.Storage.id);
     if (chat !== undefined) {
       ChatHub.selectChat = chat;
     }

@@ -41,7 +41,8 @@ namespace ChatServer.Controllers
                                             : (DB.UserInStorages.FirstOrDefault(p => p.User != getUserFromDB).User.IsOnline ? "Online" :
                                                     DB.UserInStorages.FirstOrDefault(p => p.User != getUserFromDB).User.LastOnline.ToString()),
                                   imgContent = us.Storage.Image.Key,
-                                  name = us.Storage.Name,
+                                  name = us.Storage.Type != StorageType.Private ? us.Storage.Name :
+                                        DB.UserInStorages.FirstOrDefault(p => p.Storage == us.Storage && p.User != getUserFromDB).User.Nickname,
                                   type = us.Storage.Type,
                                   uniqueName = us.Storage.UniqueName
                               },

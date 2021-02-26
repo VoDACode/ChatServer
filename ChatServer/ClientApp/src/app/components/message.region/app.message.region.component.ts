@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {MessageCreateViewModel, MessageModel} from '../../models/MessageModel';
+import {MessageModel} from '../../models/MessageModel';
 import {Location} from '@angular/common';
 import {ChatHub} from '../../services/app.service.signalR';
 import {ChatModel} from '../../models/ChatModel';
@@ -46,10 +46,6 @@ export class AppMessageRegionComponent {
   }
   getHubSelectChat(): ChatModel{
     return ChatHub.selectChat;
-  }
-
-  getHtmlContent(message: MessageModel): string{
-    return MessageCreateViewModel.getHtmlContent(message, ChatHub.selectChat.Storage);
   }
 
   selectFile(): void{

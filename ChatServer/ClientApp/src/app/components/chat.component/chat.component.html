@@ -11,7 +11,7 @@
     <div id="contactViewBox">
       <div class="contactItem" *ngFor="let obj of ViewContactItem"
            id="contat_{{obj.Storage.id}}"
-           (click)="onSelectContact(obj.Storage.id, obj.Storage.type)">
+           (click)="onSelectContact(obj)">
         <div>
           <img class="contactItem_TitleImg" [src]=obj.Storage.imgContent>
         </div>
