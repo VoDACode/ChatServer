@@ -20,18 +20,40 @@ import {ConfirmEmailComponent} from './components/confirm.email/confirm.email.co
 import {SetPasswordComponent} from './components/set.password.component/set.password.component';
 import * as $ from 'jquery';
 import {FileDownloadComponent} from './components/file.download.component/file-download.component';
+import {UserInformationComponent} from './components/user.information.component/user.information.component';
+import {UserListComponent} from './components/detail.Info.About.Storage/user.list.component/user.list.component';
+import {DetailStorageSettingsComponent} from './components/detail.Info.About.Storage/settings.component/settings.component';
+import {BanSettingsComponent} from './components/storage.settings/ban.settings.component/ban.settings.component';
+import {JoinLinkSettingsComponent} from './components/storage.settings/join.link.settings.component/join.link.settings.component';
+import {LogSettingsComponent} from './components/storage.settings/log.settings.component/log.settings.component';
+import {MainSettingsComponent} from './components/storage.settings/main.settings.component/main.settings.component';
+import {PermissionSettingsComponent} from './components/storage.settings/permission.settings.component/permission.settings.component';
 
 const appRoutes: Routes = [
   { path: '*', redirectTo: '/', pathMatch: 'full'},
   { path: 'login', component: LogRegInComponent},
-  { path: 'chat', component: ChatComponent}
+  { path: 'storage/info/:id', component: DetailInfoAboutStorageComponent,
+  children: [
+    {path: 'userlist/:id', component: UserListComponent},
+    {path: 'settings', component: DetailStorageSettingsComponent}
+  ]},
+  { path: 'user/info/:id', component: UserInformationComponent},
+  {path: 'storage/settings', component: StorageSttingsComponent,
+  children: [
+    {path: 'main', component: MainSettingsComponent},
+    {path: 'permission', component: PermissionSettingsComponent},
+    {path: 'log', component: LogSettingsComponent},
+    {path: 'ban', component: BanSettingsComponent},
+    {path: 'join', component: JoinLinkSettingsComponent}
+  ]}
 ];
 
 @NgModule({
   declarations: [
     AppRootComponent, ChatComponent, AppMessageRegionComponent, MenuComponents, StorageSttingsComponent, SetPasswordComponent
     , DetailInfoAboutStorageComponent, CreateStorageMenuComponent, SwitchComponent, LogRegInComponent, ConfirmEmailComponent,
-    FileDownloadComponent
+    FileDownloadComponent, UserInformationComponent, UserListComponent, DetailStorageSettingsComponent,
+    BanSettingsComponent, JoinLinkSettingsComponent, LogSettingsComponent, MainSettingsComponent, PermissionSettingsComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, RouterModule, RouterModule.forRoot(appRoutes)

@@ -1,63 +1,38 @@
 <div class="Modal_bg detailInfoAboutStorage" id="detailedInfoAboutStorage"
-     style="display: none">
+     style="display: block">
   <div class="Modal_content">
     <div class="Modal_top_panel">
       <div>
         <span class="Modal_title">Detailed Information</span>
       </div>
       <div>
-        <span class="Modal_close detailInfoAboutStorage" onclick="$('#detailedInfoAboutStorage').hide()">X</span>
+        <span [routerLink]="['/']" class="Modal_close detailInfoAboutStorage">X</span>
       </div>
     </div>
     <div class="Modal_main_conten_box">
       <div class="Modal_top_info">
         <div class="Modal_img_box">
-          <img [src]="getSelectChat.Storage.imgContent" id="StorageTitleImg">
+          <img [src]="SelectChat.Storage.imgContent" id="StorageTitleImg">
         </div>
         <div class="Modal_info_box">
           <div>
-            <span class="StorageTitleName">{{getSelectChat.Storage.name}}</span>
+            <span class="StorageTitleName">{{SelectChat.Storage.name}}</span>
           </div>
           <div>
-            <span class="StorageStatus">{{getSelectChat.Storage.status}}</span>
+            <span class="StorageStatus">{{SelectChat.Storage.status}}</span>
           </div>
         </div>
       </div>
       <div class="Modal_setting_panel">
-        <div id="Modal_swich_userList" (click)="openUserList()">
+        <div [routerLink]="['userlist', SelectChat.Storage.id]" id="Modal_swich_userList">
           <span>User list</span>
         </div>
-        <div id="Modal_swich_setting" (click)="openSettings()">
+        <div [routerLink]="['settings']" id="Modal_swich_setting">
           <span>Settings</span>
         </div>
       </div>
       <div class="Modal_View_SelectIn_setting_panel">
-        <div id="ListUsers_inStorage">
-          <div *ngFor="let obj of getSelectChat.UsersList" class="contactItem" id="contat_{{obj.id}}">
-            <div>
-              <img class="contactItem_TitleImg" [src]="obj.imgContent == null ? 'assets/imgs/default-user-avatar-96.png': '/api/image?key='+obj.imgContent">
-            </div>
-            <div class="contactItem_Detail_Box">
-              <div>
-                <span class="contactItem_titleName" [innerText]="obj.nickname"></span>
-              </div>
-              <div>
-                <span class="contactItem_status">{{obj.status}}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="SettingPanel">
-          <div>
-            <span>Export chat history</span>
-          </div>
-          <div>
-            <span (click)="eventLeaveStorage()">Leave</span>
-          </div>
-          <div>
-            <span id="buttonOpen_stSettings">Storage settings</span>
-          </div>
-        </div>
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>

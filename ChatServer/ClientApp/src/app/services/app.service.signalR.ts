@@ -101,6 +101,9 @@ export class ChatHub{
       if (this.selectChat.Storage.id === obj.storage.id){
         this.selectChat.MessageList.push(newMessage);
       }else {
+        const img = newMessage.sender.imgContent == null ? (chat.Storage.type !== StorageType.Private ? 'assets/imgs/default-storage-icon.png' : 'ssets/imgs/default-user-avatar-96.png') : `api/image?key=${newMessage.sender.imgContent}`;
+        const title = chat.Storage.type === StorageType.Private ? chat.Storage.name : `[${chat.Storage.name}]: ${newMessage.sender.nickname}`;
+        this.CreateNotification(title, newMessage.textContent, img);
         chat.MessageList.push(newMessage);
       }
       $('#MessagesBox').animate({ scrollTop: $('#MessagesBox').height() }, 200);
@@ -163,7 +166,8 @@ export class ChatHub{
       }else {
         chat.Storage.imgContent = `/api/image?key=${chat.Storage.imgContent}`;
       }
-      chat.youPermissionsTemplateList = this.authorizationService.http(`api/storage/permission/me/list?sID=${chat.Storage.id}`, 'GET');
+      const query = `api/storage/permission/me/list?sID=${chat.Storage.id}`;
+      chat.youPermissionsTemplateList = this.authorizationService.http(query, 'GET');
       chat.MessageList = chatList[i].message;
       this.chatList.push(chat);
     }
@@ -200,5 +204,30 @@ export class ChatHub{
     } else {
       this.authorizationService.http(q, 'POST', true);
     }
+  }
+
+  static CreateNotification(title: string, content: string, image: string): void{
+    if (!('Notification' in window)) {
+      return;
+    }
+    else if (Notification.permission === 'granted') {
+      this.viewNotification(title, content, image);
+    }
+    else if (Notification.permission !== 'denied') {
+      Notification.requestPermission((permission) => {
+        if (permission === 'granted') {
+          this.viewNotification(title, content, image);
+        }
+      });
+    }
+  }
+  private static viewNotification(title: string, content: string, image: string): void{
+    const notification  = new Notification(title, {
+      body: content,
+      icon: image
+    });
+    notification.addEventListener('click', () => {
+      alert('Click');
+    });
   }
 }

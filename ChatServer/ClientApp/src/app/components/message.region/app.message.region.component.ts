@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import {MessageModel} from '../../models/MessageModel';
-import {Location} from '@angular/common';
 import {ChatHub} from '../../services/app.service.signalR';
 import {ChatModel} from '../../models/ChatModel';
 import * as $ from 'jquery';
 import {StorageType} from '../../models/StorageModel';
 import {copyToClipboard} from '../../services/CustomClass';
+import {Router} from '@angular/router';
 
 @Component({
   selector: `app-message-region`,
@@ -16,6 +16,7 @@ export class AppMessageRegionComponent {
   get IsVisible(): boolean{
     return ChatHub.selectChat.Storage.id != null;
   }
+  routingUrl = '';
   TextContent = '';
   SelectFile: any;
   IsDeleteMessage = true;
@@ -27,9 +28,7 @@ export class AppMessageRegionComponent {
   get TargetMessage(): string{
     return $('#MessageMenu').attr('target-message');
   }
-  private location: Location;
-  constructor(local: Location) {
-    this.location = local;
+  constructor(private router: Router) {
   }
   sendMessage(): void{
     if (this.TextContent === '' && this.SelectFile === null) {
@@ -50,11 +49,6 @@ export class AppMessageRegionComponent {
 
   selectFile(): void{
     $('#input-SelectFiles').click();
-  }
-  onOpenDetailInfo(): void{
-    $('#detailedInfoAboutStorage').show();
-    const res = ChatHub.authorizationService.http(`api/storage/user/list?sId=${ChatHub.selectChat.Storage.id}`, 'POST');
-    ChatHub.selectChat.UsersList = res;
   }
 
   openMessageContextMenu(e, message: MessageModel): boolean{
@@ -86,6 +80,12 @@ export class AppMessageRegionComponent {
     this.eventCancelEditMessage();
   }
 
+  eventCopyMessageText(): void{
+    // tslint:disable-next-line:triple-equals
+    const message = this.getHubSelectChat().MessageList.find(p => p.id == this.TargetMessage);
+    copyToClipboard(message.textContent);
+  }
+
   eventCopyMessage(): void{
     // tslint:disable-next-line:triple-equals
     const message = this.getHubSelectChat().MessageList.find(p => p.id == this.TargetMessage);
@@ -94,5 +94,15 @@ export class AppMessageRegionComponent {
 
   eventDeleteMessage(): void{
     ChatHub.authorizationService.http(`api/message/delete?sID=${this.getHubSelectChat().Storage.id}&mID=${this.TargetMessage}`, 'POST');
+  }
+
+  openDetailInfo(): void{
+    const response = ChatHub.authorizationService.http(`api/storage/type/${ChatHub.selectChat.Storage.id}`, 'GET');
+    if (response.type === 2){
+      this.routingUrl = 'user/info/' + response.userId;
+    }else {
+      this.routingUrl = 'storage/info/' + this.getHubSelectChat().Storage.id + '/userlist/' + this.getHubSelectChat().Storage.id;
+    }
+    this.router.navigate([this.routingUrl]);
   }
 }

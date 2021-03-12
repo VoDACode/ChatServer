@@ -1,0 +1,135 @@
+<div class="PermissionsTemplates">
+  <div class="list">
+    <div class="item" *ngFor="let obj of getSelectChat().PermissionsTemplateList;let i = index" (click)="selectPermissionsTemplateItem(i)" [style.background-color]="(obj.isSelected)?selectColor:''">
+      <span>{{obj.template.name}}</span>
+    </div>
+  </div>
+  <div class="viewBox">
+    <div>
+      <label>Name</label>
+      <input type="text" [(ngModel)]="getSelectPermissionsTemplateItem().template.name" [disabled]="isMainRole">
+      <button (click)="createNewRole()" [disabled]="isCreateNewRole">Create new</button>
+      <button (click)="deleteRole()" [disabled]="isMainRole || isCreateNewRole">Delete</button>
+      <button (click)="saveNewRole()" *ngIf="isCreateNewRole">Save</button>
+      <button (click)="cancelNewRole()" *ngIf="isCreateNewRole">Cancel</button>
+      <button (click)="saveChangesRole()">Save changes</button>
+    </div>
+    <div>
+      <h3>Roles</h3>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isDeleteRoles"
+                    [valueName]="'isDeleteRoles'" [Lable]="'Delete permissions templates:'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isEditRoles"
+                    [valueName]="'isEditRoles'" [Lable]="'Edit permissions templates:'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isCreateRoles"
+                    [valueName]="'isCreateRoles'" [Lable]="'Create permissions templates:'">
+        </app-switch>
+      </div>
+    </div>
+    <div>
+      <h3>Users</h3>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isMuteUser"
+                    [valueName]="'isMuteUser'" [Lable]="'Mute user:'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isKickUser"
+                    [valueName]="'isKickUser'" [Lable]="'Kick user:'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isBanUser"
+                    [valueName]="'isBanUser'" [Lable]="'Ban user:'">
+        </app-switch>
+      </div>
+    </div>
+    <div>
+      <h3>Join link</h3>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isGenerateJoinURL"
+                    [valueName]="'isGenerateJoinURL'" [Lable]="'Create new join link:'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isCopyJoinURL"
+                    [valueName]="'isCopyJoinURL'" [Lable]="'Copy join link:'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isDeleteJoinURL"
+                    [valueName]="'isDeleteJoinURL'" [Lable]="'Delete join link:'">
+        </app-switch>
+      </div>
+    </div>
+    <div>
+      <h3>Messages</h3>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isSendMessage"
+                    [valueName]="'isSendMessage'" [Lable]="'Send message:'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isSendFiles"
+                    [valueName]="'isSendFiles'" [Lable]="'Send file:'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isDeleteMessages"
+                    [valueName]="'isDeleteMessages'" [Lable]="'Delete message:'">
+        </app-switch>
+      </div>
+    </div>
+    <div>
+      <h3>Storage</h3>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isCanViewSettings"
+                    [valueName]="'isCanViewSettings'" [Lable]="'Can view settings'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isCanEditSettings"
+                    [valueName]="'isCanEditSettings'" [Lable]="'Can edit settings'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isRenameStorage"
+                    [valueName]="'isRenameStorage'" [Lable]="'Rename storage:'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isEditTitleImage"
+                    [valueName]="'isEditTitleImage'" [Lable]="'Edit title image:'">
+        </app-switch>
+      </div>
+      <div>
+        <app-switch (onChanged)="setPermissionParam($event)"
+                    [Status]="getSelectPermissionsTemplateItem().template.isReadLog"
+                    [valueName]="'isReadLog'" [Lable]="'Read log:'">
+        </app-switch>
+      </div>
+    </div>
+  </div>
+</div>

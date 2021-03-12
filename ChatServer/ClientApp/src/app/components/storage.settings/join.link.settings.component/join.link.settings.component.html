@@ -1,0 +1,25 @@
+<h1>Join links</h1>
+<button (click)="createNewJoinURL()">Create new</button>
+<div class="JoinLinks">
+  <div class="list">
+    <div class="item" *ngFor="let obj of getSelectChat().JoinLinks">
+      <div class="user">
+        <div class="avatar">
+          <img [src]='obj.userCreator.imgContent'>
+        </div>
+        <div class="name">
+          <span><a href="#">{{obj.userCreator.nickname}}</a></span>
+        </div>
+      </div>
+      <div class="link" (click)="copyJoinLink(obj.key)">
+        <span>{{obj.key}}</span>
+      </div>
+      <div class="time">
+        <span>{{obj.createDate}}</span>
+      </div>
+      <div class="settings" *ngIf="isViewDeleteJoin">
+        <button title="Delete" (click)="deleteJoinURL(obj.key)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

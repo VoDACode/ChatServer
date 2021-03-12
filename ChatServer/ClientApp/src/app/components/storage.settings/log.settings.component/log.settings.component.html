@@ -1,0 +1,21 @@
+<h1>Log</h1>
+<div class="Log">
+  <div class="list">
+    <div class="item" *ngFor="let obj of getSelectChat().LogList">
+      <div class="date">
+        <span>{{obj.FormatDate(obj.CareateDate)}}</span>
+      </div>
+      <div class="user">
+        <div class="avatar">
+          <img [src]='obj.User.imgContent'>
+        </div>
+        <div class="name">
+          <span><a href="#">{{obj.User.userName}}</a></span>
+        </div>
+      </div>
+      <div class="ection">
+        <span>{{obj.Content}}</span>
+      </div>
+    </div>
+  </div>
+</div>

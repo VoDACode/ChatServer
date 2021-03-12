@@ -1,0 +1,28 @@
+<div class="main">
+  <div class="ava">
+    <button>
+      <img [src]="getSelectChat().Storage.imgContent">
+    </button>
+  </div>
+  <div class="content">
+    <div>
+      <span>Name:</span>
+      <input type="text" [(ngModel)]="getSelectChat().Storage.name" (change)="onChangeMainSettings()">
+    </div>
+    <div>
+      <app-switch (onChanged)="setPrivate($event);onChangeMainSettings()"
+                  [Status]="getSelectChat().Storage.isPrivate"
+                  [valueName]="'isPrivate'" [Lable]="'Private:'">
+      </app-switch>
+    </div>
+    <div>
+      <span>Universal name</span>
+      <input type="text" [(ngModel)]="getSelectChat().Storage.uniqueName"
+             [disabled]="getSelectChat().Storage.isPrivate"
+             (change)="onChangeMainSettings()">
+    </div>
+    <div *ngIf="isChangeMainSettings">
+      <button (click)="onSaveMainChanges()">Save</button>
+    </div>
+  </div>
+</div>

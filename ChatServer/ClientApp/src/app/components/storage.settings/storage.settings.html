@@ -3,280 +3,37 @@
     <div class="menu">
       <div class="menuItemBox">
         <span>Settings storage</span>
-        <div (click)="selectMenuItem(0)" [style.background-color]="(menuTemplateArr[0])?selectColor:''"
+        <div (click)="selectMenuItem(0)" [routerLink]="['/storage/settings/main']"
+             [style.background-color]="(menuTemplateArr[0])?selectColor:''"
              [style.display]="(isViewMainPage)?'block':'none'" class="item">
           <span>Main</span>
         </div>
-        <div (click)="selectMenuItem(1)" [style.background-color]="(menuTemplateArr[1])?selectColor:''"
+        <div (click)="selectMenuItem(1)" [routerLink]="['/storage/settings/permission']"
+             [style.background-color]="(menuTemplateArr[1])?selectColor:''"
              [style.display]="(isViewRolePage)?'block':'none'" class="item">
           <span>Permissions templates</span>
         </div>
-        <div (click)="selectMenuItem(2)" [style.background-color]="(menuTemplateArr[2])?selectColor:''"
+        <div (click)="selectMenuItem(2)" [routerLink]="['/storage/settings/join']"
+             [style.background-color]="(menuTemplateArr[2])?selectColor:''"
              [style.display]="(isViewBanPage)?'block':'none'" class="item">
           <span>Join links</span>
         </div>
-        <div (click)="selectMenuItem(3)" [style.background-color]="(menuTemplateArr[3])?selectColor:''"
+        <div (click)="selectMenuItem(3)" [routerLink]="['/storage/settings/ban']"
+             [style.background-color]="(menuTemplateArr[3])?selectColor:''"
              [style.display]="(isViewJoinURLsPage)?'block':'none'" class="item">
           <span>Bans</span>
         </div>
-        <div (click)="selectMenuItem(4)" [style.background-color]="(menuTemplateArr[4])?selectColor:''"
+        <div (click)="selectMenuItem(4)" [routerLink]="['/storage/settings/log']"
+             [style.background-color]="(menuTemplateArr[4])?selectColor:''"
              [style.display]="(isViewLogPage)?'block':'none'" class="item">
           <span>Log</span>
         </div>
       </div>
     </div>
     <div class="content">
-      <span class="Modal_close stSettings" onclick="$('#storageSettings').hide()">X</span>
-      <div [style.display]="(menuTemplateArr[0])?'block':'none'" class="menuTemplate" style="display: block;">
-        <div class="main">
-          <div class="ava">
-            <button>
-              <img [src]="getSelectChat().Storage.imgContent">
-            </button>
-          </div>
-          <div class="content">
-            <div>
-              <span>Name:</span>
-              <input type="text" [(ngModel)]="getSelectChat().Storage.name" (change)="onChangeMainSettings()">
-            </div>
-            <div>
-              <app-switch (onChanged)="setPrivate($event);onChangeMainSettings()"
-                          [Status]="getSelectChat().Storage.isPrivate"
-                          [valueName]="'isPrivate'" [Lable]="'Private:'">
-              </app-switch>
-            </div>
-            <div>
-              <span>Universal name</span>
-              <input type="text" [(ngModel)]="getSelectChat().Storage.uniqueName"
-                     [disabled]="getSelectChat().Storage.isPrivate"
-                     (change)="onChangeMainSettings()">
-            </div>
-            <div *ngIf="isChangeMainSettings">
-              <button (click)="onSaveMainChanges()">Save</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div [style.display]="(menuTemplateArr[1])?'block':'none'" class="menuTemplate">
-        <div class="PermissionsTemplates">
-          <div class="list">
-            <div class="item" *ngFor="let obj of getSelectChat().PermissionsTemplateList;let i = index" (click)="selectPermissionsTemplateItem(i)" [style.background-color]="(obj.isSelected)?selectColor:''">
-              <span>{{obj.template.name}}</span>
-            </div>
-          </div>
-          <div class="viewBox">
-            <div>
-              <label>Name</label>
-              <input type="text" [(ngModel)]="getSelectPermissionsTemplateItem().template.name" [disabled]="isMainRole">
-              <button (click)="createNewRole()" [disabled]="isCreateNewRole">Create new</button>
-              <button (click)="deleteRole()" [disabled]="isMainRole || isCreateNewRole">Delete</button>
-              <button (click)="saveNewRole()" *ngIf="isCreateNewRole">Save</button>
-              <button (click)="cancelNewRole()" *ngIf="isCreateNewRole">Cancel</button>
-              <button (click)="saveChangesRole()">Save changes</button>
-            </div>
-            <div>
-              <h3>Roles</h3>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isDeleteRoles"
-                            [valueName]="'isDeleteRoles'" [Lable]="'Delete permissions templates:'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isEditRoles"
-                            [valueName]="'isEditRoles'" [Lable]="'Edit permissions templates:'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isCreateRoles"
-                            [valueName]="'isCreateRoles'" [Lable]="'Create permissions templates:'">
-                </app-switch>
-              </div>
-            </div>
-            <div>
-              <h3>Users</h3>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isMuteUser"
-                            [valueName]="'isMuteUser'" [Lable]="'Mute user:'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isKickUser"
-                            [valueName]="'isKickUser'" [Lable]="'Kick user:'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isBanUser"
-                            [valueName]="'isBanUser'" [Lable]="'Ban user:'">
-                </app-switch>
-              </div>
-            </div>
-            <div>
-              <h3>Join link</h3>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isGenerateJoinURL"
-                            [valueName]="'isGenerateJoinURL'" [Lable]="'Create new join link:'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isCopyJoinURL"
-                            [valueName]="'isCopyJoinURL'" [Lable]="'Copy join link:'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isDeleteJoinURL"
-                            [valueName]="'isDeleteJoinURL'" [Lable]="'Delete join link:'">
-                </app-switch>
-              </div>
-            </div>
-            <div>
-              <h3>Messages</h3>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isSendMessage"
-                            [valueName]="'isSendMessage'" [Lable]="'Send message:'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isSendFiles"
-                            [valueName]="'isSendFiles'" [Lable]="'Send file:'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isDeleteMessages"
-                            [valueName]="'isDeleteMessages'" [Lable]="'Delete message:'">
-                </app-switch>
-              </div>
-            </div>
-            <div>
-              <h3>Storage</h3>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isCanViewSettings"
-                            [valueName]="'isCanViewSettings'" [Lable]="'Can view settings'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isCanEditSettings"
-                            [valueName]="'isCanEditSettings'" [Lable]="'Can edit settings'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isRenameStorage"
-                            [valueName]="'isRenameStorage'" [Lable]="'Rename storage:'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isEditTitleImage"
-                            [valueName]="'isEditTitleImage'" [Lable]="'Edit title image:'">
-                </app-switch>
-              </div>
-              <div>
-                <app-switch (onChanged)="setPermissionParam($event)"
-                            [Status]="getSelectPermissionsTemplateItem().template.isReadLog"
-                            [valueName]="'isReadLog'" [Lable]="'Read log:'">
-                </app-switch>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div [style.display]="(menuTemplateArr[2])?'block':'none'" class="menuTemplate">
-        <h1>Join links</h1>
-        <button (click)="createNewJoinURL()">Create new</button>
-        <div class="JoinLinks">
-          <div class="list">
-            <div class="item" *ngFor="let obj of getSelectChat().JoinLinks">
-              <div class="user">
-                <div class="avatar">
-                  <img [src]='obj.userCreator.imgContent'>
-                </div>
-                <div class="name">
-                  <span><a href="#">{{obj.userCreator.nickname}}</a></span>
-                </div>
-              </div>
-              <div class="link" (click)="copyJoinLink(obj.key)">
-                <span>{{obj.key}}</span>
-              </div>
-              <div class="time">
-                <span>{{obj.createDate}}</span>
-              </div>
-              <div class="settings" *ngIf="isViewDeleteJoin">
-                <button title="Delete" (click)="deleteJoinURL(obj.key)">Delete</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div [style.display]="(menuTemplateArr[3])?'block':'none'" class="menuTemplate">
-        <h1>Bans</h1>
-        <div class="Bans">
-          <div class="list">
-            <div class="item" *ngFor="let obj of getSelectChat().BanList">
-              <div class="user">
-                <div class="avatar">
-                  <img [src]='obj.User.imgContent'>
-                </div>
-                <div class="name">
-                  <span><a href="#">{{obj.User.userName}}</a></span>
-                </div>
-              </div>
-              <div class="reason">
-                <span>{{obj.Reason}}</span>
-              </div>
-              <div class="time">
-                <div class="start">
-                  <span>{{obj.FormatDate(obj.StartDate)}}</span>
-                </div>
-                <div class="end">
-                  <span>{{obj.FormatDate(obj.EndDate)}}</span>
-                </div>
-                <div class="duration">
-                  <span>{{obj.Duration()}}</span>
-                </div>
-              </div>
-              <div class="settings">
-                <button>Unban</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div [style.display]="(menuTemplateArr[4])?'block':'none'" class="menuTemplate">
-        <h1>Log</h1>
-        <div class="Log">
-          <div class="list">
-            <div class="item" *ngFor="let obj of getSelectChat().LogList">
-              <div class="date">
-                <span>{{obj.FormatDate(obj.CareateDate)}}</span>
-              </div>
-              <div class="user">
-                <div class="avatar">
-                  <img [src]='obj.User.imgContent'>
-                </div>
-                <div class="name">
-                  <span><a href="#">{{obj.User.userName}}</a></span>
-                </div>
-              </div>
-              <div class="ection">
-                <span>{{obj.Content}}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <span class="Modal_close stSettings" [routerLink]="['/']">X</span>
+      <div class="menuTemplate">
+        <router-outlet></router-outlet>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <div id="TitleBox" [style.display]="IsVisible?'block':'none'" *ngIf="IsVisible">
-  <div id="TitleInfoBox" (click)="onOpenDetailInfo()">
+  <div (click)="openDetailInfo()" id="TitleInfoBox">
     <div>
       <span class="StorageTitleName">{{getHubSelectChat().Storage.name}}</span>
     </div>
@@ -14,23 +14,28 @@
   <div class="messageItem message" *ngFor="let obj of getHubSelectChat().MessageList"
        id="{{obj.id}}_message" (contextmenu)="openMessageContextMenu($event, obj)">
     <div class="messageItem_message_box">
-      <div class="messageItem_top_panel">
-        <div>
-          <span class="messageItem_senderName" [innerHTML]="obj.sender.nickname"></span>
-        </div>
-        <div>
-          <span class="messageItem_sendDate" [innerHTML]="obj.sendDate"></span>
-        </div>
+      <div class="column img">
+        <img height="80" width="80" [src]="obj.sender.imgContent === null ? 'assets/imgs/default-user-avatar-96.png' : 'api/image?key='+obj.sender.imgContent">
       </div>
-      <div class="messageItem_content">
-        <app-file *ngIf="obj.type == 0" [message]="obj" [storage]="getHubSelectChat().Storage">
-        </app-file>
-        <div *ngIf="obj.type == 2">
-          <span>{{obj.textContent}}</span>
-          <img class="messageItem_content_img" [src]="obj.imgContent">
+      <div class="column content">
+        <div class="messageItem_top_panel">
+          <div>
+            <span [routerLink]="['/user/info', obj.sender.id]" class="messageItem_senderName" [innerHTML]="obj.sender.nickname"></span>
+          </div>
+          <div>
+            <span class="messageItem_sendDate" [innerHTML]="obj.sendDate"></span>
+          </div>
         </div>
-        <div *ngIf="obj.type == 1">
-          <span>{{obj.textContent}}</span>
+        <div class="messageItem_content">
+          <app-file *ngIf="obj.type == 0" [message]="obj" [storage]="getHubSelectChat().Storage">
+          </app-file>
+          <div *ngIf="obj.type == 2">
+            <span>{{obj.textContent}}</span>
+            <img class="messageItem_content_img" [src]="obj.imgContent">
+          </div>
+          <div *ngIf="obj.type == 1">
+            <span>{{obj.textContent}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -66,7 +71,8 @@
 <!--Custom context message menu-->
 <ul class="dropdown-menu" id="MessageMenu" target-message="0">
   <li><a class="dropdown-item" onclick="alert(':D')" *ngIf="!IsChannel">Reply</a></li>
-  <li><a class="dropdown-item" (click)="eventCopyMessage()">Copy</a></li>
+  <li><a class="dropdown-item" (click)="eventCopyMessage()">Copy message</a></li>
+  <li><a class="dropdown-item" (click)="eventCopyMessageText()">Copy text</a></li>
   <li><a class="dropdown-item" (click)="eventEditMessage()" *ngIf="IsEditMessage">Edit</a></li>
   <li><a class="dropdown-item" onclick="alert(':D')">Copy the link on the message</a></li>
   <li><a class="dropdown-item" (click)="eventDeleteMessage()" *ngIf="IsDeleteMessage">Delete</a></li>

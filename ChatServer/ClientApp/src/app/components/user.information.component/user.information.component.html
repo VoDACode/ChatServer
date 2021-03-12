@@ -1,0 +1,24 @@
+<div [style.display]="IsVisible ? 'block': 'none'" class="modal fade show" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button [routerLink]="['/']" type="button" class="btn-close" data-bs-dismiss="modal" (click)="eventClose()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <img height="80" width="80" [src]="SelectUser.imgContent == null ? 'assets/imgs/default-user-avatar-96.png' : 'api/image?key='+SelectUser.imgContent">
+        </p>
+        <p>
+          {{SelectUser.id}}
+        </p>
+        <p>
+          {{SelectUser.nickname}}
+        </p>
+        <p>
+          {{SelectUser.userName}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

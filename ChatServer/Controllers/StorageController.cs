@@ -23,9 +23,59 @@ namespace ChatServer.Controllers
             this.Hub = hub;
         }
 
+        [HttpPost("{id}")]
+        public IActionResult GetStorageInfo(string id)
+        {
+            DB.Images.ToList();
+            var storage = DB.Storages.FirstOrDefault(p => p.Id.ToString() == id || (p.UniqueName == id && !p.IsPrivate));
+            if(storage == null)
+                return BadRequest(new { errorText = "Access denied." });
+            var us = DB.UserInStorages.FirstOrDefault(p => p.Storage == storage && p.User == getUserFromDB);
+            if (us == null)
+                return BadRequest(new { errorText = "Access denied." });
+            return Ok(new
+            {
+                createDate = us.DateOfEntry,
+                id = us.Storage.Id,
+                isPrivate = us.Storage.IsPrivate,
+                status = (us.Storage.Type != StorageType.Private) ?
+                                            DB.UserInStorages.Where(s => s.Storage == us.Storage).Count().ToString()
+                                            : (DB.UserInStorages.FirstOrDefault(p => p.User != getUserFromDB).User.IsOnline ? "Online" :
+                                                    DB.UserInStorages.FirstOrDefault(p => p.User != getUserFromDB).User.LastOnline.ToString()),
+                imgContent = us.Storage.Image == null ? null : us.Storage.Image.Key,
+                name = us.Storage.Type != StorageType.Private ? us.Storage.Name :
+                                        DB.UserInStorages.FirstOrDefault(p => p.Storage == us.Storage && p.User != getUserFromDB).User.Nickname,
+                type = us.Storage.Type,
+                uniqueName = us.Storage.UniqueName
+            });
+        }
+        [HttpGet("type/{id}")]
+        public IActionResult GetTypeStorage(string id)
+        {
+            DB.Images.ToList();
+            var storage = DB.Storages.FirstOrDefault(p => p.Id.ToString() == id || (p.UniqueName == id && !p.IsPrivate));
+            if (storage == null)
+                return BadRequest(new { errorText = "Access denied." });
+            var us = DB.UserInStorages.FirstOrDefault(p => p.Storage == storage && p.User == getUserFromDB);
+            if (us == null)
+                return BadRequest(new { errorText = "Access denied." });
+            if (storage.Type == StorageType.Private)
+            {
+                DB.Users.ToList();
+                var user = DB.UserInStorages.FirstOrDefault(p => p.Storage == storage && p.User != getUserFromDB);
+                return Ok(new
+                {
+                    type = StorageType.Private,
+                    userId = user.User.Id
+                });
+            }
+            return GetStorageInfo(id);
+        }
+
         [HttpGet("list")]
         public IActionResult GetList()
         {
+            DB.Images.ToList();
             DB.Storages.ToList();
             var result = (from us in DB.UserInStorages
                           where us.User == getUserFromDB
@@ -50,7 +100,13 @@ namespace ChatServer.Controllers
                                          where m.Storage == us.Storage
                                          select new
                                          {
-                                             sender = m.Sender,
+                                             sender = new 
+                                             {
+                                                 id = m.Sender.Id,
+                                                 userName = m.Sender.UserName,
+                                                 imgContent = m.Sender.Image == null ? null : m.Sender.Image.Key,
+                                                 nickname = m.Sender.Nickname, 
+                                             },
                                              sendDate = m.SendDate,
                                              type = m.Type,
                                              id = m.Id,
@@ -233,6 +289,34 @@ namespace ChatServer.Controllers
                     }           
                     break;
             }
+            return Ok();
+        }
+
+        [HttpPost("edit")]
+        public IActionResult EditStorage(string sID, string name, string UName, bool IsPrivate)
+        {
+            var storage = DB.Storages.FirstOrDefault(p => p.Id.ToString() == sID);
+            var userStorage = DB.UserInStorages.FirstOrDefault(p => p.Storage == storage && p.User == getUserFromDB);
+            if (userStorage == null)
+                return BadRequest(new { errorText = "Access denied." });
+            if (storage.Creator != getUserFromDB)
+            {
+                if (!DB.UserPermissions.Where(p => p.UserInStorage == userStorage &&
+                                      p.PermissionTemplate.IsRenameStorage).Any())
+                    return BadRequest(new { errorText = "Access denied." });
+            }
+
+            if(!IsPrivate && !string.IsNullOrWhiteSpace(UName))
+            {
+                storage.IsPrivate = IsPrivate;
+                storage.UniqueName = UName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(name))
+                storage.Name = name;
+
+            DB.SaveChanges();
+
             return Ok();
         }
 

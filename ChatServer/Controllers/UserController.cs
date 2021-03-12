@@ -27,6 +27,7 @@ namespace ChatServer.Controllers
         [HttpGet("{id}")]
         public IActionResult GetUserInfo(string id)
         {
+            DB.Images.ToList();
             if (string.IsNullOrWhiteSpace(id))
                 return BadRequest(new { errorText = "User isn't selected." });
             var result = DB.Users.FirstOrDefault(u => u.Id.ToString() == id ||
@@ -36,7 +37,7 @@ namespace ChatServer.Controllers
             return Ok(new
             {
                 result.Id,
-                result.Image.Key,
+                imgContent = result.Image == null ? null : result.Image.Key,
                 result.IsOnline,
                 result.LastOnline,
                 result.Nickname,

@@ -1,0 +1,32 @@
+<h1>Bans</h1>
+<div class="Bans">
+  <div class="list">
+    <div class="item" *ngFor="let obj of getSelectChat().BanList">
+      <div class="user">
+        <div class="avatar">
+          <img [src]='obj.User.imgContent'>
+        </div>
+        <div class="name">
+          <span><a href="#">{{obj.User.userName}}</a></span>
+        </div>
+      </div>
+      <div class="reason">
+        <span>{{obj.Reason}}</span>
+      </div>
+      <div class="time">
+        <div class="start">
+          <span>{{obj.FormatDate(obj.StartDate)}}</span>
+        </div>
+        <div class="end">
+          <span>{{obj.FormatDate(obj.EndDate)}}</span>
+        </div>
+        <div class="duration">
+          <span>{{obj.Duration()}}</span>
+        </div>
+      </div>
+      <div class="settings">
+        <button>Unban</button>
+      </div>
+    </div>
+  </div>
+</div>
