@@ -13,7 +13,6 @@ import {Convert, Network} from './CustomClass';
 export class ChatHub{
   private static location: Location;
   static chatList: Array<ChatModel> = new Array<ChatModel>();
-  private static client: any;
   private static connection: any;
   // tslint:disable-next-line:variable-name
   private static connectionId: string;
@@ -21,7 +20,6 @@ export class ChatHub{
     this.UpdateConnectionId();
     return this.connectionId;
   }
-  static IsSetPassword = false;
   static User: UserModel = new UserModel();
   static authorizationService: AuthorizationService;
   static selectChat: ChatModel = new ChatModel();

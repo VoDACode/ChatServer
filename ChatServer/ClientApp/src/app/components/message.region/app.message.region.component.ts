@@ -99,9 +99,9 @@ export class AppMessageRegionComponent {
   openDetailInfo(): void{
     const response = ChatHub.authorizationService.http(`api/storage/type/${ChatHub.selectChat.Storage.id}`, 'GET');
     if (response.type === 2){
-      this.routingUrl = 'user/info/' + response.userId;
+      this.routingUrl = 'chat/user/info/' + response.userId;
     }else {
-      this.routingUrl = 'storage/info/' + this.getHubSelectChat().Storage.id + '/userlist/' + this.getHubSelectChat().Storage.id;
+      this.routingUrl = 'chat/storage/info/' + this.getHubSelectChat().Storage.id + '/userlist/' + this.getHubSelectChat().Storage.id;
     }
     this.router.navigate([this.routingUrl]);
   }

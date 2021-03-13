@@ -1,0 +1,7 @@
+  <div class="position-absolute top-50 start-50 translate-middle">
+    <h1>Join to {{storage.type == 1 ? "Group" : "Channel"}}</h1>
+    <img [src]="storage.imgContent" class="rounded mx-auto d-block">
+    <h2 [innerText]="storage.name"></h2>
+    <p [innerText]="storage.uniqueName"></p>
+    <button type="button" class="btn btn-success mx-auto" (click)="actionJoin()">Join</button>
+  </div>

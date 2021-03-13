@@ -3,6 +3,7 @@ import {UserModel} from '../../models/UserModel';
 import {ChatHub} from '../../services/app.service.signalR';
 import * as $ from 'jquery';
 import {Convert, Network} from '../../services/CustomClass';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-menu-source',
@@ -12,7 +13,7 @@ import {Convert, Network} from '../../services/CustomClass';
 // tslint:disable-next-line:component-class-suffix
 export class MenuComponents {
   ViewUser: UserModel = new UserModel();
-  constructor() {
+  constructor(private router: Router) {
     this.ViewUser.nickname = this.getUserData().nickname;
     this.ViewUser.userName = this.getUserData().userName;
     this.ViewUser.email = this.getUserData().email;
@@ -23,6 +24,7 @@ export class MenuComponents {
   }
   LogOutUser(): void{
     ChatHub.authorizationService.logOut();
+    this.router.navigate(['/']);
   }
   openUserSettingsWindow(): void{
     $('#UserSettingsWindow').show();
@@ -57,8 +59,5 @@ export class MenuComponents {
       ChatHub.authorizationService.http(`api/user/my/email/set?val=${this.ViewUser.email}`, 'POST');
     }
     $('#UserSettingsWindow').hide();
-  }
-  OpenSetPasswordMenu(): void{
-    ChatHub.IsSetPassword = true;
   }
 }

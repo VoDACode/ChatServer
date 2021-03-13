@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {ChatHub} from '../../services/app.service.signalR';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-set-password',
@@ -11,6 +12,10 @@ export class SetPasswordComponent{
   NewPassword: string;
   ConfirmNewPassword: string;
   IsValid = true;
+
+  constructor(private router: Router) {
+  }
+
   actionSetPassword(): void {
     const expPassword = /([0-9a-z]+){8,255}/i;
     this.IsValid = true;
@@ -27,7 +32,7 @@ export class SetPasswordComponent{
       if (!res.errorText){
         this.PrintWarning(res.errorText);
       }else {
-        ChatHub.IsSetPassword = false;
+        this.router.navigate(['/']);
       }
     }
   }
@@ -37,8 +42,5 @@ export class SetPasswordComponent{
     obj.innerHTML = message;
     document.getElementById('WarningBox').appendChild(obj);
     document.getElementById('WarningBox').innerHTML += '</br>';
-  }
-  actionClose(): void{
-    ChatHub.IsSetPassword = false;
   }
 }

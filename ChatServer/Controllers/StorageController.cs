@@ -320,15 +320,6 @@ namespace ChatServer.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
-        [Route("/join")]
-        [HttpGet("{key}")]
-        public IActionResult JoiningByReference(string key)
-        {
-            //TO DO
-            return Ok();
-        }
-
         [HttpPost("preview")]
         public IActionResult PreviewStorage(string sId)
         {

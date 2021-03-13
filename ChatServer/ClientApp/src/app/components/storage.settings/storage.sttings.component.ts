@@ -20,7 +20,6 @@ export class StorageSttingsComponent {
   menuTemplateArr: Array<boolean> = new Array<boolean>();
 
   constructor(private router: Router) {
-    console.log(ChatHub.selectChat);
     if (ChatHub.selectChat.Storage.id === '') {
       router.navigate(['/']);
     }

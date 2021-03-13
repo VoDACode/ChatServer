@@ -3,27 +3,27 @@
     <div class="menu">
       <div class="menuItemBox">
         <span>Settings storage</span>
-        <div (click)="selectMenuItem(0)" [routerLink]="['/storage/settings/main']"
+        <div (click)="selectMenuItem(0)" [routerLink]="['/chat/storage/settings/main']"
              [style.background-color]="(menuTemplateArr[0])?selectColor:''"
              [style.display]="(isViewMainPage)?'block':'none'" class="item">
           <span>Main</span>
         </div>
-        <div (click)="selectMenuItem(1)" [routerLink]="['/storage/settings/permission']"
+        <div (click)="selectMenuItem(1)" [routerLink]="['/chat/storage/settings/permission']"
              [style.background-color]="(menuTemplateArr[1])?selectColor:''"
              [style.display]="(isViewRolePage)?'block':'none'" class="item">
           <span>Permissions templates</span>
         </div>
-        <div (click)="selectMenuItem(2)" [routerLink]="['/storage/settings/join']"
+        <div (click)="selectMenuItem(2)" [routerLink]="['/chat/storage/settings/join']"
              [style.background-color]="(menuTemplateArr[2])?selectColor:''"
              [style.display]="(isViewBanPage)?'block':'none'" class="item">
           <span>Join links</span>
         </div>
-        <div (click)="selectMenuItem(3)" [routerLink]="['/storage/settings/ban']"
+        <div (click)="selectMenuItem(3)" [routerLink]="['/chat/storage/settings/ban']"
              [style.background-color]="(menuTemplateArr[3])?selectColor:''"
              [style.display]="(isViewJoinURLsPage)?'block':'none'" class="item">
           <span>Bans</span>
         </div>
-        <div (click)="selectMenuItem(4)" [routerLink]="['/storage/settings/log']"
+        <div (click)="selectMenuItem(4)" [routerLink]="['/chat/storage/settings/log']"
              [style.background-color]="(menuTemplateArr[4])?selectColor:''"
              [style.display]="(isViewLogPage)?'block':'none'" class="item">
           <span>Log</span>
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="content">
-      <span class="Modal_close stSettings" [routerLink]="['/']">X</span>
+      <span class="Modal_close stSettings" [routerLink]="['/chat']">X</span>
       <div class="menuTemplate">
         <router-outlet></router-outlet>
       </div>

@@ -1,4 +1,4 @@
-<div [routerLink]="['/user/info', obj.id]"
+<div [routerLink]="['/chat/user/info', obj.id]"
      *ngFor="let obj of UsersList" class="contactItem" id="contat_{{obj.id}}">
   <div>
     <img class="contactItem_TitleImg" [src]="obj.imgContent == null ? 'assets/imgs/default-user-avatar-96.png': '/api/image?key='+obj.imgContent">

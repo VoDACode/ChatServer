@@ -1,11 +1,11 @@
 <h1>Join links</h1>
-<button (click)="createNewJoinURL()">Create new</button>
+<button (click)="createNewJoinURL()" *ngIf="isViewCreateJoin">Create new</button>
 <div class="JoinLinks">
   <div class="list">
     <div class="item" *ngFor="let obj of getSelectChat().JoinLinks">
       <div class="user">
         <div class="avatar">
-          <img [src]='obj.userCreator.imgContent'>
+          <img [src]="obj.userCreator.imgContent == null ? 'assets/imgs/default-user-avatar-96.png' : 'api/image?key='+obj.userCreator.imgContent">
         </div>
         <div class="name">
           <span><a href="#">{{obj.userCreator.nickname}}</a></span>

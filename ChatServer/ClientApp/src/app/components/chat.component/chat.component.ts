@@ -3,6 +3,7 @@ import {ChatHub} from '../../services/app.service.signalR';
 import {ChatModel} from '../../models/ChatModel';
 import * as $ from 'jquery';
 import {StorageType} from '../../models/StorageModel';
+import {Router} from '@angular/router';
 
 @Component({
   templateUrl: './chat.component.html',
@@ -11,6 +12,12 @@ import {StorageType} from '../../models/StorageModel';
 export class ChatComponent{
   SearchQuery = '';
   ViewContactItem = this.getChatList();
+
+  constructor(private router: Router) {
+    if (!ChatHub.authorizationService.logIn){
+      this.router.navigate(['']);
+    }
+  }
 
   getSelectChat(): ChatModel{
     return ChatHub.selectChat;

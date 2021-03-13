@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {ChatHub} from '../../../services/app.service.signalR';
 import {copyToClipboard} from '../../../services/CustomClass';
 import {ChatModel} from '../../../models/ChatModel';
@@ -9,12 +8,12 @@ import {ChatModel} from '../../../models/ChatModel';
   templateUrl: 'join.link.settings.component.html'
 })
 export class JoinLinkSettingsComponent{
-  constructor(private route: ActivatedRoute) {
-    route.params.subscribe((params) => {
+  constructor() {
       const res = ChatHub.authorizationService.http(`api/storage/join/list?sId=${ChatHub.selectChat.Storage.id}`, 'GET');
       this.getSelectChat().JoinLinks = res;
-      console.log(res);
-    });
+  }
+  get isViewCreateJoin(): boolean{
+    return ChatHub.selectChat.youPermissionsTemplateList.find(p => p.isCreateRoles) !== null;
   }
   get isViewDeleteJoin(): boolean{
     return ChatHub.selectChat.youPermissionsTemplateList.find(p => p.isDeleteJoinURL) !== null;
@@ -23,12 +22,14 @@ export class JoinLinkSettingsComponent{
     return ChatHub.selectChat;
   }
   createNewJoinURL(): void{
-    const res = ChatHub.authorizationService.http(`api/storage/join/create?sId=${ChatHub.selectChat.Storage.id}`, 'GET');
-    ChatHub.selectChat.JoinLinks.push(res);
+    const res = ChatHub.authorizationService.http(`api/storage/join/create?sId=${ChatHub.selectChat.Storage.id}`, 'POST');
+    if (!res.errorText) {
+      ChatHub.selectChat.JoinLinks.push(res);
+    }
   }
   deleteJoinURL(key: string): void{
     const res = ChatHub.authorizationService.http(`api/storage/join/delete?sId=${ChatHub.selectChat.Storage.id}&key=${key}`, 'DELETE');
-    if (res){
+    if (res.errorText){
       console.error(res);
       return;
     }
@@ -36,6 +37,6 @@ export class JoinLinkSettingsComponent{
     this.getSelectChat().JoinLinks.splice(deleteIndex, 1);
   }
   copyJoinLink(key: string): void{
-    copyToClipboard(`${location.protocol}//${location.host}/storage/join/${key}`);
+    copyToClipboard(`${location.protocol}//${location.host}/join/${key}`);
   }
 }

@@ -28,32 +28,46 @@ import {JoinLinkSettingsComponent} from './components/storage.settings/join.link
 import {LogSettingsComponent} from './components/storage.settings/log.settings.component/log.settings.component';
 import {MainSettingsComponent} from './components/storage.settings/main.settings.component/main.settings.component';
 import {PermissionSettingsComponent} from './components/storage.settings/permission.settings.component/permission.settings.component';
+import {LogInComponent} from './components/log.reg.in.component/log.in.component/log-in.component';
+import {RegInComponent} from './components/log.reg.in.component/reg.in.component/reg.in.component';
+import {LogRegTopPanel} from './components/log.reg.in.component/log.reg.top.panel/log.reg.top.panel';
+import {JoinComponent} from './components/join.component/join.component';
 
 const appRoutes: Routes = [
-  { path: '*', redirectTo: '/', pathMatch: 'full'},
-  { path: 'login', component: LogRegInComponent},
-  { path: 'storage/info/:id', component: DetailInfoAboutStorageComponent,
-  children: [
-    {path: 'userlist/:id', component: UserListComponent},
-    {path: 'settings', component: DetailStorageSettingsComponent}
-  ]},
-  { path: 'user/info/:id', component: UserInformationComponent},
-  {path: 'storage/settings', component: StorageSttingsComponent,
-  children: [
-    {path: 'main', component: MainSettingsComponent},
-    {path: 'permission', component: PermissionSettingsComponent},
-    {path: 'log', component: LogSettingsComponent},
-    {path: 'ban', component: BanSettingsComponent},
-    {path: 'join', component: JoinLinkSettingsComponent}
-  ]}
+  {path: '*', redirectTo: '/', pathMatch: 'full'},
+  {path: '', component: LogRegInComponent, children: [
+      {path: 'login', component: LogInComponent},
+      {path: 'regin', component: RegInComponent}
+      ]},
+  {path: 'chat', component: ChatComponent, children: [
+      {path: 'storage', children: [
+            {path: 'info/:id', component: DetailInfoAboutStorageComponent, children: [
+              {path: 'userlist/:id', component: UserListComponent},
+              {path: 'settings', component: DetailStorageSettingsComponent}
+          ]},
+            {path: 'settings', component: StorageSttingsComponent, children: [
+              {path: 'main', component: MainSettingsComponent},
+              {path: 'permission', component: PermissionSettingsComponent},
+              {path: 'log', component: LogSettingsComponent},
+              {path: 'ban', component: BanSettingsComponent},
+              {path: 'join', component: JoinLinkSettingsComponent}
+            ]},
+        ]},
+      {path: 'user/info/:id', component: UserInformationComponent},
+    ]},
+  {path: 'set_password', component: SetPasswordComponent},
+  {path: 'confirmEmail', component: ConfirmEmailComponent},
+  {path: 'join/:key', component: JoinComponent}
 ];
 
 @NgModule({
   declarations: [
     AppRootComponent, ChatComponent, AppMessageRegionComponent, MenuComponents, StorageSttingsComponent, SetPasswordComponent
-    , DetailInfoAboutStorageComponent, CreateStorageMenuComponent, SwitchComponent, LogRegInComponent, ConfirmEmailComponent,
-    FileDownloadComponent, UserInformationComponent, UserListComponent, DetailStorageSettingsComponent,
-    BanSettingsComponent, JoinLinkSettingsComponent, LogSettingsComponent, MainSettingsComponent, PermissionSettingsComponent
+    , DetailInfoAboutStorageComponent, CreateStorageMenuComponent, SwitchComponent
+    , LogRegInComponent, LogInComponent, RegInComponent, LogRegTopPanel,
+    ConfirmEmailComponent, FileDownloadComponent, UserInformationComponent, UserListComponent, DetailStorageSettingsComponent,
+    BanSettingsComponent, JoinLinkSettingsComponent, LogSettingsComponent, MainSettingsComponent, PermissionSettingsComponent,
+    JoinComponent
   ],
   imports: [
     BrowserModule, FormsModule, HttpClientModule, RouterModule, RouterModule.forRoot(appRoutes)
