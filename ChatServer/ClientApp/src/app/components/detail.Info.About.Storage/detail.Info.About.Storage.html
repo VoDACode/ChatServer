@@ -1,38 +1,40 @@
-<div class="Modal_bg detailInfoAboutStorage" id="detailedInfoAboutStorage"
+<div class="detailInfoAboutStorage modal" id="detailedInfoAboutStorage"
      style="display: block">
-  <div class="Modal_content">
-    <div class="Modal_top_panel">
-      <div>
-        <span class="Modal_title">Detailed Information</span>
-      </div>
-      <div>
-        <span [routerLink]="['/chat']" class="Modal_close detailInfoAboutStorage">X</span>
-      </div>
-    </div>
-    <div class="Modal_main_conten_box">
-      <div class="Modal_top_info">
-        <div class="Modal_img_box">
-          <img [src]="SelectChat.Storage.imgContent" id="StorageTitleImg">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <span class="Modal_title">Detailed Information</span>
         </div>
-        <div class="Modal_info_box">
-          <div>
-            <span class="StorageTitleName">{{SelectChat.Storage.name}}</span>
+        <div>
+          <span [routerLink]="['/chat']" class="Modal_close detailInfoAboutStorage">X</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="Modal_top_info">
+          <div class="Modal_img_box">
+            <img [src]="SelectChat.Storage.imgContent" id="StorageTitleImg">
           </div>
-          <div>
-            <span class="StorageStatus">{{SelectChat.Storage.status}}</span>
+          <div class="Modal_info_box">
+            <div>
+              <span class="StorageTitleName">{{SelectChat.Storage.name}}</span>
+            </div>
+            <div>
+              <span class="StorageStatus">{{SelectChat.Storage.status}}</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="Modal_setting_panel">
-        <div [routerLink]="['userlist', SelectChat.Storage.id]" id="Modal_swich_userList">
-          <span>User list</span>
+        <div class="Modal_setting_panel">
+          <div [routerLink]="['userlist', SelectChat.Storage.id]" id="Modal_swich_userList">
+            <span>User list</span>
+          </div>
+          <div [routerLink]="['settings']" id="Modal_swich_setting">
+            <span>Settings</span>
+          </div>
         </div>
-        <div [routerLink]="['settings']" id="Modal_swich_setting">
-          <span>Settings</span>
+        <div class="Modal_View_SelectIn_setting_panel">
+          <router-outlet></router-outlet>
         </div>
-      </div>
-      <div class="Modal_View_SelectIn_setting_panel">
-        <router-outlet></router-outlet>
       </div>
     </div>
   </div>

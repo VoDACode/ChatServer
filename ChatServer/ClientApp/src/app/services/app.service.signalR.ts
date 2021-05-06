@@ -9,6 +9,7 @@ import {CookieService} from 'ngx-cookie-service';
 import * as signalR from '@aspnet/signalr';
 import {StorageModel, StorageType} from '../models/StorageModel';
 import {Convert, Network} from './CustomClass';
+import {VisualService} from './visual.service';
 
 export class ChatHub{
   private static location: Location;
@@ -22,7 +23,23 @@ export class ChatHub{
   }
   static User: UserModel = new UserModel();
   static authorizationService: AuthorizationService;
-  static selectChat: ChatModel = new ChatModel();
+  private static SelectChat: ChatModel = new ChatModel();
+  static get selectChat(): ChatModel{
+    return this.SelectChat;
+  }
+  static set selectChat(val){
+    if (val == null){
+      $('#dialogList').css('display', 'block');
+      $('app-message-region').css('display', 'none');
+      this.SelectChat = new ChatModel();
+      return;
+    }
+    this.SelectChat = val;
+    if (new VisualService().IsMobile){
+      $('#dialogList').css('display', 'none');
+      $('app-message-region').css('display', 'grid');
+    }
+  }
   static onAddMessage: EventEmitter<void> = new EventEmitter<void>();
   static onAddContactList: EventEmitter<void> = new EventEmitter<void>();
   static onChangeUsersList: EventEmitter<void> = new EventEmitter<void>();
@@ -43,6 +60,9 @@ export class ChatHub{
           return ChatHub.authorizationService.token; },
       })
       .build();
+    if (this.connection == null) {
+      return;
+    }
     this.connection.start()
       .catch(err => console.error('Error start chat hub: ', err))
       .then(() => {
@@ -84,11 +104,15 @@ export class ChatHub{
     this.connection.on('receiveStorage', (obj) => {
       const chat = new ChatModel();
       chat.Storage = obj;
-      chat.Storage.imgContent = chat.Storage.imgContent == null ? 'assets/imgs/default-storage-icon.png' : `/api/image?key=${chat.Storage.imgContent}`;
-      chat.PermissionsTemplateList = this.authorizationService.http(`api/storage/permission/list?sID=${chat.Storage.id}`, 'GET');
+      if (chat.Storage.imgContent == null){
+        chat.Storage.imgContent = chat.Storage.type === StorageType.Private ? 'assets/imgs/default-user-avatar-96.png' :
+                                                                              'assets/imgs/default-storage-icon.png';
+      }else {
+        chat.Storage.imgContent = `/api/image?key=${chat.Storage.imgContent}`;
+      }
+
       chat.youPermissionsTemplateList = this.authorizationService.http(`api/storage/permission/me/list?sID=${chat.Storage.id}`, 'GET');
       chat.MessageList = this.authorizationService.http(`api/message/list?sID=${chat.Storage.id}&limit=500`, 'GET');
-      console.log(chat);
       this.chatList.push(chat);
     });
     this.connection.on('receiveMessage', (obj) => {
@@ -104,7 +128,6 @@ export class ChatHub{
         this.CreateNotification(title, newMessage.textContent, img);
         chat.MessageList.push(newMessage);
       }
-      $('#MessagesBox').animate({ scrollTop: $('#MessagesBox').height() }, 200);
     });
     this.connection.on('receiveStorageMainSettings', (obj) => {
       const editStorage = this.chatList.find(o => o.Storage.id === obj.id);
@@ -150,8 +173,9 @@ export class ChatHub{
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < chatList.length; i++){
       const chat = new ChatModel();
+      console.log(chatList[i].storage);
       chat.Storage = chatList[i].storage;
-      if (chat.Storage.imgContent === null){
+      if (chat.Storage.imgContent == null){
         if (chat.Storage.type === 2) {
           Convert.toDataURL('assets/imgs/default-user-avatar-96.png', (res) => {
             chat.Storage.imgContent = res;
@@ -191,11 +215,13 @@ export class ChatHub{
   }
 
   static sendMessage(text: string, file: any): void {
+    console.log(text);
     let q = '';
-    if (this.selectChat.Storage.type !== StorageType.Private) {
-      q = `api/message/post?sID=${this.selectChat.Storage.id}&textContent=${text}`;
-    }else {
-      q = `api/message/post/private?uID=${this.selectChat.Storage.id}&textContent=${text}`;
+    if (this.selectChat.Storage.type === StorageType.Private && this.selectChat.MessageList.length === 0) {
+      q = `api/message/post/private?uID=${this.selectChat.Storage.id}&textContent=` + text;
+    }
+    else {
+      q = `api/message/post?sID=${this.selectChat.Storage.id}&textContent=` + text;
     }
     if (file != null) {
       Network.UploadFile(q, file, 'file');

@@ -1,0 +1,18 @@
+@media (max-width: 768px) {
+  #contentBox{
+    grid-template-columns: auto;
+  }
+  app-message-region{
+    display: none;
+  }
+  #TitleBox{
+    grid-template-columns: 64px auto 25%;
+  }
+  #BackToContacts{
+    display: block;
+  }
+  #LeftTabMenu{
+    left: -75%;
+    width: 75%;
+  }
+}

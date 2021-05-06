@@ -16,7 +16,7 @@ export class PermissionsTemplateModel{
   isSendMessage = false;
   isDeleteMessages = false;
   isSendFiles = false;
-  //
+  // Join links
   isGenerateJoinURL = false;
   isCopyJoinURL = false;
   isDeleteJoinURL = false;

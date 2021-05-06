@@ -15,7 +15,7 @@ export class DetailStorageSettingsComponent{
   }
 
   eventLeaveStorage(): void{
-    const query = `api/storage/leave?connectionId=${ChatHub.ConnectionId}&sId=${ChatHub.selectChat.Storage.id}`;
+    const query = `api/storage/leave?sId=${ChatHub.selectChat.Storage.id}`;
     ChatHub.authorizationService.http(query, 'POST');
   }
 }

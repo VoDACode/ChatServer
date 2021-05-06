@@ -22,6 +22,16 @@ export class AppMessageRegionComponent {
   IsDeleteMessage = true;
   IsEditMessage = true;
   IsEditMode = false;
+
+  get IsSendMessage(): boolean{
+    return ChatHub.selectChat.youPermissionsTemplateList.find(p => p.isSendMessage) != null ||
+      ChatHub.selectChat.Storage.type === StorageType.Private;
+  }
+  get IsSendFile(): boolean{
+    return ChatHub.selectChat.youPermissionsTemplateList.find(p => p.isSendFiles) != null ||
+      ChatHub.selectChat.Storage.type === StorageType.Private;
+  }
+
   get IsChannel(): boolean{
     return this.getHubSelectChat().Storage.type === StorageType.Channel;
   }
@@ -35,8 +45,12 @@ export class AppMessageRegionComponent {
       return;
     }
     if (!this.IsEditMode) {
-      // @ts-ignore
-      ChatHub.sendMessage(this.TextContent, document.querySelector('#input-SelectFiles').files[0]);
+      let file = document.querySelector('#input-SelectFiles');
+      if (file !== null) {
+        // @ts-ignore
+        file = file.files[0];
+      }
+      ChatHub.sendMessage(this.TextContent, file);
       this.TextContent = '';
       this.SelectFile = null;
     }else {
@@ -98,11 +112,19 @@ export class AppMessageRegionComponent {
 
   openDetailInfo(): void{
     const response = ChatHub.authorizationService.http(`api/storage/type/${ChatHub.selectChat.Storage.id}`, 'GET');
+    if (response.type === 'SAVED_MESSAGES')
+    {
+      return;
+    }
     if (response.type === 2){
       this.routingUrl = 'chat/user/info/' + response.userId;
     }else {
       this.routingUrl = 'chat/storage/info/' + this.getHubSelectChat().Storage.id + '/userlist/' + this.getHubSelectChat().Storage.id;
     }
     this.router.navigate([this.routingUrl]);
+  }
+
+  eventBackToContacts(): void{
+    ChatHub.selectChat = null;
   }
 }

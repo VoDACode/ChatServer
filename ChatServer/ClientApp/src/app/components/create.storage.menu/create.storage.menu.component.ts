@@ -33,7 +33,7 @@ export class CreateStorageMenuComponent {
     console.log(this.Storage);
   }
   createStorage(): void{
-    const queryString = `api/storage/create?connectionId=${ChatHub.ConnectionId}&name=${this.Storage.name}&UName=${this.Storage.uniqueName}&IsPrivate=${this.Storage.isPrivate}&type=${this.Storage.type}`;
+    const queryString = `api/storage/create?name=${this.Storage.name}&UName=${this.Storage.uniqueName}&IsPrivate=${this.Storage.isPrivate}&type=${this.Storage.type}`;
     document.getElementById('createStorageMenu').style.display = 'none';
     ChatHub.authorizationService.http(queryString , 'POST');
     this.Storage = new ContactModel();

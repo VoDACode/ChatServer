@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {AppRootComponent} from './app.root.component';
@@ -32,6 +32,9 @@ import {LogInComponent} from './components/log.reg.in.component/log.in.component
 import {RegInComponent} from './components/log.reg.in.component/reg.in.component/reg.in.component';
 import {LogRegTopPanel} from './components/log.reg.in.component/log.reg.top.panel/log.reg.top.panel';
 import {JoinComponent} from './components/join.component/join.component';
+import * as Hammer from 'hammerjs';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AreYouSureComponent} from './components/are.you.sure.component/are.you.sure.component';
 
 const appRoutes: Routes = [
   {path: '*', redirectTo: '/', pathMatch: 'full'},
@@ -60,19 +63,30 @@ const appRoutes: Routes = [
   {path: 'join/:key', component: JoinComponent}
 ];
 
+export class MyHammerConfig extends HammerGestureConfig {
+  overrides = {
+    swipe: { direction: Hammer.DIRETION_ALLL }
+  } as any;
+}
+
 @NgModule({
   declarations: [
     AppRootComponent, ChatComponent, AppMessageRegionComponent, MenuComponents, StorageSttingsComponent, SetPasswordComponent
     , DetailInfoAboutStorageComponent, CreateStorageMenuComponent, SwitchComponent
     , LogRegInComponent, LogInComponent, RegInComponent, LogRegTopPanel,
+    AreYouSureComponent,
     ConfirmEmailComponent, FileDownloadComponent, UserInformationComponent, UserListComponent, DetailStorageSettingsComponent,
     BanSettingsComponent, JoinLinkSettingsComponent, LogSettingsComponent, MainSettingsComponent, PermissionSettingsComponent,
     JoinComponent
   ],
   imports: [
-    BrowserModule, FormsModule, HttpClientModule, RouterModule, RouterModule.forRoot(appRoutes)
+    BrowserModule, BrowserAnimationsModule, FormsModule, HttpClientModule, RouterModule, RouterModule.forRoot(appRoutes)
   ],
-  providers: [CookieService],
+  providers: [CookieService,
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: HammerGestureConfig
+    }],
   bootstrap: [AppRootComponent]
 })
 
@@ -96,4 +110,5 @@ window.onbeforeunload = (e) => {
 };
 $(document).bind( 'click', () => {
   $('#MessageMenu').hide();
+  $('#ChatMenu').hide();
 });

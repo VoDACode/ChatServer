@@ -50,7 +50,7 @@ export class RegInComponent{
       this.cookie.set('confirm_key', data.userKey);
       ChatHub.authorizationService.UpdateUserInfo();
       ChatHub.initializeHub();
-      this.router.navigate(['/chat']);
+      this.router.navigate(['/confirmEmail']);
     });
   }
 }

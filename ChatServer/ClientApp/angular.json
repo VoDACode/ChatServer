@@ -27,7 +27,8 @@
               "src/css/main.css",
               "src/css/modal.window.css",
               "src/css/switch.css",
-              "src/css/regAndLog.css"
+              "src/css/regAndLog.css",
+              "src/css/mobile.main.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",

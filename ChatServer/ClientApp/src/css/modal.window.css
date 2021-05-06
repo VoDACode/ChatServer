@@ -467,7 +467,9 @@
   background-color: rgb(83, 205, 255);
   cursor: pointer;
 }
-
+.dropdown-item:hover{
+  cursor: pointer;
+}
 /*LeftTabMenu*/
 #LeftTabMenu{
   position: absolute;
@@ -476,6 +478,13 @@
   height: 100%;
   width: 25%;
   background-color: #0080db;
+  z-index: 120;
+}
+#LeftTabMenu > .bg{
+  position: absolute;
+  height: 200%;
+  left: 100%;
+  width: 100%;
   z-index: 120;
 }
 #LeftTabMenu > .content{

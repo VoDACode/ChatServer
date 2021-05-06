@@ -4,6 +4,7 @@ import {ChatHub} from '../../services/app.service.signalR';
 import * as $ from 'jquery';
 import {Convert, Network} from '../../services/CustomClass';
 import {Router} from '@angular/router';
+import {VisualService} from '../../services/visual.service';
 
 @Component({
   selector: 'app-menu-source',
@@ -59,5 +60,11 @@ export class MenuComponents {
       ChatHub.authorizationService.http(`api/user/my/email/set?val=${this.ViewUser.email}`, 'POST');
     }
     $('#UserSettingsWindow').hide();
+  }
+
+  close(): void{
+    $('#LeftTabMenu').animate({
+      left: `-${new VisualService().IsMobile ? '75' : '25'}%`
+    }, 500);
   }
 }

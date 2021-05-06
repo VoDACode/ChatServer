@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>6b1908ea-2b91-4e2b-b2f0-d40193af0329</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChatServer\ChatServer.csproj" />
+  </ItemGroup>
+
+</Project>

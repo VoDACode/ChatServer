@@ -4,6 +4,7 @@ import {ChatModel} from '../../models/ChatModel';
 import * as $ from 'jquery';
 import {StorageType} from '../../models/StorageModel';
 import {Router} from '@angular/router';
+import {VisualService} from '../../services/visual.service';
 
 @Component({
   templateUrl: './chat.component.html',
@@ -13,10 +14,40 @@ export class ChatComponent{
   SearchQuery = '';
   ViewContactItem = this.getChatList();
 
+  SelectContextChat: ChatModel = new ChatModel();
+  IsViewAreYouSure = false;
+
   constructor(private router: Router) {
     if (!ChatHub.authorizationService.logIn){
       this.router.navigate(['']);
     }
+  }
+
+  get MyName(): string{
+    return ChatHub.User.nickname;
+  }
+
+  get IsMySavedMessages(): boolean{
+    const query = `api/storage/type/${ChatHub.selectChat.Storage.id}`;
+    const result = ChatHub.authorizationService.http(query, 'GET');
+    return result.type === 'SAVED_MESSAGES';
+  }
+
+  get MyInterlocutorId(): string{
+    const query = `api/storage/type/${ChatHub.selectChat.Storage.id}`;
+    const result = ChatHub.authorizationService.http(query, 'GET');
+    return result.userId;
+  }
+
+  get IsDeleteChat(): boolean{
+    return this.SelectContextChat.youPermissionsTemplateList.find(p => p.isDeleteStorage) != null
+            || this.SelectContextChat.Storage.type === StorageType.Private;
+  }
+  get IsPrivateChat(): boolean{
+    return this.SelectContextChat.Storage.type === StorageType.Private;
+  }
+  get IsDeleteMessages(): boolean{
+    return this.SelectContextChat.youPermissionsTemplateList.find(p => p.isDeleteMessages) != null;
   }
 
   getSelectChat(): ChatModel{
@@ -32,7 +63,12 @@ export class ChatComponent{
     }, 500);
     $('app-message-region').bind( 'click', () => {
       $('#LeftTabMenu').animate({
-        left: '-25%'
+        left: `-${new VisualService().IsMobile ? '75' : '25'}%`
+      }, 500);
+    });
+    $('#LeftTabMenu>.bg').bind( 'click', () => {
+      $('#LeftTabMenu').animate({
+        left: `-${new VisualService().IsMobile ? '75' : '25'}%`
       }, 500);
     });
   }
@@ -72,7 +108,7 @@ export class ChatComponent{
   onSelectContact(selectChat: ChatModel): void{
     if (this.SearchQuery.length !== 0) {
       if (selectChat.Storage.type === 0) {
-        const query = `api/storage/join?sId=${selectChat.Storage.id}&objectType=0&connectionId=${ChatHub.ConnectionId}`;
+        const query = `api/storage/join?sId=${selectChat.Storage.id}&objectType=1`;
         ChatHub.authorizationService.http(query, 'POST');
       }else if (selectChat.Storage.type === 1) {
         ChatHub.selectChat = new ChatModel();
@@ -80,6 +116,7 @@ export class ChatComponent{
         ChatHub.selectChat.Storage.name = selectChat.Storage.name;
         ChatHub.selectChat.Storage.imgContent = selectChat.Storage.imgContent;
         ChatHub.selectChat.Storage.type = StorageType.Private;
+        return;
       }
     }
     // tslint:disable-next-line:triple-equals
@@ -87,5 +124,21 @@ export class ChatComponent{
     if (chat !== undefined) {
       ChatHub.selectChat = chat;
     }
+  }
+
+  eventAreYouSure(val: boolean): void{
+    if (val){
+      const query = `api/storage/delete?sId=${this.SelectContextChat.Storage.id}`;
+      ChatHub.authorizationService.http(query, 'DELETE', true);
+    }
+    this.IsViewAreYouSure = false;
+  }
+
+  openContextMenu(chat: ChatModel, e): boolean{
+    this.SelectContextChat = chat;
+    $('#ChatMenu').attr('target-storage', chat.Storage.id);
+    $('#ChatMenu').css({top: e.pageY, left: e.pageX, position: 'absolute'});
+    $('#ChatMenu').show();
+    return false;
   }
 }

@@ -1,4 +1,7 @@
-<div id="TitleBox" [style.display]="IsVisible?'block':'none'" *ngIf="IsVisible">
+<div id="TitleBox" *ngIf="IsVisible">
+  <div id="BackToContacts" (click)="eventBackToContacts()">
+    <img src="assets/imgs/left-64.png">
+  </div>
   <div (click)="openDetailInfo()" id="TitleInfoBox">
     <div>
       <span class="StorageTitleName">{{getHubSelectChat().Storage.name}}</span>
@@ -49,12 +52,12 @@
       <a href="#" (click)="eventSaveEditMessage()">save</a> changes.
     </span>
   </div>
-  <div id="SendBoxContent">
+  <div id="SendBoxContent" *ngIf="IsSendMessage">
     <form name="sendData">
       <div id="BoxSendTextMessage">
         <input type="text" name="textContent" [(ngModel)]="TextContent"/>
       </div>
-      <div id="BoxSendFilesMessage">
+      <div id="BoxSendFilesMessage" *ngIf="IsSendFile">
         <button type="button" name="selectFiles" (click)="selectFile()" id="buttonSelectFiles">
           <img src="../../../assets/imgs/select-file-24.png">
         </button>

@@ -44,7 +44,7 @@
         </div>
       </div>
       <div>
-        <button type="button" [routerLink]="['set_password']" class="btn btn-primary">Set password</button>
+        <button type="button" [routerLink]="['/set_password']" class="btn btn-primary">Set password</button>
       </div>
       <div>
         <button type="button" (click)="SaveUserSetting()" class="btn btn-success">Success</button>
@@ -55,6 +55,7 @@
 
 <!--Left tab menu-->
 <div id="LeftTabMenu">
+  <div class="bg"></div>
   <div class="content">
     <div class="top">
       <div>
@@ -77,6 +78,9 @@
         </div>
         <div class="item">
           <span>About the app</span>
+        </div>
+        <div class="item" (click)="close()">
+          <span>Close this menu</span>
         </div>
       </div>
     </div>
