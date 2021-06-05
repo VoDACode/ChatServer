@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {ChatHub} from '../../../services/app.service.signalR';
 import {UserModel} from '../../../models/UserModel';
 import {Router} from '@angular/router';
+import {ApiUser} from '../../../services/Api/ApiUser';
+import {ApiAuth} from '../../../services/Api/ApiAuth';
 
 @Component({
   selector: 'app-log-in-component',
@@ -21,15 +23,14 @@ export class LogInComponent {
       this.PrintWarning('T - Wrong login or password!');
     }
     if (this.IsValid){
-      ChatHub.authorizationService.login(this.User.email, this.Password, (status: boolean) => {
-        if (!status) {
-          this.PrintWarning('C - Wrong login or password!');
-        }else{
-          ChatHub.authorizationService.UpdateUserInfo();
-          ChatHub.initializeHub();
-          this.router.navigate(['/chat']);
-        }
-      });
+      const result = ApiAuth.login(this.User.email, this.Password);
+      if (!result){
+        this.PrintWarning('C - Wrong login or password!');
+      }else {
+        ChatHub.User = ApiUser.getMyInfo();
+        ChatHub.initializeHub();
+        this.router.navigate(['/chat']);
+      }
     }
     this.IsValid = true;
   }

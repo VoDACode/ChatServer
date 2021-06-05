@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {ChatHub} from '../../../services/app.service.signalR';
 import {copyToClipboard} from '../../../services/CustomClass';
 import {ChatModel} from '../../../models/ChatModel';
+import {ApiStorageJoin} from '../../../services/Api/ApiStorageJoin';
 
 @Component({
   selector: 'app-storage-settings-join-link',
@@ -9,8 +10,7 @@ import {ChatModel} from '../../../models/ChatModel';
 })
 export class JoinLinkSettingsComponent{
   constructor() {
-      const res = ChatHub.authorizationService.http(`api/storage/join/list?sId=${ChatHub.selectChat.Storage.id}`, 'GET');
-      this.getSelectChat().JoinLinks = res;
+      this.getSelectChat().JoinLinks = ApiStorageJoin.list(ChatHub.selectChat.Storage.id);
   }
   get isViewCreateJoin(): boolean{
     return ChatHub.selectChat.youPermissionsTemplateList.find(p => p.isCreateRoles) !== null;
@@ -22,13 +22,13 @@ export class JoinLinkSettingsComponent{
     return ChatHub.selectChat;
   }
   createNewJoinURL(): void{
-    const res = ChatHub.authorizationService.http(`api/storage/join/create?sId=${ChatHub.selectChat.Storage.id}`, 'POST');
+    const res = ApiStorageJoin.create(ChatHub.selectChat.Storage.id);
     if (!res.errorText) {
       ChatHub.selectChat.JoinLinks.push(res);
     }
   }
   deleteJoinURL(key: string): void{
-    const res = ChatHub.authorizationService.http(`api/storage/join/delete?sId=${ChatHub.selectChat.Storage.id}&key=${key}`, 'DELETE');
+    const res = ApiStorageJoin.delete(ChatHub.selectChat.Storage.id, key);
     if (res.errorText){
       console.error(res);
       return;

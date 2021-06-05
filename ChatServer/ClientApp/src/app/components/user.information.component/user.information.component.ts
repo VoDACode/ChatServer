@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import {UserModel} from '../../models/UserModel';
-import {ChatHub} from '../../services/app.service.signalR';
+import {ApiUser} from '../../services/Api/ApiUser';
 
 @Component({
   selector: 'app-user-information',
@@ -18,7 +18,7 @@ export class UserInformationComponent{
   constructor(private route: ActivatedRoute) {
     route.params.subscribe(params => {
       this.SelectId = params.id;
-      this.SelectUser = ChatHub.authorizationService.http(`api/user/${params.id}`, 'GET');
+      this.SelectUser = ApiUser.getUser(params.id);
     });
   }
 

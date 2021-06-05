@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ChatHub} from '../../../services/app.service.signalR';
 import {ModelPermissionsTemplate, SendPermissionsTemplateModel} from '../storage.sttings.component';
 import {ChatModel} from '../../../models/ChatModel';
+import {ApiStoragePermission} from '../../../services/Api/ApiStoragePermission';
 
 @Component({
   selector: 'app-storage-settings-permission',
@@ -16,9 +17,7 @@ export class PermissionSettingsComponent{
     if (ChatHub.selectChat.Storage.id === '') {
       router.navigate(['/']);
     }
-    const query = `api/storage/permission/list?sID=${this.getSelectChat().Storage.id}`;
-    const result = ChatHub.authorizationService.http(query, 'GET');
-    this.getSelectChat().PermissionsTemplateList = result;
+    this.getSelectChat().PermissionsTemplateList = ApiStoragePermission.getList(this.getSelectChat().Storage.id);
     this.getSelectPermissionsTemplateItem();
   }
   getSelectChat(): ChatModel{
@@ -43,11 +42,9 @@ export class PermissionSettingsComponent{
   }
   deleteRole(): void{
     const selectItem = this.getSelectChat().PermissionsTemplateList.find(obj => obj.isSelected);
-    const queryResult = ChatHub.authorizationService.http(`api/storage/permission/${ChatHub.selectChat.Storage.id}/${selectItem.template.id}/delete`, 'DELETE');
+    const queryResult = ApiStoragePermission.delete(ChatHub.selectChat.Storage.id, selectItem.template.id);
     if (!queryResult.errorText){
-      const res = ChatHub.authorizationService.http(`api/storage/permission/list?sID=${this.getSelectChat().Storage.id}`, 'GET');
-      console.log(res);
-      this.getSelectChat().PermissionsTemplateList = res;
+      this.getSelectChat().PermissionsTemplateList = ApiStoragePermission.getList(this.getSelectChat().Storage.id);
       this.getSelectChat().PermissionsTemplateList[0].isSelected = true;
       return;
     }
@@ -55,7 +52,7 @@ export class PermissionSettingsComponent{
   }
   saveChangesRole(): void{
     const selectRole = ChatHub.selectChat.PermissionsTemplateList.find(p => p.isSelected).template;
-    const queryResult = ChatHub.authorizationService.http(`api/storage/permission/edit?sID=${ChatHub.selectChat.Storage.id}&JsonModel=${JSON.stringify(new SendPermissionsTemplateModel(selectRole))}`, 'POST');
+    const queryResult = ApiStoragePermission.edit(ChatHub.selectChat.Storage.id, selectRole);
     if (!queryResult){
       return;
     }
@@ -81,8 +78,7 @@ export class PermissionSettingsComponent{
 
   saveNewRole(): void{
     const createModel = ChatHub.selectChat.PermissionsTemplateList[ChatHub.selectChat.PermissionsTemplateList.length - 1].template;
-    const query = `api/storage/permission/create?sID=${ChatHub.selectChat.Storage.id}&JsonModel=${JSON.stringify(new SendPermissionsTemplateModel(createModel))}`;
-    const res = ChatHub.authorizationService.http(query, 'POST');
+    const res = ApiStoragePermission.create(ChatHub.selectChat.Storage.id, createModel);
     console.log(res);
     if (res.id){
       this.isCreateNewRole = false;

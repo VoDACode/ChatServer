@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ChatModel} from '../../../models/ChatModel';
 import {ChatHub} from '../../../services/app.service.signalR';
+import {ApiStorage} from '../../../services/Api/ApiStorage';
 
 @Component({
   selector: 'app-storage-settings-main',
@@ -24,8 +25,7 @@ export class MainSettingsComponent{
     this.getSelectChat().Storage[obj.parameter] = obj.val;
   }
   onSaveMainChanges(): void{
-    const queryString = `api/storage/edit?sID=${this.getSelectChat().Storage.id}&name=${this.getSelectChat().Storage.name}&UName=${this.getSelectChat().Storage.uniqueName}&IsPrivate=${this.getSelectChat().Storage.isPrivate}`;
-    const queryResult = ChatHub.authorizationService.http(queryString, 'POST');
+    const queryResult = ApiStorage.edit(this.getSelectChat().Storage);
     this.isChangeMainSettings = false;
     if (!queryResult){
       return;

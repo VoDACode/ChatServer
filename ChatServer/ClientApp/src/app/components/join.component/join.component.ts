@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {StorageModel} from '../../models/StorageModel';
 import {ChatHub} from '../../services/app.service.signalR';
+import {ApiAuth} from '../../services/Api/ApiAuth';
+import {MediaService} from '../../services/MediaService';
+import {ApiStorageJoin} from '../../services/Api/ApiStorageJoin';
 
 @Component({
   selector: 'app-join-component',
@@ -13,21 +16,21 @@ export class JoinComponent{
   constructor(private activatedRoute: ActivatedRoute, private route: Router) {
     activatedRoute.params.subscribe((params) => {
       this.Key = params.key;
-      const result = ChatHub.authorizationService.http(`api/storage/join/info/${this.Key}`, 'GET');
+      const result = ApiStorageJoin.StorageInfo(this.Key);
       if (result.errorText){
         this.route.navigate(['/']);
       }
       this.storage = result;
       this.storage.imgContent = (this.storage.imgContent == null ?
-            '/assets/imgs/default-storage-icon.png' : '/api/image?key=' + this.Key);
+            '/assets/imgs/default-storage-icon.png' : MediaService.ConstructImageUrl(this.Key));
     });
   }
   actionJoin(): void{
-    if (!ChatHub.authorizationService.logIn){
+    if (!ApiAuth.isAuth){
       this.route.navigate(['/']);
       return;
     }
-    ChatHub.authorizationService.http(`api/storage/join/${this.Key}`, 'GET');
+    ApiStorageJoin.JoinToOnKey(this.Key);
     this.route.navigate(['/']);
   }
 }

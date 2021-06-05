@@ -3,6 +3,8 @@ import {ChatHub} from '../../services/app.service.signalR';
 import {ChatModel} from '../../models/ChatModel';
 import {ActivatedRoute} from '@angular/router';
 import {StorageType} from '../../models/StorageModel';
+import {MediaService} from '../../services/MediaService';
+import {ApiStorage} from '../../services/Api/ApiStorage';
 
 @Component({
   selector: 'app-detail-info-storage',
@@ -13,8 +15,8 @@ export class DetailInfoAboutStorageComponent{
   SelectChat: ChatModel = new ChatModel();
   constructor(private route: ActivatedRoute) {
     route.params.subscribe(params => {
-      this.SelectChat.Storage = ChatHub.authorizationService.http(`api/storage/${params.id}`, 'POST');
-      this.SelectChat.Storage.imgContent = this.SelectChat.Storage.imgContent == null ? '{{other}}' : `api/image?key=${this.SelectChat.Storage.imgContent}`;
+      this.SelectChat.Storage = ApiStorage.getStorageInfo(params.id);
+      this.SelectChat.Storage.imgContent = this.SelectChat.Storage.imgContent == null ? '{{other}}' : MediaService.ConstructImageUrl(this.SelectChat.Storage.imgContent);
       if (this.SelectChat.Storage.imgContent === '{{other}}'){
         if (this.SelectChat.Storage.type === StorageType.Private) {
           this.SelectChat.Storage.imgContent = 'assets/imgs/default-user-avatar-96.png';
@@ -22,8 +24,7 @@ export class DetailInfoAboutStorageComponent{
           this.SelectChat.Storage.imgContent = 'assets/imgs/default-storage-icon.png';
         }
       }
-      const res = ChatHub.authorizationService.http(`api/storage/user/list?sId=${params.id}`, 'POST');
-      this.SelectChat.UsersList = res;
+      this.SelectChat.UsersList = ApiStorage.usersList(params.id);
     });
   }
 }

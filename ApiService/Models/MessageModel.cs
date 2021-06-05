@@ -10,6 +10,8 @@ namespace ApiService.Models
         public string ImgContent { get; set; }
         public string FileSavePath { get; set; }
         public string FileUrl { get; set; }
+        public bool? Viewing { get; set; } = null;
+        public DateTime? DateLastEdit { get; set; } = null;
         public MessageType Type { get; set; }
         public DateTime SendDate { get; set; }
         public UserModel Sender { get; set; }

@@ -3,6 +3,8 @@ import {ChatHub} from '../../../services/app.service.signalR';
 import {UserModel} from '../../../models/UserModel';
 import {CookieService} from 'ngx-cookie-service';
 import {Router} from '@angular/router';
+import {ApiAuth} from '../../../services/Api/ApiAuth';
+import {ApiUser} from '../../../services/Api/ApiUser';
 
 @Component({
   selector: 'app-reg-in-component',
@@ -13,7 +15,9 @@ export class RegInComponent{
   Password = '';
   ConfirmPassword = '';
   IsValid = true;
+
   constructor(private cookie: CookieService, private router: Router) {}
+
   actionRegIn(): void{
     document.getElementById('WarningBox').innerHTML = '';
     const expNickname = /[a-z]{4,255}/i;
@@ -38,6 +42,7 @@ export class RegInComponent{
       this.RegIn();
     }
   }
+
   private PrintWarning(message): void{
     this.IsValid = false;
     const obj = document.createElement('span');
@@ -45,12 +50,14 @@ export class RegInComponent{
     document.getElementById('WarningBox').appendChild(obj);
     document.getElementById('WarningBox').innerHTML += '</br>';
   }
+
   private RegIn(): void{
-    $.post(`api/account/registration?email=${this.User.email}&password=${this.Password}&userName=${this.User.userName}&nickName=${this.User.nickname}`, (data) => {
-      this.cookie.set('confirm_key', data.userKey);
-      ChatHub.authorizationService.UpdateUserInfo();
+    const result = ApiAuth.registration(this.User, this.Password);
+    if (result.userKey != null){
+      this.cookie.set('confirm_key', result.userKey);
+      ChatHub.User = ApiUser.getMyInfo();
       ChatHub.initializeHub();
       this.router.navigate(['/confirmEmail']);
-    });
+    }
   }
 }

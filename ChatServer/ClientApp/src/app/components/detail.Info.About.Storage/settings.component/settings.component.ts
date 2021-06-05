@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {ChatHub} from '../../../services/app.service.signalR';
 import {ActivatedRoute} from '@angular/router';
+import {ApiStorage} from '../../../services/Api/ApiStorage';
 
 @Component({
   selector: 'app-detail-storage-info-settings',
@@ -15,7 +16,6 @@ export class DetailStorageSettingsComponent{
   }
 
   eventLeaveStorage(): void{
-    const query = `api/storage/leave?sId=${ChatHub.selectChat.Storage.id}`;
-    ChatHub.authorizationService.http(query, 'POST');
+    ApiStorage.leave(ChatHub.selectChat.Storage.id);
   }
 }

@@ -1,11 +1,15 @@
-﻿using ApiService.Models;
+﻿using ApiService.Helpers;
+using ApiService.Models;
+using ApiService.Models.Cache;
 using ApiService.Options;
 using ApiService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -19,10 +23,13 @@ namespace ApiService.Controllers
     public class AuthController : ControllerBase
     {
         DBContext DB;
+        IMemoryCache cache;
         UserModel getUserFromDB { get => DB.Users.FirstOrDefault(u => u.Email == User.Identity.Name); }
-        public AuthController(DBContext dBContext)
+
+        public AuthController(DBContext dBContext, IMemoryCache cache)
         {
             DB = dBContext;
+            this.cache = cache;
         }
 
         [HttpPost("auth")]
@@ -35,7 +42,7 @@ namespace ApiService.Controllers
             return Ok(new { token = token });
         }
 
-        [HttpPost("register")]
+        [HttpPost("registration")]
         public IActionResult Registration(string email, string password, string userName, string nickName)
         {
             if (DB.Users.FirstOrDefault(u => u.Email == email) != null)
@@ -103,36 +110,67 @@ namespace ApiService.Controllers
         [HttpGet("isValid")]
         public IActionResult ValidToken()
         {
-            return Ok(new { status = User.Identity.IsAuthenticated });
+            return Ok(User.Identity.IsAuthenticated);
         }
 
-        [HttpGet]
-        [Route("/confirm/email/{lKey}")]
-        public IActionResult ConfirmEmail(string lKey)
+        [HttpPost("forgot")]
+        public IActionResult ForgotPassword(string email)
         {
-            var uKey = HttpContext.Request.Cookies["confirm_key"];
-            DB.Users.ToList();
-            var confirm = DB.ConfirmEmails.FirstOrDefault(c => c.LinkKey == lKey && c.UserKey == uKey);
-            if (confirm == null)
-                return Redirect("/");
+            if (!DB.Users.Any(p => p.Email == email))
+                return BadRequest(new { text = "Email address not found.", isError = true });
 
-            HttpContext.Response.Cookies.Delete("confirm_key");
-            // Confirm set email
-            var email = HttpContext.Request.Cookies["confirm_set_email"];
-            if (!string.IsNullOrWhiteSpace(email))
+            var confirmModel = new ConfirmEventModel();
+            if(cache.TryGetValue(CacheHelper.CreateCacheKeyString(email, "PasswordRecovery"), out confirmModel))
             {
-                getUserFromDB.Email = email;
-                DB.SaveChanges();
-                HttpContext.Response.Cookies.Delete("confirm_set_email");
-                return Redirect("/");
+                return BadRequest(new
+                {
+                    text = "Email is sent.",
+                    isError = true
+                });
             }
 
-            var token = CreateToken(confirm.User.Email, confirm.User.Password);
-            if (token == null)
-                return Redirect("/");
-            HttpContext.Response.Cookies.Append("auth_token", token);
+            var key = "".RandomString(128);
+            confirmModel = new ConfirmEventModel()
+            {
+                EventName = "PasswordRecovery",
+                Key = key,
+                User = DB.Users.First(p => p.Email == email),
+                IsActivated = false
+            };
 
-            return Redirect("/");
+            cache.CreateEntry(CacheHelper.CreateCacheKeyString(email, "PasswordRecovery"));
+            cache.Set(CacheHelper.CreateCacheKeyString(email, "PasswordRecovery"), confirmModel, TimeSpan.FromSeconds(300));
+
+            var base64Email = Convert.ToBase64String(Encoding.UTF8.GetBytes(email));
+
+            MailService.SendAsyn(to: email,
+                                subject: "Password recovery",
+                                text: $"Please confirm your action.\nGo to this url:\n https://chat.privatevoda.space:5000/confirm/event/{key}?email={base64Email}");
+            return Ok(new { isError = false });
+        }
+
+        [HttpPost("forgot/{key}/set")]
+        public IActionResult SetForgotPassword(string password, string key, string email)
+        {
+            email = Encoding.UTF8.GetString(Convert.FromBase64String(email));
+            var confirmModel = new ConfirmEventModel();
+
+            if (string.IsNullOrWhiteSpace(password) || password.Length < 8)
+                return BadRequest(new { isError = true, text = "Password is too short" });
+
+            if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(email) ||
+                !cache.TryGetValue(CacheHelper.CreateCacheKeyString(email, "PasswordRecovery"), out confirmModel))
+                return BadRequest(new { isError = true, text = "Unknown key" });
+
+            if (!confirmModel.IsActivated)
+                return BadRequest(new { isError = true, text = "Key not activated" });
+
+            cache.Remove(CacheHelper.CreateCacheKeyString(email, "PasswordRecovery"));
+
+            DB.Users.FirstOrDefault(p => p.Email == email).Password = password;
+            DB.SaveChanges();
+
+            return Ok(new { isError = false });
         }
 
         private string CreateToken(string email, string password)
@@ -142,7 +180,6 @@ namespace ApiService.Controllers
                 return null;
 
             var now = DateTime.UtcNow;
-            // создаем JWT-токен
             var jwt = new JwtSecurityToken(
                     issuer: AuthOptions.ISSUER,
                     audience: AuthOptions.AUDIENCE,
@@ -171,8 +208,6 @@ namespace ApiService.Controllers
                     ClaimsIdentity.DefaultRoleClaimType);
                 return claimsIdentity;
             }
-
-            // если пользователя не найдено
             return null;
         }
     }

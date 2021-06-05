@@ -23,7 +23,7 @@ namespace ApiService.Controllers
             DB = dBContext;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("info/{id}")]
         public IActionResult GetUserInfo(string id)
         {
             DB.Images.ToList();

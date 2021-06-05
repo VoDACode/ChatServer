@@ -10,6 +10,11 @@ import * as signalR from '@aspnet/signalr';
 import {StorageModel, StorageType} from '../models/StorageModel';
 import {Convert, Network} from './CustomClass';
 import {VisualService} from './visual.service';
+import {ApiStorage} from './Api/ApiStorage';
+import {MediaService} from './MediaService';
+import {ApiStoragePermission} from './Api/ApiStoragePermission';
+import {ApiMessage} from './Api/ApiMessage';
+import {ApiUser} from './Api/ApiUser';
 
 export class ChatHub{
   private static location: Location;
@@ -55,7 +60,7 @@ export class ChatHub{
 
   public static initializeHub(): void{
     this.connection = new signalR.HubConnectionBuilder()
-      .withUrl('hub/chat', {
+      .withUrl('https://api.chat.privatevoda.space:5100/hub/chat', {
         accessTokenFactory: () => {
           return ChatHub.authorizationService.token; },
       })
@@ -108,11 +113,11 @@ export class ChatHub{
         chat.Storage.imgContent = chat.Storage.type === StorageType.Private ? 'assets/imgs/default-user-avatar-96.png' :
                                                                               'assets/imgs/default-storage-icon.png';
       }else {
-        chat.Storage.imgContent = `/api/image?key=${chat.Storage.imgContent}`;
+        chat.Storage.imgContent = MediaService.ConstructImageUrl(chat.Storage.imgContent);
       }
 
-      chat.youPermissionsTemplateList = this.authorizationService.http(`api/storage/permission/me/list?sID=${chat.Storage.id}`, 'GET');
-      chat.MessageList = this.authorizationService.http(`api/message/list?sID=${chat.Storage.id}&limit=500`, 'GET');
+      chat.youPermissionsTemplateList = ApiStoragePermission.http(`me/list?sID=${chat.Storage.id}`, 'GET');
+      chat.MessageList = ApiMessage.list(chat.Storage.id);
       this.chatList.push(chat);
     });
     this.connection.on('receiveMessage', (obj) => {
@@ -123,8 +128,17 @@ export class ChatHub{
       if (this.selectChat.Storage.id === obj.storage.id){
         this.selectChat.MessageList.push(newMessage);
       }else {
-        const img = newMessage.sender.imgContent == null ? (chat.Storage.type !== StorageType.Private ? 'assets/imgs/default-storage-icon.png' : 'ssets/imgs/default-user-avatar-96.png') : `api/image?key=${newMessage.sender.imgContent}`;
-        const title = chat.Storage.type === StorageType.Private ? chat.Storage.name : `[${chat.Storage.name}]: ${newMessage.sender.nickname}`;
+        let img = '';
+        if (newMessage.sender.imgContent == null){
+          img = (chat.Storage.type !== StorageType.Private ?
+            'assets/imgs/default-storage-icon.png' :
+            'assets/imgs/default-user-avatar-96.png');
+        }else {
+          img = MediaService.ConstructImageUrl(newMessage.sender.imgContent);
+        }
+        const title = chat.Storage.type === StorageType.Private ?
+              chat.Storage.name :
+              `[${chat.Storage.name}]: ${newMessage.sender.nickname}`;
         this.CreateNotification(title, newMessage.textContent, img);
         chat.MessageList.push(newMessage);
       }
@@ -169,7 +183,7 @@ export class ChatHub{
         chat.MessageList.splice(index, 1);
       }
     });
-    const chatList = this.authorizationService.http('api/storage/list', 'GET');
+    const chatList = ApiStorage.http('list', 'GET');
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < chatList.length; i++){
       const chat = new ChatModel();
@@ -186,10 +200,9 @@ export class ChatHub{
           });
         }
       }else {
-        chat.Storage.imgContent = `/api/image?key=${chat.Storage.imgContent}`;
+        chat.Storage.imgContent = MediaService.ConstructImageUrl(chat.Storage.imgContent);
       }
-      const query = `api/storage/permission/me/list?sID=${chat.Storage.id}`;
-      chat.youPermissionsTemplateList = this.authorizationService.http(query, 'GET');
+      chat.youPermissionsTemplateList = ApiStoragePermission.http(`me/list?sID=${chat.Storage.id}`, 'GET');
       chat.MessageList = chatList[i].message;
       this.chatList.push(chat);
     }
@@ -203,7 +216,7 @@ export class ChatHub{
   }
 
   static GetUserInfo(id: string): any{
-    return this.authorizationService.http(`api/user/${id}`, 'GET');
+    return ApiUser.http(id, 'GET');
   }
 
   public static UpdateConnectionId(): void{
@@ -215,7 +228,15 @@ export class ChatHub{
   }
 
   static sendMessage(text: string, file: any): void {
+
+    ApiMessage.send(
+      this.selectChat.Storage.id,
+      text,
+      this.selectChat.Storage.type === StorageType.Private && this.selectChat.MessageList.length === 0,
+      file);
+
     console.log(text);
+    /*
     let q = '';
     if (this.selectChat.Storage.type === StorageType.Private && this.selectChat.MessageList.length === 0) {
       q = `api/message/post/private?uID=${this.selectChat.Storage.id}&textContent=` + text;
@@ -228,6 +249,7 @@ export class ChatHub{
     } else {
       this.authorizationService.http(q, 'POST', true);
     }
+     */
   }
 
   static CreateNotification(title: string, content: string, image: string): void{
@@ -245,6 +267,7 @@ export class ChatHub{
       });
     }
   }
+
   private static viewNotification(title: string, content: string, image: string): void{
     const notification  = new Notification(title, {
       body: content,

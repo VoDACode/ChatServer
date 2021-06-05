@@ -3,6 +3,7 @@ import {ContactModel} from '../../models/ContactModel';
 import {StorageType} from '../../models/StorageModel';
 import {ChatHub} from '../../services/app.service.signalR';
 import * as $ from 'jquery';
+import {ApiStorage} from '../../services/Api/ApiStorage';
 
 @Component({
   templateUrl: './create.storage.menu.html',
@@ -33,9 +34,8 @@ export class CreateStorageMenuComponent {
     console.log(this.Storage);
   }
   createStorage(): void{
-    const queryString = `api/storage/create?name=${this.Storage.name}&UName=${this.Storage.uniqueName}&IsPrivate=${this.Storage.isPrivate}&type=${this.Storage.type}`;
     document.getElementById('createStorageMenu').style.display = 'none';
-    ChatHub.authorizationService.http(queryString , 'POST');
+    ApiStorage.create(this.Storage);
     this.Storage = new ContactModel();
     this.IsViewMainPage = false;
     $('#createStorageMenu').hide();

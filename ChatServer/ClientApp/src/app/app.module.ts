@@ -30,11 +30,16 @@ import {MainSettingsComponent} from './components/storage.settings/main.settings
 import {PermissionSettingsComponent} from './components/storage.settings/permission.settings.component/permission.settings.component';
 import {LogInComponent} from './components/log.reg.in.component/log.in.component/log-in.component';
 import {RegInComponent} from './components/log.reg.in.component/reg.in.component/reg.in.component';
-import {LogRegTopPanel} from './components/log.reg.in.component/log.reg.top.panel/log.reg.top.panel';
 import {JoinComponent} from './components/join.component/join.component';
 import * as Hammer from 'hammerjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AreYouSureComponent} from './components/are.you.sure.component/are.you.sure.component';
+import {ApiAuth} from './services/Api/ApiAuth';
+import {ForgotPasswordComponent} from './components/forgot.password.component/forgot.password.component';
+import {SetForgotPasswordComponent} from './components/forgot.password.component/set.forgot.password.component/set.forgot.password.component';
+import {EnterEmailForgotPasswordComponent} from './components/forgot.password.component/enter.email.forgot.password.component/enter.email.forgot.password.component';
+import {ConfirmEventComponent} from './components/confirm.event.component/confirm.event.component';
+import {ApiUser} from './services/Api/ApiUser';
 
 const appRoutes: Routes = [
   {path: '*', redirectTo: '/', pathMatch: 'full'},
@@ -60,24 +65,26 @@ const appRoutes: Routes = [
     ]},
   {path: 'set_password', component: SetPasswordComponent},
   {path: 'confirmEmail', component: ConfirmEmailComponent},
-  {path: 'join/:key', component: JoinComponent}
+  {path: 'join/:key', component: JoinComponent},
+  {path: 'forgot', component: ForgotPasswordComponent, children: [
+      {path: '', component: EnterEmailForgotPasswordComponent},
+      {path: ':key', component: SetForgotPasswordComponent}
+    ]
+  },
+  {path: 'confirm/event/:key', component: ConfirmEventComponent }
 ];
-
-export class MyHammerConfig extends HammerGestureConfig {
-  overrides = {
-    swipe: { direction: Hammer.DIRETION_ALLL }
-  } as any;
-}
 
 @NgModule({
   declarations: [
     AppRootComponent, ChatComponent, AppMessageRegionComponent, MenuComponents, StorageSttingsComponent, SetPasswordComponent
     , DetailInfoAboutStorageComponent, CreateStorageMenuComponent, SwitchComponent
-    , LogRegInComponent, LogInComponent, RegInComponent, LogRegTopPanel,
+    , LogRegInComponent, LogInComponent, RegInComponent,
     AreYouSureComponent,
     ConfirmEmailComponent, FileDownloadComponent, UserInformationComponent, UserListComponent, DetailStorageSettingsComponent,
     BanSettingsComponent, JoinLinkSettingsComponent, LogSettingsComponent, MainSettingsComponent, PermissionSettingsComponent,
-    JoinComponent
+    JoinComponent,
+    ForgotPasswordComponent, SetForgotPasswordComponent, EnterEmailForgotPasswordComponent,
+    ConfirmEventComponent
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, FormsModule, HttpClientModule, RouterModule, RouterModule.forRoot(appRoutes)
@@ -94,12 +101,13 @@ export class AppModule {
   constructor(l: Location, router: Router, cookieService: CookieService) {
     UrlParameters.initialize(l);
     ChatHub.initialize(l, router, cookieService);
-    if (!ChatHub.authorizationService.IsValidToken) {
+    if (!ApiAuth.isAuth) {
       console.log('Authorization error');
       cookieService.delete('auth_token');
+      // router.navigate(['login']);
     }else {
       console.log('Authorization done');
-      ChatHub.authorizationService.UpdateUserInfo();
+      ChatHub.User = ApiUser.getMyInfo();
       ChatHub.initializeHub();
     }
   }

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {ChatHub} from '../../services/app.service.signalR';
 import {Router} from '@angular/router';
+import {ApiUser} from '../../services/Api/ApiUser';
 
 @Component({
   selector: 'app-set-password',
@@ -27,8 +27,7 @@ export class SetPasswordComponent{
       this.PrintWarning('Incorrectly filled "Password" field!');
     }
     if (this.IsValid){
-      const res = ChatHub.authorizationService.http(`api/user/my/password/set?newP=${this.NewPassword}&oldP=${this.OldPassword}`, 'POST');
-      console.log(res);
+      const res = ApiUser.setPassword(this.NewPassword, this.OldPassword);
       if (!res.errorText){
         this.PrintWarning(res.errorText);
       }else {

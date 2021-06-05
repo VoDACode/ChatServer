@@ -182,7 +182,7 @@ namespace ApiService.Controllers
             return Ok();
         }     
 
-        [HttpPost("delete")]
+        [HttpDelete("delete")]
         public IActionResult DeleteMessage(string sID, string mID)
         {
             DB.Storages.ToList();
@@ -231,6 +231,7 @@ namespace ApiService.Controllers
             if(message.Sender != getUserFromDB)
                 return BadRequest(new { errorText = "Access denied." });
             message.TextContent = newText;
+            message.DateLastEdit = DateTime.Now;
             DB.SaveChanges();
             hub.Clients.Group($"Storage_{sID}").SendAsync("editMessage", sID, mID, newText);
             return Ok();
@@ -254,7 +255,9 @@ namespace ApiService.Controllers
                            textContent = m.TextContent,
                            imgContent = m.ImgContent,
                            fileUrl = m.FileUrl,
-                           fileName = System.IO.Path.GetFileName(m.FileSavePath)
+                           fileName = System.IO.Path.GetFileName(m.FileSavePath),
+                           viewing = m.Viewing,
+                           dateLastEdit = m.DateLastEdit
                        }).Take(limit).ToList();
             return Ok(result);
         }

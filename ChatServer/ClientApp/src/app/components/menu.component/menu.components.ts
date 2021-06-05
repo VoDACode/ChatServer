@@ -5,6 +5,7 @@ import * as $ from 'jquery';
 import {Convert, Network} from '../../services/CustomClass';
 import {Router} from '@angular/router';
 import {VisualService} from '../../services/visual.service';
+import {ApiUser} from '../../services/Api/ApiUser';
 
 @Component({
   selector: 'app-menu-source',
@@ -24,7 +25,7 @@ export class MenuComponents {
     return ChatHub.User;
   }
   LogOutUser(): void{
-    ChatHub.authorizationService.logOut();
+    // ChatHub.authorizationService.logOut();
     this.router.navigate(['/']);
   }
   openUserSettingsWindow(): void{
@@ -41,23 +42,20 @@ export class MenuComponents {
     // @ts-ignore
     const file = document.querySelector('#selectUserTitleImg').files[0];
     if (file){
-      console.log('Start upload img');
       Convert.FileToBase64(file, (res) => {
         ChatHub.User.imgContent = res;
         this.ViewUser.imgContent = res;
-        console.log('Done convert!');
-        console.log(res);
-        Network.UploadFile('api/user/my/img/set', file, 'img');
+        ApiUser.setMyImage(file);
       });
     }
     if (this.ViewUser.userName !== this.getUserData().userName){
-      ChatHub.authorizationService.http(`api/user/my/username/set?val=${this.ViewUser.userName}`, 'POST');
+      ApiUser.setMyUserName(this.ViewUser.userName);
     }
     if (this.ViewUser.nickname !== this.getUserData().nickname){
-      ChatHub.authorizationService.http(`api/user/my/nickname/set?val=${this.ViewUser.nickname}`, 'POST');
+      ApiUser.setMyNickname(this.ViewUser.nickname);
     }
     if (this.ViewUser.email !== this.getUserData().email && expEmail.test(this.ViewUser.email)){
-      ChatHub.authorizationService.http(`api/user/my/email/set?val=${this.ViewUser.email}`, 'POST');
+      ApiUser.setMyEmail(this.ViewUser.email);
     }
     $('#UserSettingsWindow').hide();
   }

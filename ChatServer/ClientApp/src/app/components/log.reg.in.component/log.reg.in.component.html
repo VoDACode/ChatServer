@@ -1,6 +1,7 @@
 <div id="logRegInBox">
-  <div class="selectMode">
-    <app-log-reg-top-panel></app-log-reg-top-panel>
+  <div class="header">
+    <button type="button" class="btn btn-primary log" [routerLink]="['/login']">Login</button>
+    <button type="button" class="btn btn-primary reg" [routerLink]="['/regin']">Create new account</button>
   </div>
   <div class="viewModes">
     <router-outlet></router-outlet>

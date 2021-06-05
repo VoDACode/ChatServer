@@ -23,7 +23,7 @@ namespace ApiService.Controllers
             this.Hub = hub;
         }
 
-        [HttpPost("{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetStorageInfo(string id)
         {
             DB.Images.ToList();
@@ -119,7 +119,7 @@ namespace ApiService.Controllers
             return Ok(result);
         }
 
-        [Route("/search")]
+        [HttpGet("search")]
         public IActionResult SerachStorage(string q)
         {
             if (string.IsNullOrWhiteSpace(q))
@@ -149,7 +149,7 @@ namespace ApiService.Controllers
             return Ok(result);
         }
 
-        [HttpPost("user/list")]
+        [HttpGet("user/list")]
         public IActionResult GetUserList(string sId)
         {
             var storage = DB.Storages.FirstOrDefault(s => s.Id.ToString() == sId);

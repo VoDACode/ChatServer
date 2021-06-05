@@ -6,6 +6,8 @@ import * as $ from 'jquery';
 import {StorageType} from '../../models/StorageModel';
 import {copyToClipboard} from '../../services/CustomClass';
 import {Router} from '@angular/router';
+import {ApiMessage} from '../../services/Api/ApiMessage';
+import {ApiStorage} from '../../services/Api/ApiStorage';
 
 @Component({
   selector: `app-message-region`,
@@ -89,8 +91,7 @@ export class AppMessageRegionComponent {
     this.IsEditMode = false;
   }
   eventSaveEditMessage(): void{
-    const query = `api/message/edit?sID=${ChatHub.selectChat.Storage.id}&mID=${this.TargetMessage}&newText=${this.TextContent}`;
-    ChatHub.authorizationService.http(query, 'POST');
+    ApiMessage.edit(ChatHub.selectChat.Storage.id, this.TargetMessage, this.TextContent);
     this.eventCancelEditMessage();
   }
 
@@ -107,11 +108,11 @@ export class AppMessageRegionComponent {
   }
 
   eventDeleteMessage(): void{
-    ChatHub.authorizationService.http(`api/message/delete?sID=${this.getHubSelectChat().Storage.id}&mID=${this.TargetMessage}`, 'POST');
+    ApiMessage.delete(ChatHub.selectChat.Storage.id, this.TargetMessage);
   }
 
   openDetailInfo(): void{
-    const response = ChatHub.authorizationService.http(`api/storage/type/${ChatHub.selectChat.Storage.id}`, 'GET');
+    const response = ApiStorage.getType(ChatHub.selectChat.Storage.id);
     if (response.type === 'SAVED_MESSAGES')
     {
       return;

@@ -18,6 +18,7 @@ namespace ApiService
 {
     public class Startup
     {
+        readonly string MyAllowServers = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,7 +29,9 @@ namespace ApiService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("ChatSqlConnection");
+            //string connection = Configuration.GetConnectionString("ConnectionStrings:DbConnection");
+
+            string connection = "Data Source=10.0.1.20;Initial Catalog=Chat_VoDA;User ID=ChatServer;Password=a86519v90fzQ1813";
 
             services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(connection));
@@ -50,7 +53,20 @@ namespace ApiService
                         ValidateIssuerSigningKey = true,
                     };
                 });
+            services.AddSignalR();
             services.AddControllersWithViews();
+            services.AddCors(options =>{
+                options.AddPolicy(MyAllowServers, builder =>
+                {
+                    builder.WithOrigins("https://chat.privatevoda.space", "https://media.chat.privatevoda.space",
+                                    "https://chat.privatevoda.space:5000", "https://media.chat.privatevoda.space:5200",
+                                    "http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .AllowAnyMethod();
+                });
+            });
+            services.AddDistributedMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +80,8 @@ namespace ApiService
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(MyAllowServers);
 
             app.UseEndpoints(endpoints =>
             {
